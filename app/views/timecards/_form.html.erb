@@ -1,0 +1,41 @@
+<%= form_for(@timecard) do |f| %>
+  <% if @timecard.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@timecard.errors.count, "error") %> prohibited this timecard from being saved:</h2>
+
+      <ul>
+      <% @timecard.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :initial_time %><br />
+    <%= f.datetime_select :initial_time %>
+  </div>
+  <div class="field">
+    <%= f.label :end_time %><br />
+    <%= f.datetime_select :end_time %>
+  </div>
+  <div class="field">
+    <%= f.label :user_id %><br />
+    <%= f.text_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :project_id %><br />
+    <%= f.text_field :project_id %>
+  </div>
+  <div class="field">
+    <%= f.label :timesheets_note_id %><br />
+    <%= f.text_field :timesheets_note_id %>
+  </div>
+  <div class="field">
+    <%= f.label :last_update_by %><br />
+    <%= f.text_field :last_update_by %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

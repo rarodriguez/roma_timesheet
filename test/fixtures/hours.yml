@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  description: MyText
+  initial_time: 2010-10-09 18:14:26
+  end_time: 2010-10-09 18:14:26
+  timesheet_id: 1
+
+two:
+  description: MyText
+  initial_time: 2010-10-09 18:14:26
+  end_time: 2010-10-09 18:14:26
+  timesheet_id: 1

@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  initial_time: 2010-10-09 22:53:10
+  end_time: 2010-10-09 22:53:10
+  user_id: 1
+  project_id: 1
+  timesheets_note_id: 1
+  last_update_by: 1
+
+two:
+  initial_time: 2010-10-09 22:53:10
+  end_time: 2010-10-09 22:53:10
+  user_id: 1
+  project_id: 1
+  timesheets_note_id: 1
+  last_update_by: 1
