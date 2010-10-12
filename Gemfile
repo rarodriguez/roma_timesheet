@@ -7,6 +7,9 @@ gem 'rails', '3.0.0'
 
 gem 'mysql', :require => 'mysql'
 
+gem 'foreigner'
+
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

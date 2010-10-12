@@ -4,7 +4,7 @@ class CreateHours < ActiveRecord::Migration
       t.text :description
       t.datetime :initial_time
       t.datetime :end_time
-      t.integer :timesheet_id
+      t.integer :timecard_id
 
       t.timestamps
     end

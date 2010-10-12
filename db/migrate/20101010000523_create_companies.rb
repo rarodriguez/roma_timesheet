@@ -5,9 +5,10 @@ class CreateCompanies < ActiveRecord::Migration
       t.string :address
       t.integer :user_id
       t.text :description
-
+    
       t.timestamps
     end
+    
   end
 
   def self.down

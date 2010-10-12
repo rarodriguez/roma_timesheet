@@ -5,7 +5,7 @@ class CreateTimecards < ActiveRecord::Migration
       t.datetime :end_time
       t.integer :user_id
       t.integer :project_id
-      t.integer :timesheets_note_id
+      t.integer :timecards_note_id
       t.integer :last_update_by
 
       t.timestamps

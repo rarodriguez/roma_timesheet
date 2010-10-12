@@ -13,7 +13,7 @@ class CreateUsers < ActiveRecord::Migration
       t.datetime :current_login_at
       t.datetime :last_request_at
       t.integer :failed_login_count
-      t.integer :last_udated_by
+      t.integer :last_updated_by
 
       t.timestamps
     end
