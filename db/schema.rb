@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101012050609) do
+ActiveRecord::Schema.define(:version => 20101018223300) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -22,6 +22,14 @@ ActiveRecord::Schema.define(:version => 20101012050609) do
   end
 
   add_index "companies", ["user_id"], :name => "companies_user_id_fk"
+
+  create_table "companies_users", :id => false, :force => true do |t|
+    t.integer "company_id"
+    t.integer "user_id"
+  end
+
+  add_index "companies_users", ["company_id"], :name => "companies_users_company_id_fk"
+  add_index "companies_users", ["user_id"], :name => "companies_users_user_id_fk"
 
   create_table "historical_hours", :force => true do |t|
     t.text     "old_value"
@@ -138,6 +146,9 @@ ActiveRecord::Schema.define(:version => 20101012050609) do
   add_index "users", ["last_updated_by"], :name => "users_last_updated_by_fk"
 
   add_foreign_key "companies", "users", :name => "companies_user_id_fk"
+
+  add_foreign_key "companies_users", "companies", :name => "companies_users_company_id_fk"
+  add_foreign_key "companies_users", "users", :name => "companies_users_user_id_fk"
 
   add_foreign_key "historical_hours", "hours", :name => "historical_hours_hour_id_fk"
   add_foreign_key "historical_hours", "users", :name => "historical_hours_created_by_fk", :column => "created_by"
