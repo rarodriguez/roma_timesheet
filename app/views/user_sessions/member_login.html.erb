@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+        <title>Members login</title>
+		<%= stylesheet_link_tag 'scaffold' %>
+    </head>
+    <body>
+        <p style="color: green">
+            <%= flash[:notice] %>
+        </p>
+        <h1>Member Login</h1>
+    	<% form_for @member_session, :url => member_login_create_path do |f| %>
+        	<%= error_messages_for :object => @member_session %>
+        	<p>
+                <%=f.label :login, "Email Address"%>
+                <br/>
+                <%= f.text_field :login %>
+            </p>
+            <p>
+                <%=f.label :password, "Email Address"%>
+                <br/>
+                <%= f.password_field :password %>
+            </p>
+			<p>
+				<%=f.label :remember_me, "Remember Me"%>
+				<%=f.checkbox :remember_me%>
+			</p>
+			<p>
+            	<%= f.submit 'Login' %>
+        	</p>
+        <% end %>
+		<br />
+		Don't have an account? <%= link_to "create", member_signup_url%> one now.
+	</body>
+</html>

@@ -5,8 +5,14 @@
 	<projects>
 	</projects>
 	<buildSpec>
+		<buildCommand>
+			<name>org.rubypeople.rdt.core.rubybuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>org.radrails.rails.core.railsnature</nature>
+		<nature>org.rubypeople.rdt.core.rubynature</nature>
 	</natures>
 </projectDescription>
