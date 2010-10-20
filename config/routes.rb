@@ -12,6 +12,9 @@ Timesheet::Application.routes.draw do
   resources :projects
 
   resources :companies
+  
+  match 'login' => 'user_sessions#login', :as => :login, :via => "get"
+  match 'login' => 'user_sessions#login_submit', :as => :login_create, :via => "post"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

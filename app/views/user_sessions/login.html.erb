@@ -10,7 +10,7 @@
             <%= flash[:notice] %>
         </p>
         <h1>Member Login</h1>
-    	<% form_for @member_session, :url => member_login_create_path do |f| %>
+    	<% form_for @member_session, :url => login_create_path do |f| %>
         	<%= error_messages_for :object => @member_session %>
         	<p>
                 <%=f.label :login, "Email Address"%>
@@ -24,13 +24,13 @@
             </p>
 			<p>
 				<%=f.label :remember_me, "Remember Me"%>
-				<%=f.checkbox :remember_me%>
+				<%=f.check_box :remember_me%>
 			</p>
 			<p>
             	<%= f.submit 'Login' %>
         	</p>
         <% end %>
 		<br />
-		Don't have an account? <%= link_to "create", member_signup_url%> one now.
+		Don't have an account? <%= link_to "create", new_user_url%> one now.
 	</body>
 </html>

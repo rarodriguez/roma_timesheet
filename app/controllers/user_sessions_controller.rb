@@ -6,11 +6,12 @@ class UserSessionsController < ApplicationController
   filter_parameter_logging 'password'
   
    # Backend login page
-  def member_login
+  def login
+    @member_session = UserSession.new(params[:user_session])
   end
   
     # Backend login action 
-  def member_login_submit
+  def login_submit
     #@user_session = UserSession.new(params[:user])
     if(@member_session.save)
       @current_member = @member_session.record
@@ -38,10 +39,8 @@ class UserSessionsController < ApplicationController
   def prepare_member_model
     params[:user_session] ||= {}
     #UserSession.with_scope(:find_options => {:conditions => "role_id = 1 && status != 0"}) do
-    UserSession.with_scope(:find_options => {:conditions => "role_id = 2 && (status_id = 1 || status_id = 2)"}) do
-      params[:user_session][:remember_me] = !params[:user_session][:remember_me].nil?
-      @member_session = UserSession.new(params[:user_session])
-    end
+    params[:user_session][:remember_me] = !params[:user_session][:remember_me].nil?
+    @member_session = UserSession.new(params[:user_session])
   end
   
 end

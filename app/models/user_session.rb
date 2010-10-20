@@ -18,5 +18,9 @@ class UserSession < Authlogic::Session::Base
       errors.add_to_base("Sorry, we couldn't find that account and password combination.")
     end
   end
+  def to_key
+    new_record? ? nil : [ self.send(self.class.primary_key) ]
+  end
+
   
 end

@@ -7,9 +7,9 @@ class User < ActiveRecord::Base
   has_many :timecards
   
   # primary username validation
-  validates_presence_of :login, :message=>"Oops, you can't proceed until you enter your email address."
-  validates_uniqueness_of :login, :scope=>:role_id, :message=>"Oops, the email address you entered is already associated with an envaulted account."
-  validates_format_of :login,
+  validates_presence_of :login, :message=>"Oops, you can't proceed until you enter your login."
+  validates_uniqueness_of :login, :message=>"Oops, the email username you entered is already associated with an envaulted account."
+  validates_format_of :email,
                       :with => /\A([\w\.\-\+]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i,
                       :message => "Oops, you can't proceed until you enter a valid email address."
                       
@@ -36,9 +36,9 @@ class User < ActiveRecord::Base
   end
   
   # Method that allows the user to login, this verification always is taken in consideration before login.
-  def active?
-    self.status_id == 1 || self.status_id == 2 
-  end
+ # def active?
+ #   self.status_id == 1 || self.status_id == 2 
+ # end
   
   def format_of_password
     if(!self.password.match(/^((?=.{8,17}$)(?=.*[a-z])(?=.*\d)(?=.*[A-Z])(?=.*[\!\@\#\$\%\&\*\-\+])).*/))
