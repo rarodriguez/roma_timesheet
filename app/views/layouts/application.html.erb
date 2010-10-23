@@ -1,14 +1,55 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+Name       : Vertebrate  
+Released   : 20100423
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta name="keywords" content="timesheet hours companies projects" />
+<meta name="description" content="A simple application which stores the amount of time that each employee of a company spends on a project" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <title>Timesheet</title>
-  <%= stylesheet_link_tag :all %>
+  <%= stylesheet_link_tag 'timesheet.css' %>
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
 </head>
 <body>
-
-<%= yield %>
-
+<div id="wrapper">
+  <div id="header">
+    <div id="logo">
+      <h1><a href="#">Timesheet</a></h1>
+    </div>
+  </div>
+  <!-- end #header -->
+  <div id="menu">
+    <ul>
+      <li class="current_page_item"><a href="#">Home</a></li>
+      <li><a href="#">Timesheets</a></li>
+      <li><a href="#">Projects</a></li>
+      <li><a href="#">Companies</a></li>
+      <li><a href="#">Employees</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+  </div>
+  <!-- end #menu -->
+  <div id="page">
+  <div id="page-bgtop">
+  <div id="page-bgbtm">
+    <div id="content">
+      <%= yield %>
+    </div>
+  </div>
+  </div>
+  </div>
+  <!-- end #page -->
+  
+</div>
+  <div id="footer">
+    <p>RomaSoft Timesheet. Initial design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/es/">&nbsp;&nbsp;<img alt="Licencia de Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/2.5/es/80x15.png" /></a></p>
+  </div>
+  <!-- end #footer -->
 </body>
 </html>

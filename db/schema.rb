@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101018223300) do
+ActiveRecord::Schema.define(:version => 20101023210707) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -96,6 +96,16 @@ ActiveRecord::Schema.define(:version => 20101018223300) do
 
   add_index "roles_users", ["role_id"], :name => "roles_users_role_id_fk"
   add_index "roles_users", ["user_id"], :name => "roles_users_user_id_fk"
+
+  create_table "sessions", :force => true do |t|
+    t.string   "session_id", :null => false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "timecards", :force => true do |t|
     t.datetime "initial_time"

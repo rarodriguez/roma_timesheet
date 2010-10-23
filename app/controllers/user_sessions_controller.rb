@@ -2,12 +2,11 @@ class UserSessionsController < ApplicationController
   before_filter :require_no_member, :only=>[:member_login, :member_login_submit]
   before_filter :require_member, :only=>[:member_logout]
   # filter to prepare the model for creating an admin session
-  before_filter :prepare_member_model, :only => [:member_login, :member_login_submit]
+  before_filter :prepare_member_model, :only => [:login, :login_submit]
   filter_parameter_logging 'password'
   
    # Backend login page
   def login
-    @member_session = UserSession.new(params[:user_session])
   end
   
     # Backend login action 
@@ -22,9 +21,8 @@ class UserSessionsController < ApplicationController
       
       member = Member.find_by_user_id(@current_member.id)
       session[:member_name] = (member.first_name.nil? ? @current_member.login : member.first_name)  
-      render :json => "{\"success\":true}"
     else
-      render :json => "{\"success\":false,\"errormsg\":\"Oops, The email or password you entered is incorrect.\"}"
+      render :action => "login"
     end
   end
   
