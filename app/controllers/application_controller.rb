@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   ###################### MEMBER ##########################
   def current_member_session
     return @current_member_session if defined?(@current_admin_session)
-    @current_member_session = UserSession.find(:admin)
+    @current_member_session = UserSession.find()
   end
 
   def current_member

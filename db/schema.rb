@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101023210707) do
+ActiveRecord::Schema.define(:version => 20101024210813) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(:version => 20101023210707) do
     t.integer  "role_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "needs_extra_validation"
   end
 
   add_index "permissions", ["role_id"], :name => "permissions_role_id_fk"
@@ -151,6 +152,7 @@ ActiveRecord::Schema.define(:version => 20101023210707) do
     t.integer  "last_updated_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "password_changed_at"
   end
 
   add_index "users", ["last_updated_by"], :name => "users_last_updated_by_fk"
