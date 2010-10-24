@@ -4,7 +4,13 @@
   <div style="clear: both;">&nbsp;</div>
   <div class="entry">
     <% form_for @member_session, :url => login_create_path do |f| %>
-      <%= error_messages_for :object => @member_session, :header_message=>nil, :message=>nil  %>
+      <% if @member_session.errors.any? %>
+        <ul>
+        <% @member_session.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      <% end %>
       <p>
         <%=f.label :login, "Email Address"%>
         <br/>

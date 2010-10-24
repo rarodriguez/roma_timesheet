@@ -1,29 +1,33 @@
-<h1>Listing companies</h1>
+<div class="information">
+  <h2 class="title">Listing companies</h2>
+  <p class="meta"><span class="date">Listing all the Companies</span></p>
+  <div style="clear: both;">&nbsp;</div>
+  <div class="entry">
+    <table class="list">
+      <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>User</th>
+        <th>Description</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    
+    <% @companies.each do |company| %>
+      <tr>
+        <td><%= company.name %></td>
+        <td><%= company.address %></td>
+        <td><%= company.user_id %></td>
+        <td><%= company.description %></td>
+        <td><%= link_to 'Show', company %></td>
+        <td><%= link_to 'Edit', edit_company_path(company) %></td>
+        <td><%= link_to 'Destroy', company, :confirm => 'Are you sure?', :method => :delete %></td>
+      </tr>
+    <% end %>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Address</th>
-    <th>User</th>
-    <th>Description</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @companies.each do |company| %>
-  <tr>
-    <td><%= company.name %></td>
-    <td><%= company.address %></td>
-    <td><%= company.user_id %></td>
-    <td><%= company.description %></td>
-    <td><%= link_to 'Show', company %></td>
-    <td><%= link_to 'Edit', edit_company_path(company) %></td>
-    <td><%= link_to 'Destroy', company, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Company', new_company_path %>
+    </table>
+    
+    <p class="links"><%= link_to 'Add another company', new_company_path %></p>
+  </div>
+</div>

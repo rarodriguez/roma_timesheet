@@ -1,6 +1,9 @@
-<h1>Editing project</h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Show', @project %> |
-<%= link_to 'Back', projects_path %>
+<div class="information">
+  <h2 class="title">Editing Project</h2>
+  <p class="meta"><span class="date">Enter new information for your project</span></p>
+  <div style="clear: both;">&nbsp;</div>
+  <div class="entry">
+      <%= render 'form' %>
+    <p class="links"><%= link_to 'Show', @project %>&nbsp;|&nbsp;<%= link_to 'Back', projects_path %></p>
+  </div>
+</div>

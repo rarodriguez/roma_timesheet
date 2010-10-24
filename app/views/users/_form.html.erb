@@ -1,5 +1,15 @@
 <%= form_for(@user) do |f| %>
-  <%= error_messages_for :object => @member, :header_message=>nil, :message=>nil  %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% @user.errors.each do |attr, msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
   <div class="field">
     <%= f.label :login %><br />
     <%= f.text_field :login %>

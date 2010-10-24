@@ -1,5 +1,9 @@
-<h1>New company</h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Back', companies_path %>
+<div class="information">
+  <h2 class="title">New Company</h2>
+  <p class="meta"><span class="date">Enter the information for your new company</span></p>
+  <div style="clear: both;">&nbsp;</div>
+  <div class="entry">
+      <%= render 'form' %>
+    <p class="links"><%= link_to 'Back', companies_path %></p>
+  </div>
+</div>

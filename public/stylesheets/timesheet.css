@@ -166,7 +166,7 @@ div.field, div.actions {
 }
 
 #page-bgtop {
-	padding: 20px px;
+	padding: 20px 0px;
 }
 
 #page-bgbtm {
@@ -301,7 +301,12 @@ table.list { width:800px;}
   display: table;
 }
 
-#errorExplanation {
+.field_with_errors label{
+  color:#ffffff;
+}
+
+
+#error_explanation {
   width: 450px;
   border: 2px solid #C51821;
   padding: 7px;
@@ -309,7 +314,7 @@ table.list { width:800px;}
   margin-bottom: 20px;
 }
 
-#errorExplanation h2 {
+#error_explanation h2 {
   text-align: left;
   font-weight: bold;
   padding: 5px 5px 5px 15px;
@@ -320,20 +325,20 @@ table.list { width:800px;}
   color: #fff;
 }
 
-#errorExplanation p {
+#error_explanation p {
   line-height:150%;
 }
 
-#errorExplanation ul li {
+#error_explanation ul li {
   font-size: 12px;
   list-style: square;
 }
 
-#new_user_session #errorExplanation ul {
+#new_user_session #error_explanation ul {
   padding:5px;
 }
 
-#new_user_session #errorExplanation ul li {
+#new_user_session #error_explanation ul li {
   font-size: 14px;
   list-style: none;
 }

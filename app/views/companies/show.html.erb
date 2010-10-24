@@ -1,25 +1,29 @@
-<p id="notice"><%= notice %></p>
+<div class="information">
+  <h2 class="title">Show Company</h2>
+  <p class="meta"><span class="date"><%= notice %></span></p>
+  <div style="clear: both;">&nbsp;</div>
+  <div class="entry">
+      <p id="notice"><%= notice %></p>
+      <p>
+        <b>Name:</b>
+        <%= @company.name %>
+      </p>
+      
+      <p>
+        <b>Address:</b>
+        <%= @company.address %>
+      </p>
+      
+      <p>
+        <b>Administrator:</b>
+        <%= @company.user.first_name + @company.user.last_name if(@company.user)%>
+      </p>
+      
+      <p>
+        <b>Description:</b>
+        <%= @company.description %>
+      </p>
 
-<p>
-  <b>Name:</b>
-  <%= @company.name %>
-</p>
-
-<p>
-  <b>Address:</b>
-  <%= @company.address %>
-</p>
-
-<p>
-  <b>User:</b>
-  <%= @company.user_id %>
-</p>
-
-<p>
-  <b>Description:</b>
-  <%= @company.description %>
-</p>
-
-
-<%= link_to 'Edit', edit_company_path(@company) %> |
-<%= link_to 'Back', companies_path %>
+    <p class="links"><%= link_to 'Edit', edit_company_path(@company) %> | <%= link_to 'Back', companies_path %></p>
+  </div>
+</div>

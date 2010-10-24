@@ -1,25 +1,28 @@
-<p id="notice"><%= notice %></p>
+<div class="information">
+  <h2 class="title">Show project</h2>
+  <p class="meta"><span class="date"><%= notice %></span></p>
+  <div style="clear: both;">&nbsp;</div>
+  <div class="entry">
+      <p>
+        <b>Name:</b>
+        <%= @project.name %>
+      </p>
+      
+      <p>
+        <b>Company:</b>
+        <%= @project.company_id %>
+      </p>
+      
+      <p>
+        <b>User:</b>
+        <%= @project.user_id %>
+      </p>
+      
+      <p>
+        <b>Last update by:</b>
+        <%= @project.last_update_by %>
+      </p>
 
-<p>
-  <b>Name:</b>
-  <%= @project.name %>
-</p>
-
-<p>
-  <b>Company:</b>
-  <%= @project.company_id %>
-</p>
-
-<p>
-  <b>User:</b>
-  <%= @project.user_id %>
-</p>
-
-<p>
-  <b>Last update by:</b>
-  <%= @project.last_update_by %>
-</p>
-
-
-<%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Back', projects_path %>
+    <p class="links"><%= link_to 'Edit', edit_project_path(@project) %> | <%= link_to 'Back', projects_path %></p>
+  </div>
+</div>
