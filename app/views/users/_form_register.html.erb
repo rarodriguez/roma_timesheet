@@ -1,0 +1,64 @@
+<%= form_for(@user, :url=>register_create_path) do |f| %>
+  <% if @user.errors.any? || @company.errors.any?%>
+    <div id="error_explanation">
+      <ul>
+      <% @user.errors.each do |attr, msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      <% @company.errors.each do |attr, msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="leftAlign">
+    <fieldset><legend>User information</legend>
+    <div class="field">
+      <%= f.label :login, "Username" %><br />
+      <%= f.text_field :login %>
+    </div>
+    <div class="field">
+      <%= f.label :password %><br />
+      <%= f.password_field :password %>
+    </div>
+    <div class="field">
+      <%= f.label :password_confirmation %><br />
+      <%= f.password_field :password_confirmation %>
+    </div>
+    <div class="field">
+      <%= f.label :name, 'First name' %><br />
+      <%= f.text_field :name %>
+    </div>
+    <div class="field">
+      <%= f.label :last_name %><br />
+      <%= f.text_field :last_name %>
+    </div>
+    <div class="field">
+      <%= f.label :email %><br />
+      <%= f.text_field :email %>
+    </div>
+    </fieldset>
+  </div>
+  <div class="rightAlign">
+    <fieldset><legend>Company information</legend>
+    <%= fields_for :company do |com| %>
+      <div class="field">
+        <%= com.label :name %><br />
+        <%= com.text_field :name %>
+      </div>
+      <div class="field">
+        <%= com.label :address %><br />
+        <%= com.text_field :address %>
+      </div>
+      <div class="field", style="margin-bottom:18px;">
+        <%= com.label :description %><br />
+        <%= com.text_area :description, :rows=>8 %>
+      </div>
+    <%end%>
+    </fieldset>
+  </div>
+  <div class="clear">&nbsp;</div>
+  <div class="actions">
+    <%= f.submit :value=>"Create my account" %>
+  </div>
+<% end %>

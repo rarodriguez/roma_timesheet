@@ -2,13 +2,13 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :projects
   has_and_belongs_to_many :companies
   has_and_belongs_to_many :roles
-  has_one :managed_project, :class_name => 'project'
-  has_one :managed_company, :class_name => 'company'
+  has_one :managed_project, :class_name => 'Project'
+  has_one :managed_company, :class_name => 'Company'
   has_many :timecards
   
   # primary username validation
-  validates_presence_of :login, :message=>"Oops, you can't proceed until you enter your login."
-  validates_uniqueness_of :login, :message=>"Oops, the email username you entered is already associated with an envaulted account."
+  validates_presence_of :login, :message=>"Oops, you can't proceed until you enter an username."
+  validates_uniqueness_of :login, :message=>"Oops, the username you entered is already associated with an account. Please try another."
   validates_format_of :email,
                       :with => /\A([\w\.\-\+]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i,
                       :message => "Oops, you can't proceed until you enter a valid email address."
@@ -17,6 +17,9 @@ class User < ActiveRecord::Base
   
   validate :format_of_password, :if=>Proc.new{|u|u.ignore_password != 1}
   validates_confirmation_of :password, :message=>"Oops, you can't proceed until the password and password confirmation match.", :if=>Proc.new{|u|u.ignore_password != 1}
+  
+  validates_presence_of :name, :message=>"Oops, you can't proceed until you enter your first name."
+  validates_presence_of :last_name, :message=>"Oops, you can't proceed until you enter your last name."
   
   attr_accessor :ignore_password
   attr_accessor :check_old_pass
@@ -30,6 +33,7 @@ class User < ActiveRecord::Base
   acts_as_authentic do |c|  
     #c.session_ids = [:member]
     c.validate_login_field = false
+    c.validate_email_field = false
     c.validate_password_field = false
     c.logged_in_timeout = 10.minutes
     c.ignore_blank_passwords = false

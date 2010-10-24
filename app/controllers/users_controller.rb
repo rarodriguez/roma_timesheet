@@ -1,7 +1,11 @@
 class UsersController < ApplicationController
+ 
   # GET /users
   # GET /users.xml
   def index
+    #@current_action = action_name
+    #@current_controller =  controller_name
+    
     @users = User.all
 
     respond_to do |format|
@@ -31,6 +35,40 @@ class UsersController < ApplicationController
       format.xml  { render :xml => @user }
     end
   end
+
+  # GET /register
+  def register
+    @user = User.new
+    @company = Company.new
+  end
+  
+  # POST /register
+  def register_create
+    @user = User.new(params[:user])
+    # TODO add the method to asign the ROLE
+    # @user.roles << Role.find_by_name(Admin)
+    @company = Company.new(params[:company])
+    
+    if [@user.valid?, @company.valid?].all? 
+      begin
+        User.transaction do
+          @user.save!
+          @company.manager = @user
+          @company.save!
+        end
+        redirect_to "/"
+      rescue Exception => e
+        logger.error e.message
+        logger.error e.backtrace
+        render :action=>'register'
+      end
+    else
+      @user.password = ""
+      @user.password_confirmation = ""
+      render :action => "register"
+    end
+  end
+
 
   # GET /users/1/edit
   def edit

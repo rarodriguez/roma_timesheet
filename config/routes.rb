@@ -15,6 +15,9 @@ Timesheet::Application.routes.draw do
   
   match 'login' => 'user_sessions#login', :as => :login, :via => "get"
   match 'login' => 'user_sessions#login_submit', :as => :login_create, :via => "post"
+  
+  match 'register' => 'users#register', :as => :register, :via => "get"
+  match 'register' => 'users#register_create', :as => :register_create, :via => "post"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -49,10 +49,18 @@ a {
 a:hover {
 }
 
+fieldset {width: 430px; padding: 10px; border-color: #F5EC92;}
+legend{font-weight: bold; background-color: #FAF4C0; color: #464032; padding: 3px 10px; border: 1px solid #464032;}
+
 div.field, div.actions {
   margin-bottom: 10px;
 }
 
+.leftAlign {float:left;}
+.rightAlign {float:right;}
+.clear {clear:both;}
+.rightText {float:right;}
+.leftText {float:left;}
 #wrapper {
 	width: 960px;
 	margin: 0 auto;
@@ -166,7 +174,7 @@ div.field, div.actions {
 }
 
 #page-bgtop {
-	padding: 20px 0px;
+	padding: 10px 0px 20px 0px;
 }
 
 #page-bgbtm {
@@ -176,7 +184,6 @@ div.field, div.actions {
 
 #content {
 	width: 100%;
-	padding: 30px 0px 0px 0px;
 }
 
 .information {

@@ -42,14 +42,10 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(params[:project])
 
-    respond_to do |format|
-      if @project.save
-        format.html { redirect_to(@project, :notice => 'Project was successfully created.') }
-        format.xml  { render :xml => @project, :status => :created, :location => @project }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @project.errors, :status => :unprocessable_entity }
-      end
+    if @project.save
+      redirect_to(@project, :notice => 'Project was successfully created.')
+    else
+      render :action => "new"
     end
   end
 
