@@ -4,13 +4,21 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::InvalidAuthenticityToken, :with => :bad_token
   
   helper :all # include all helpers, all the time
-  protect_from_forgery # See ActionController::RequestForgeryProtection for details
-  helper_method :current_admin
+  helper_method :current_member
   helper_method :remove_whitespaces, :redo_whitespaces
 
+  #before_filter
+  before_filter :validate_access
+  
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
   protected
+  
+  def validate_access
+    require_member
+    security = SecurityController.new
+    security.validate_access_sec
+  end
 
   def redirect_back_or_default(default)
     redirect_to(session[:redirect_url] || default)
