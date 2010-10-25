@@ -8,16 +8,18 @@ class ApplicationController < ActionController::Base
   helper_method :remove_whitespaces, :redo_whitespaces
 
   #before_filter
-  before_filter :validate_access
+  before_filter :validate_access, :except => [:login, :register]
   
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
   protected
   
   def validate_access
-    require_member
+    #require_member
     security = SecurityController.new
-    security.validate_access_sec
+    unless security.validate_access_sec(controller_name, action_name)
+      redirect_to :login
+    end
   end
 
   def redirect_back_or_default(default)

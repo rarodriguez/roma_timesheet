@@ -3,9 +3,9 @@ class SecurityController < ApplicationController
   #Method of before_filter
   def validate_access_sec (controller, action)
     if (current_member && current_member.password_changed_at)
-      has_permission?(controller, action)
+      #has_permission?(controller, action)
     end
-    redirect_to :login
+    false
   end
   
   # Generic method to validate the actions of the user in the controller
