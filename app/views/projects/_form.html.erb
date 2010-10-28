@@ -1,4 +1,4 @@
-<%= form_for(@project) do |f| %>
+<%= form_for([:company, @project]) do |f| %>
   <% if @project.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
@@ -16,16 +16,8 @@
     <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :company_id %><br />
-    <%= f.text_field :company_id %>
-  </div>
-  <div class="field">
-    <%= f.label :user_id %><br />
-    <%= f.text_field :user_id %>
-  </div>
-  <div class="field">
-    <%= f.label :last_update_by %><br />
-    <%= f.text_field :last_update_by %>
+    <%= f.label :user_id, "Project Manager" %><br />
+    <%= f.select :user_id, @managers %>
   </div>
   <div class="actions">
     <%= f.submit %>

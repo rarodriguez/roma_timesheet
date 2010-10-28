@@ -1,6 +1,6 @@
 <div class="information">
   <h2 class="title">Listing employees</h2>
-  <p class="meta"><span class="date">Employees from "Company 1"</span></p>
+  <p class="meta"><span class="date">Employees from "<%=@company.name if(@company)%>"</span></p>
   <div style="clear: both;">&nbsp;</div>
   <div class="entry">
     <table class="list">
@@ -19,13 +19,13 @@
         <td><%= user.name %></td>
         <td><%= user.last_name %></td>
         <td><%= user.email %></td>
-        <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
+        <td><%= link_to 'Show', company_user_path(@company.id,user.id) %></td>
+        <td><%= link_to 'Edit', edit_company_user_path(@company.id,user.id) %></td>
+        <td><%= link_to 'Destroy', company_user_path(@company.id,user.id), :confirm => 'Are you sure?', :method => :delete %></td>
       </tr>
     <% end %>
     </table>
     
-    <p class="links"><%= link_to 'Add another employee', new_user_path %></p>
+    <p class="links"><%= link_to 'Add another employee', new_company_user_path %></p>
   </div>
 </div>

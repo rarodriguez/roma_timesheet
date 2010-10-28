@@ -6,34 +6,20 @@ class UsersController < ApplicationController
     #@current_action = action_name
     #@current_controller =  controller_name
     
-    @users = User.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @users }
-    end
+    @company = Company.find(params[:company_id])
+    @users = @company.users
   end
 
   # GET /users/1
   # GET /users/1.xml
   def show
     @user = User.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @user }
-    end
   end
 
   # GET /users/new
   # GET /users/new.xml
   def new
     @user = User.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @user }
-    end
   end
 
   # GET /register
@@ -55,6 +41,8 @@ class UsersController < ApplicationController
           @user.save!
           @company.manager = @user
           @company.save!
+          # Adds the user to the list of users that belongs to the company
+          @company.users << @user
         end
         redirect_to "/"
       rescue Exception => e
@@ -79,15 +67,12 @@ class UsersController < ApplicationController
   # POST /users.xml
   def create
     @user = User.new(params[:user])
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to(@user, :notice => 'User was successfully created.') }
-        format.xml  { render :xml => @user, :status => :created, :location => @user }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
-      end
+    @company = Company.find(params[:company_id])
+    if @user.save
+      @company.users << @user
+      redirect_to(company_user(:company_id=>@company.id, :id=>@user.id), :notice => 'User was successfully created.')
+    else
+      render :action => "new"
     end
   end
 
@@ -96,14 +81,10 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
 
-    respond_to do |format|
-      if @user.update_attributes(params[:user])
-        format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
-      end
+    if @user.update_attributes(params[:user])
+      redirect_to(company_user(:company_id=>@company.id, :id=>@user.id), :notice => 'User was successfully updated.')
+    else
+      render :action => "edit"
     end
   end
 
@@ -113,9 +94,6 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @user.destroy
 
-    respond_to do |format|
-      format.html { redirect_to(users_url) }
-      format.xml  { head :ok }
-    end
+    redirect_to(users_url)
   end
 end

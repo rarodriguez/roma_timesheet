@@ -157,33 +157,33 @@ ActiveRecord::Schema.define(:version => 20101024210813) do
 
   add_index "users", ["last_updated_by"], :name => "users_last_updated_by_fk"
 
-  add_foreign_key "companies", "users", :name => "companies_user_id_fk"
+  add_foreign_key "companies", "users", :name => "companies_user_id_fk", :dependent => :delete
 
   add_foreign_key "companies_users", "companies", :name => "companies_users_company_id_fk"
   add_foreign_key "companies_users", "users", :name => "companies_users_user_id_fk"
 
-  add_foreign_key "historical_hours", "hours", :name => "historical_hours_hour_id_fk"
-  add_foreign_key "historical_hours", "users", :name => "historical_hours_created_by_fk", :column => "created_by"
+  add_foreign_key "historical_hours", "hours", :name => "historical_hours_hour_id_fk", :dependent => :delete
+  add_foreign_key "historical_hours", "users", :name => "historical_hours_created_by_fk", :column => "created_by", :dependent => :delete
 
-  add_foreign_key "hours", "timecards", :name => "hours_timecard_id_fk"
+  add_foreign_key "hours", "timecards", :name => "hours_timecard_id_fk", :dependent => :delete
 
-  add_foreign_key "permissions", "roles", :name => "permissions_role_id_fk"
+  add_foreign_key "permissions", "roles", :name => "permissions_role_id_fk", :dependent => :delete
 
-  add_foreign_key "projects", "users", :name => "projects_user_id_fk"
+  add_foreign_key "projects", "users", :name => "projects_user_id_fk", :dependent => :delete
 
-  add_foreign_key "projects_users", "projects", :name => "projects_users_project_id_fk"
-  add_foreign_key "projects_users", "users", :name => "projects_users_user_id_fk"
+  add_foreign_key "projects_users", "projects", :name => "projects_users_project_id_fk", :dependent => :delete
+  add_foreign_key "projects_users", "users", :name => "projects_users_user_id_fk", :dependent => :delete
 
-  add_foreign_key "roles_users", "roles", :name => "roles_users_role_id_fk"
-  add_foreign_key "roles_users", "users", :name => "roles_users_user_id_fk"
+  add_foreign_key "roles_users", "roles", :name => "roles_users_role_id_fk", :dependent => :delete
+  add_foreign_key "roles_users", "users", :name => "roles_users_user_id_fk", :dependent => :delete
 
-  add_foreign_key "timecards", "projects", :name => "timecards_project_id_fk"
-  add_foreign_key "timecards", "timecards_notes", :name => "timecards_timecards_note_id_fk"
-  add_foreign_key "timecards", "users", :name => "timecards_user_id_fk"
+  add_foreign_key "timecards", "projects", :name => "timecards_project_id_fk", :dependent => :delete
+  add_foreign_key "timecards", "timecards_notes", :name => "timecards_timecards_note_id_fk", :dependent => :delete
+  add_foreign_key "timecards", "users", :name => "timecards_user_id_fk", :dependent => :delete
 
-  add_foreign_key "timecards_notes", "timecards", :name => "timecards_notes_timecard_id_fk"
-  add_foreign_key "timecards_notes", "users", :name => "timecards_notes_created_by_fk", :column => "created_by"
+  add_foreign_key "timecards_notes", "timecards", :name => "timecards_notes_timecard_id_fk", :dependent => :delete
+  add_foreign_key "timecards_notes", "users", :name => "timecards_notes_created_by_fk", :column => "created_by", :dependent => :delete
 
-  add_foreign_key "users", "users", :name => "users_last_updated_by_fk", :column => "last_updated_by"
+  add_foreign_key "users", "users", :name => "users_last_updated_by_fk", :column => "last_updated_by", :dependent => :delete
 
 end

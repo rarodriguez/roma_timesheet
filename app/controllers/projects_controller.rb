@@ -2,49 +2,47 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.xml
   def index
-    @projects = Project.all
+    # we suppouse that the security module will only allow to get here if the user have permissions.
+    @projects = Project.where(['company_id = ?', params[:company_id]])
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @projects }
-    end
   end
 
   # GET /projects/1
   # GET /projects/1.xml
   def show
-    @project = Project.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @project }
-    end
+    @project = Project.where(["id = ? AND company_id = ?", params[:id], params[:company_id]]).limit(1)
   end
 
   # GET /projects/new
   # GET /projects/new.xml
   def new
-    @project = Project.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @project }
-    end
+    @company_id = params[:company_id]
+    @project = Project.new #TODO uncomment :user_id => current_member.id
+    @managers = User.includes(:companies).where("companies.id = ?",@company_id)
+    @managers = @managers.collect{|man| ["#{man.name} #{man.last_name}",man.id]} if(@managers)
   end
 
   # GET /projects/1/edit
   def edit
+    @company_id = params[:company_id]
     @project = Project.find(params[:id])
+    @managers = User.includes(:companies).where("companies.id = ?",@company_id)
+    @managers = @managers.collect{|man| ["#{man.name} #{man.last_name}",man.id]} if(@managers)
   end
 
   # POST /projects
   # POST /projects.xml
   def create
     @project = Project.new(params[:project])
+    @project.last_updater = current_user
+    @project.company = Company.find(params[:company_id])
 
     if @project.save
       redirect_to(@project, :notice => 'Project was successfully created.')
     else
+      @company_id = params[:company_id]
+      @managers = User.includes(:companies).where("companies.id = ?",@company_id)
+      @managers = @managers.collect{|man| ["#{man.name} #{man.last_name}",man.id]} if(@managers)
       render :action => "new"
     end
   end
@@ -53,15 +51,14 @@ class ProjectsController < ApplicationController
   # PUT /projects/1.xml
   def update
     @project = Project.find(params[:id])
-
-    respond_to do |format|
-      if @project.update_attributes(params[:project])
-        format.html { redirect_to(@project, :notice => 'Project was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @project.errors, :status => :unprocessable_entity }
-      end
+    @project.last_updater = current_user
+    if @project.update_attributes(params[:project])
+      redirect_to(@project, :notice => 'Project was successfully updated.')
+    else
+      @company_id = params[:company_id]
+      @managers = User.includes(:companies).where("companies.id = ?",@company_id)
+      @managers = @managers.collect{|man| ["#{man.name} #{man.last_name}",man.id]} if(@managers)
+      render :action => "edit"
     end
   end
 

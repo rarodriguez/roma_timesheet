@@ -20,14 +20,14 @@
         <td><%= project.company_id %></td>
         <td><%= project.user_id %></td>
         <td><%= project.last_update_by %></td>
-        <td><%= link_to 'Show', project %></td>
-        <td><%= link_to 'Edit', edit_project_path(project) %></td>
-        <td><%= link_to 'Destroy', project, :confirm => 'Are you sure?', :method => :delete %></td>
+        <td><%= link_to 'Show', company_project %></td>
+        <td><%= link_to 'Edit', edit_company_project_path(project) %></td>
+        <td><%= link_to 'Destroy', company_project, :confirm => 'Are you sure?', :method => :delete %></td>
       </tr>
     <% end %>
 
     </table>
     
-    <p class="links"><%= link_to 'New Project', new_project_path %></p>
+    <p class="links"><%= link_to 'New Project', new_company_project_path %></p>
   </div>
 </div>

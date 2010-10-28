@@ -1,4 +1,6 @@
 Timesheet::Application.routes.draw do
+  root :to => "user_sessions#login"
+  
   resources :timecards
 
   resources :hours
@@ -7,11 +9,15 @@ Timesheet::Application.routes.draw do
 
   resources :permissions
 
-  resources :users
+  #resources :projects
 
-  resources :projects
-
-  resources :companies
+  #resources :companies
+  
+  resources :companies, :constraints => {:id => /[0-9]+/, :company_id =>/[0-9]+/}   do
+    resources :projects, :constraints => {:id => /[0-9]+/}
+    resources :users, :constraints => {:id => /[0-9]+/}
+  end
+  
   
   match 'login' => 'user_sessions#login', :as => :login, :via => "get"
   match 'login' => 'user_sessions#login_submit', :as => :login_create, :via => "post"
