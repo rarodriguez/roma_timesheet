@@ -24,6 +24,8 @@ Timesheet::Application.routes.draw do
   
   match 'register' => 'users#register', :as => :register, :via => "get"
   match 'register' => 'users#register_create', :as => :register_create, :via => "post"
+  
+  match 'dashboard' => 'contents#dashboard', :as => :dashboard, :via => "get"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

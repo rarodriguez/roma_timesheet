@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_one :managed_project, :class_name => 'Project'
   has_one :managed_company, :class_name => 'Company'
   has_many :timecards
+  belongs_to :last_updater, :class_name => "User", :foreign_key=> 'last_updated_by'
   
   # primary username validation
   validates_presence_of :login, :message=>"Oops, you can't proceed until you enter an username."

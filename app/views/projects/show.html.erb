@@ -14,13 +14,13 @@
       </p>
       
       <p>
-        <b>User:</b>
-        <%= @project.user_id %>
+        <b>Manager:</b>
+        <%= "#{@project.manager.name} #{@project.manager.last_name}" if(@project.manager) %>
       </p>
       
       <p>
         <b>Last update by:</b>
-        <%= @project.last_update_by %>
+        <%= "#{@project.last_updater.name} #{@project.last_updater.last_name}" if(@project.last_updater) %>
       </p>
 
     <p class="links"><%= link_to 'Edit', edit_company_project_path(@project) %> | <%= link_to 'Back', company_projects_path %></p>

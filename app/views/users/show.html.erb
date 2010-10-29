@@ -25,7 +25,7 @@
       
       <p>
         <b>Last updated by:</b>
-        <%= @user.last_updated_by %>
+        <%= "#{@user.last_updater.name} #{@user.last_updater.last_name}" if(@user.last_updater) %>
       </p>
 
 

@@ -4,19 +4,21 @@ class ProjectsController < ApplicationController
   def index
     # we suppouse that the security module will only allow to get here if the user have permissions.
     @projects = Project.where(['company_id = ?', params[:company_id]])
-
+    @company = Company.find(params[:company_id])
   end
 
   # GET /projects/1
   # GET /projects/1.xml
   def show
-    @project = Project.where(["id = ? AND company_id = ?", params[:id], params[:company_id]]).limit(1)
+    @company = Company.find(params[:company_id])
+    @project = @company.projects.find(params[:id])
   end
 
   # GET /projects/new
   # GET /projects/new.xml
   def new
     @company_id = params[:company_id]
+    @company = Company.find(@company_id)
     @project = Project.new #TODO uncomment :user_id => current_member.id
     @managers = User.includes(:companies).where("companies.id = ?",@company_id)
     @managers = @managers.collect{|man| ["#{man.name} #{man.last_name}",man.id]} if(@managers)
@@ -25,7 +27,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1/edit
   def edit
     @company_id = params[:company_id]
-    @project = Project.find(params[:id])
+    @project = Company.find(@company_id).projects.find(params[:id])
     @managers = User.includes(:companies).where("companies.id = ?",@company_id)
     @managers = @managers.collect{|man| ["#{man.name} #{man.last_name}",man.id]} if(@managers)
   end
@@ -34,11 +36,13 @@ class ProjectsController < ApplicationController
   # POST /projects.xml
   def create
     @project = Project.new(params[:project])
-    @project.last_updater = current_user
+    manager = User.find(params[:project][:user_id])
+    @project.manager = manager
+    # TODO UNCOMMENT @project.last_updater = current_user
     @project.company = Company.find(params[:company_id])
 
     if @project.save
-      redirect_to(@project, :notice => 'Project was successfully created.')
+      redirect_to(company_project_path(:id=>@project.id, :company_id =>@project.company.id), :notice => 'Project was successfully created.')
     else
       @company_id = params[:company_id]
       @managers = User.includes(:companies).where("companies.id = ?",@company_id)
@@ -50,10 +54,12 @@ class ProjectsController < ApplicationController
   # PUT /projects/1
   # PUT /projects/1.xml
   def update
-    @project = Project.find(params[:id])
-    @project.last_updater = current_user
+    @project = Company.find(params[:company_id]).projects.find(params[:id])
+    manager = User.find(params[:project][:user_id])
+    @project.manager = manager
+    # TODO UNCOMMENT @project.last_updater = current_user
     if @project.update_attributes(params[:project])
-      redirect_to(@project, :notice => 'Project was successfully updated.')
+      redirect_to(company_project_path(:id=>@project.id, :company_id =>@project.company.id), :notice => 'Project was successfully updated.')
     else
       @company_id = params[:company_id]
       @managers = User.includes(:companies).where("companies.id = ?",@company_id)
@@ -65,7 +71,7 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1
   # DELETE /projects/1.xml
   def destroy
-    @project = Project.find(params[:id])
+    @project = Company.find(params[:company_id]).projects.find(params[:id])
     @project.destroy
 
     respond_to do |format|
