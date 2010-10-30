@@ -1,0 +1,114 @@
+<%= content_for :head do%>
+  <%= javascript_include_tag 'jquery.jqGrid.min.js' %>
+  <%= stylesheet_link_tag "jquery-ui-1.8.5.custom.css","ui.jqgrid.css" %>  
+<script type="text/javascript">
+  var hours_grid = "";
+  $(document).ready(function(){
+    hours_grid = jQuery("#hours_grid").jqGrid({
+        url: '/timecards/',
+        datatype: "json",
+        mtype: "POST",
+        colNames: ["id", "Company", "Project", "Registered Hours", "Initial Time", "End Time", "Details"],
+        postData: {
+            authenticity_token: $('meta[name=csrf-token]').attr('content')
+        },
+        width: 935,
+        shrinkToFit: false,
+        pgtext: false,
+        pgbuttons: false,
+        pginput: false,
+        colModel: [{
+            name: 'id',
+            index: 'id',
+            width: 0,
+            hidden: true,
+            sortable: false,
+            key: true
+        }, {
+            name: 'Company',
+            index: 'company',
+            align: 'center',
+            width: 181,
+            sortable: false
+        }, {
+            name: 'Project',
+            index: 'project',
+            align: 'center',
+            width: 180,
+            fixed: true,
+            sortable: false
+        }, {
+            name: 'total_hours',
+            index: 'total_hours',
+            align: 'center',
+            width: 160,
+            fixed: true,
+            sortable: false
+        },{
+            name: 'initial_time',
+            index: 'initial_time',
+            width: 128,
+            fixed: true,
+            align: 'center',
+            sortable: false
+        },{
+            name: 'end_time',
+            index: 'end_time',
+            width: 128,
+            fixed: true,
+            align: 'center',
+            sortable: false
+        }, {
+            name: 'more_details',
+            index: 'more_details',
+            width: 128,
+            fixed: true,
+            align: 'center',
+            sortable: false
+        }],
+        height: 'auto',
+        emptyrecords:"No companies to display",
+        viewrecords: true,
+        loadtext:"Loading..."
+    });
+});
+</script>
+<%end%>
+<div class="information">
+  <h2 class="title">Show project</h2>
+  <p class="meta"><span class="date"><%= notice %></span></p>
+  <div style="clear: both;">&nbsp;</div>
+  <div class="entry">
+    <p>
+      <b>Initial time:</b>
+      <%= @timecard.initial_time %>
+    </p>
+    
+    <p>
+      <b>End time:</b>
+      <%= @timecard.end_time %>
+    </p>
+    
+    <p>
+      <b>User:</b>
+      <%= @timecard.user_id %>
+    </p>
+    
+    <p>
+      <b>Project:</b>
+      <%= @timecard.project.name if(@timecard.project) %>
+    </p>
+    
+    <p>
+      <b>Timesheet History:</b>
+      <%= @timecard.timesheets_note_id %>
+    </p>
+    
+    <p>
+      <b>Last update by:</b>
+      <%= "#{@timecard.last_updater.name} #{@timecard.last_updater.last_name}" if(@timecard.last_updater) %>
+    </p>
+
+    <p class="links"><%= link_to 'Edit', edit_timecard_path(@timecard) %> | <%= link_to 'Back', timecards_path %></p>
+  </div>
+</div>

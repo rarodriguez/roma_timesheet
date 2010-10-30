@@ -1,5 +1,4 @@
 <h1>Listing hours</h1>
-
 <table>
   <tr>
     <th>Description</th>
@@ -16,7 +15,7 @@
     <td><%= hour.description %></td>
     <td><%= hour.initial_time %></td>
     <td><%= hour.end_time %></td>
-    <td><%= hour.timesheet_id %></td>
+    <td><%= hour.timecard_id %></td>
     <td><%= link_to 'Show', hour %></td>
     <td><%= link_to 'Edit', edit_hour_path(hour) %></td>
     <td><%= link_to 'Destroy', hour, :confirm => 'Are you sure?', :method => :delete %></td>

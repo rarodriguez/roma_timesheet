@@ -3,16 +3,15 @@
 <%= stylesheet_link_tag "jquery-ui-1.8.5.custom.css","ui.jqgrid.css" %>  
 <%end%>
 <script>
-  var grid = "";
+  var projects_grid = "";
+  var timesheets_grid = "";
   $(document).ready(function(){
-    grid = jQuery("#companies_grid").jqGrid({
-        url: '/member_accounts/list',
+    projects_grid = jQuery("#companies_grid").jqGrid({
+        url: '/my_companies',
         datatype: "json",
         mtype: "POST",
-        colNames: ["id", "NAME", "TOTAL PROJECTS", "TOTAL HOURS", "TOTAL EMPLOYEES", "DETAILS"],
-        /*postData: {
-            authenticity_token: token
-        },*/
+        colNames: ["id", "Name", "Total Projects", "Total Employees", "Registered hours", "Details"],
+        datatype: "local",
         width: 935,
         shrinkToFit: false,
         pgtext: false,
@@ -26,22 +25,15 @@
             sortable: false,
             key: true
         }, {
-            name: 'Name',
+            name: 'name',
             index: 'name',
-            align: 'left',
-            width: 275,
+            align: 'center',
+            width: 302,
             sortable: false
         }, {
             name: 'total_projects',
             index: 'total_projects',
-            align: 'left',
-            width: 160,
-            fixed: true,
-            sortable: false
-        }, {
-            name: 'total_hours',
-            index: 'total_hours',
-            align: 'left',
+            align: 'center',
             width: 160,
             fixed: true,
             sortable: false
@@ -50,19 +42,111 @@
             index: 'total_employees',
             width: 160,
             fixed: true,
-            align: 'right',
+            align: 'center',
+            fixed: true,
+            sortable: false
+        },{
+            name: 'total_hours',
+            index: 'total_hours',
+            align: 'center',
+            width: 160,
             fixed: true,
             sortable: false
         }, {
-            name: 'more_details',
-            index: 'more_details',
+            name: 'details',
+            index: 'details',
             width: 128,
             fixed: true,
             align: 'center',
             sortable: false
         }],
-        height: 'auto'
+        height: 'auto',
+        emptyrecords:"No companies to display",
+        viewrecords: true,
+        loadtext:"Loading..."
     });
+    
+    
+    
+    timecards_grid = jQuery("#timecards_grid").jqGrid({
+        url: '/my_timecards',
+        datatype: "json",
+        mtype: "POST",
+        colNames: ["id", "Company", "Project", "Registered Hours", "Initial Time", "End Time", "Details"],
+        datatype: "local",
+        width: 935,
+        shrinkToFit: false,
+        pgtext: false,
+        pgbuttons: false,
+        pginput: false,
+        colModel: [{
+            name: 'id',
+            index: 'id',
+            width: 0,
+            hidden: true,
+            sortable: false,
+            key: true
+        }, {
+            name: 'company',
+            index: 'company',
+            align: 'center',
+            width: 181,
+            sortable: false
+        }, {
+            name: 'project',
+            index: 'project',
+            align: 'center',
+            width: 180,
+            fixed: true,
+            sortable: false
+        }, {
+            name: 'total_hours',
+            index: 'total_hours',
+            align: 'center',
+            width: 160,
+            fixed: true,
+            sortable: false
+        },{
+            name: 'initial_time',
+            index: 'initial_time',
+            width: 128,
+            fixed: true,
+            align: 'center',
+            sortable: false
+        },{
+            name: 'end_time',
+            index: 'end_time',
+            width: 128,
+            fixed: true,
+            align: 'center',
+            sortable: false
+        }, {
+            name: 'details',
+            index: 'details',
+            width: 128,
+            fixed: true,
+            align: 'center',
+            sortable: false
+        }],
+        height: 'auto',
+        emptyrecords:"No projects to display",
+        viewrecords: true,
+        loadtext:"Loading..."
+
+    });
+  });
+</script>
+<script>
+  $().ready(function(){
+    var myTimecards = <%=raw @timecards%>;
+    for(var i=0;i<myTimecards.length;i++){
+      jQuery("#timecards_grid").addRowData(myTimecards[i].id,myTimecards[i]);
+    }
+    
+    var myProjects = <%=raw @projects%>;
+    for(var i=0;i<myProjects.length;i++){
+      jQuery("#companies_grid").addRowData(myProjects[i].id,myProjects[i]);
+    }
   });
 </script>
 
@@ -74,5 +158,12 @@
     <table id="companies_grid"></table>
     
     <p class="links"><%= link_to 'Add another company', new_company_path %></p>
+  </div>
+  <br/>
+  <p class="meta"><span class="date">My Timesheets</span></p>
+  <div style="clear: both;">&nbsp;</div>
+  <div class="entry">
+    <table id="timecards_grid"></table>
+    <p class="links"><%= link_to 'Create another Timesheet', new_company_path %></p>
   </div>
 </div>

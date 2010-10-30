@@ -3,6 +3,8 @@ class Project < ActiveRecord::Base
   belongs_to :manager, :class_name => "User", :foreign_key=>'user_id'
   belongs_to :last_updater, :class_name => "User", :foreign_key=> 'last_update_by'  
   belongs_to :company
+  has_many :timecards
+  has_many :hours, :through => :timecards
   
   validates_presence_of :name, :message=>"Oops, you can't proceed until you enter your project's name."
   validates_length_of :name, :maximum => 100, :message=>"Oops, your project's name is too long. The maximum length is 100 characters."

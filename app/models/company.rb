@@ -2,6 +2,7 @@ class Company < ActiveRecord::Base
   belongs_to :manager, :class_name => "User"
   has_many :projects
   has_and_belongs_to_many :users
+  has_many :timecards, :through => :projects
   
   validates_presence_of :name, :message=>"Oops, you can't proceed until you enter your company's name."
   validates_presence_of :description, :message=>"Oops, you can't proceed until you enter your company's description."

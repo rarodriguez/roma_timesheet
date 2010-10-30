@@ -5,4 +5,17 @@ class Timecard < ActiveRecord::Base
   has_many :timecards_notes
   has_many :hours
   belongs_to :last_updater, :class_name => "User", :foreign_key=> 'last_update_by'
+  
+  def total_hours
+    total_hours = 0
+    self.hours.each do |hr| 
+      puts hr.end_time
+      puts hr.initial_time
+      total_hours += hr.end_time - hr.initial_time
+      puts total_hours 
+    end
+    #gets the hours with only 2 decimals
+    
+    (((total_hours/3600)*100).to_i)/100.0
+  end
 end
