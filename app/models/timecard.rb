@@ -8,12 +8,7 @@ class Timecard < ActiveRecord::Base
   
   def total_hours
     total_hours = 0
-    self.hours.each do |hr| 
-      puts hr.end_time
-      puts hr.initial_time
-      total_hours += hr.end_time - hr.initial_time
-      puts total_hours 
-    end
+    self.hours.each{|hr| total_hours += hr.end_time - hr.initial_time}
     #gets the hours with only 2 decimals
     
     (((total_hours/3600)*100).to_i)/100.0

@@ -14,13 +14,8 @@ class UserSessionsController < ApplicationController
     #@user_session = UserSession.new(params[:user])
     if(@member_session.save)
       @current_member = @member_session.record
-      #Reward.update_user_reward(@member_session.record)
-      #updates users' specific messages
-      session[:from_login] = 1
-      update_messages_information(@current_member)
-      
-      member = Member.find_by_user_id(@current_member.id)
-      session[:member_name] = (member.first_name.nil? ? @current_member.login : member.first_name)  
+      session[:member_name] = (@current_member.name.nil? ? @current_member.login : @current_member.name)
+      redirect_to dashboard_path
     else
       render :action => "login"
     end
@@ -36,7 +31,6 @@ class UserSessionsController < ApplicationController
 
   def prepare_member_model
     params[:user_session] ||= {}
-    #UserSession.with_scope(:find_options => {:conditions => "role_id = 1 && status != 0"}) do
     params[:user_session][:remember_me] = !params[:user_session][:remember_me].nil?
     @member_session = UserSession.new(params[:user_session])
   end
