@@ -63,6 +63,24 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  # GET /edit_self
+  def edit_self
+    @user = current_member
+  end
+  
+  # PUT /users/1
+  # PUT /users/1.xml
+  def update_self
+    @user = current_user
+    @user.last_updater = current_user
+    @user.password_changed_at = Time.now
+    if @user.update_attributes(params[:user])
+      redirect_to(dashboard_path)
+    else
+      render :action => "edit_self"
+    end
+  end
+
   # POST /users
   # POST /users.xml
   def create

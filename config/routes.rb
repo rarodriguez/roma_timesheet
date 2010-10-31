@@ -26,6 +26,9 @@ Timesheet::Application.routes.draw do
   match 'register' => 'users#register_create', :as => :register_create, :via => "post"
   
   match 'dashboard' => 'contents#dashboard', :as => :dashboard, :via => "get"
+  
+  match 'edit_self' => 'users#edit_self', :as => :edit_self, :via => "get"
+  match 'edit_self' => 'users#update_self', :as => :update_self, :via => "post"
 #  match 'my_companies' => 'companies#my_companies', :as => :my_companies, :via => "post"
 #  match 'my_timecards' => 'timecards#my_timecards', :as => :my_timecards, :via => "post"
 

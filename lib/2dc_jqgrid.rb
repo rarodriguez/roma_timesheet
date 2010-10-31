@@ -1,7 +1,7 @@
 module JqgridJson
   include ActionView::Helpers::JavaScriptHelper
   include ActionView::Helpers::SanitizeHelper
-  HTML_ESCAPE = { '&' => '&amp;',  '>' => '&gt;',   '<' => '&lt;', '"' => '&quot;' }
+  HTML_ESCAPE = { '&' => '&amp;',  '>' => '&gt;',   '<' => '&lt;', '"' => '&quot;', '%' => '&#37;' }
   
   def to_jqgrid_json(attributes, current_page, per_page, total)
     json = %Q({"page":"#{current_page}","total":#{total/per_page.to_i+1},"records":"#{total}")
@@ -65,7 +65,7 @@ module JqgridJson
   def our_escape_javascript(javascript)
     if javascript
       javascript = javascript.gsub(/(\\|<\/|\r\n|[\n\r"])/) { JS_ESCAPE_MAP[$1] }
-      javascript = javascript.gsub(/[&"><]/) { |special| HTML_ESCAPE[special] }.html_safe
+      javascript = javascript.gsub(/[&"><%]/) { |special| HTML_ESCAPE[special] }.html_safe
     else
       ''
     end

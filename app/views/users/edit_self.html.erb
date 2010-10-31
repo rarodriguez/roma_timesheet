@@ -1,0 +1,46 @@
+<div class="information">
+  <h2 class="title">Editing your information</h2>
+  <p class="meta"><span class="date">Please check your information and change your password</span></p>
+  <div style="clear: both;">&nbsp;</div>
+  <div class="entry">
+      <%= form_for(@user, :url=>update_self_path) do |f| %>
+        <% if @user.errors.any? %>
+          <div id="error_explanation">
+            <ul>
+            <% @user.errors.each do |attr, msg| %>
+              <li><%= msg %></li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <div class="field">
+          <%= f.label :login %><br />
+          <%= f.text_field :login %>
+        </div>
+        <div class="field">
+          <%= f.label :password %><br />
+          <%= f.password_field :password %>
+        </div>
+        <div class="field">
+          <%= f.label :password_confirmation %><br />
+          <%= f.password_field :password_confirmation %>
+        </div>
+        <div class="field">
+          <%= f.label :name %><br />
+          <%= f.text_field :name %>
+        </div>
+        <div class="field">
+          <%= f.label :last_name %><br />
+          <%= f.text_field :last_name %>
+        </div>
+        <div class="field">
+          <%= f.label :email %><br />
+          <%= f.text_field :email %>
+        </div>
+        <div class="actions">
+          <%= f.submit "Update my information"%>
+        </div>
+      <% end %>
+    <p class="links"></p>
+  </div>
+</div>

@@ -66,8 +66,6 @@
         loadtext:"Loading..."
     });
     
-    
-    
     timecards_grid = jQuery("#timecards_grid").jqGrid({
         url: '/my_timecards',
         datatype: "json",
@@ -134,6 +132,62 @@
         loadtext:"Loading..."
 
     });
+    
+    projects_grid = jQuery("#projects_grid").jqGrid({
+        colNames: ["id", "Project", "Registered Hours", "Total Timesheets", "View Timesheets", "Add a Timesheet"],
+        datatype: "local",
+        width: 935,
+        shrinkToFit: false,
+        pgtext: false,
+        pgbuttons: false,
+        pginput: false,
+        colModel: [{
+            name: 'id',
+            index: 'id',
+            width: 0,
+            hidden: true,
+            sortable: false,
+            key: true
+        }, {
+            name: 'project',
+            index: 'project',
+            align: 'center',
+            width: 270,
+            sortable: false
+        }, {
+            name: 'registered_hours',
+            index: 'registered_hours',
+            align: 'center',
+            width: 200,
+            fixed: true,
+            sortable: false
+        }, {
+            name: 'total_timesheets',
+            index: 'total_timesheets',
+            align: 'center',
+            width: 160,
+            fixed: true,
+            sortable: false
+        },{
+            name: 'view_timesheets',
+            index: 'view_timesheets',
+            width: 140,
+            fixed: true,
+            align: 'center',
+            sortable: false
+        },{
+            name: 'add_timesheet',
+            index: 'add_timesheet',
+            width: 140,
+            fixed: true,
+            align: 'center',
+            sortable: false
+        }],
+        height: 'auto',
+        emptyrecords:"No timesheets to display",
+        viewrecords: true,
+        loadtext:"Loading..."
+    });
   });
 </script>
 <script>
@@ -143,9 +197,14 @@
       jQuery("#timecards_grid").addRowData(myTimecards[i].id,myTimecards[i]);
     }
     
+    var myCompanies = <%=raw @companies%>;
+    for(var i=0;i<myCompanies.length;i++){
+      jQuery("#companies_grid").addRowData(myCompanies[i].id,myCompanies[i]);
+    }
+    
     var myProjects = <%=raw @projects%>;
     for(var i=0;i<myProjects.length;i++){
-      jQuery("#companies_grid").addRowData(myProjects[i].id,myProjects[i]);
+      jQuery("#projects_grid").addRowData(myProjects[i].id,myProjects[i]);
     }
   });
 </script>
@@ -156,7 +215,7 @@
   <div style="clear: both;">&nbsp;</div>
   <div class="entry">
     <table id="companies_grid"></table>
-    
+    <div id="companies_pager"></div> 
     <p class="links"><%= link_to 'Add another company', new_company_path %></p>
   </div>
   <br/>
@@ -165,5 +224,11 @@
   <div class="entry">
     <table id="timecards_grid"></table>
     <p class="links"><%= link_to 'Create another Timesheet', new_company_path %></p>
+  </div>
+  <br/>
+  <p class="meta"><span class="date">My Projects</span></p>
+  <div style="clear: both;">&nbsp;</div>
+  <div class="entry">
+    <table id="projects_grid"></table>
   </div>
 </div>
