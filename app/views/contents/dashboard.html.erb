@@ -1,5 +1,5 @@
 <%= content_for :head do%>
-<%= javascript_include_tag 'jquery.jqGrid.min.js' %>
+<%= javascript_include_tag 'i18n/grid.locale-en.js','jquery.jqGrid.min.js' %>
 <%= stylesheet_link_tag "jquery-ui-1.8.5.custom.css","ui.jqgrid.css" %>  
 <%end%>
 <script>
@@ -132,7 +132,7 @@
         loadtext:"Loading..."
 
     });
-    
+    var lastsel2;
     projects_grid = jQuery("#projects_grid").jqGrid({
         colNames: ["id", "Project", "Registered Hours", "Total Timesheets", "View Timesheets", "Add a Timesheet"],
         datatype: "local",
@@ -152,12 +152,15 @@
             name: 'project',
             index: 'project',
             align: 'center',
+            editable:true,
             width: 270,
             sortable: false
         }, {
             name: 'registered_hours',
             index: 'registered_hours',
             align: 'center',
+            editable:true,
+            editoptions:{size:10},
             width: 200,
             fixed: true,
             sortable: false
@@ -166,6 +169,8 @@
             index: 'total_timesheets',
             align: 'center',
             width: 160,
+            editable:true,
+            editoptions:{size:10},
             fixed: true,
             sortable: false
         },{
@@ -186,7 +191,20 @@
         height: 'auto',
         emptyrecords:"No timesheets to display",
         viewrecords: true,
-        loadtext:"Loading..."
+        loadtext:"Loading...",
+        edit : {
+          addCaption: "Add Record",
+          editCaption: "Edit Record",
+          bSubmit: "Submit",
+          bCancel: "Cancel",
+          bClose: "Close",
+          saveData: "Data has been changed! Save changes?",
+          bYes : "Yes",
+          bNo : "No",
+          bExit : "Cancel"
+        },
+        editurl: "server.php",
+        onSelectRow: function(id){ if(id && id!==lastsel2){ jQuery('#projects_grid').jqGrid('restoreRow',lastsel2); jQuery('#projects_grid').jqGrid('editGridRow',id,true); lastsel2=id; } } 
     });
   });
 </script>
