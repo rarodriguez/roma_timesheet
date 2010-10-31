@@ -3,7 +3,7 @@
   <p class="meta"><span class="date"> <%=subtitle%></span></p>
   <div style="clear: both;">&nbsp;</div>
   <div class="entry">
-    <% form_for @member_session, :url => login_create_path do |f| %>
+    <%= form_for @member_session, :url => login_create_path do |f| %>
       <% if @member_session.errors.any? %>
         <ul>
         <% @member_session.errors.full_messages.each do |msg| %>

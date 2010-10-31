@@ -1,6 +1,9 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
+  # Includes Security
+  include SecurityManager
+  
   rescue_from ActionController::InvalidAuthenticityToken, :with => :bad_token
   
   helper :all # include all helpers, all the time
@@ -8,7 +11,7 @@ class ApplicationController < ActionController::Base
   helper_method :remove_whitespaces, :redo_whitespaces
 
   #before_filter
-  #before_filter :validate_access, :except => [:login, :register]
+  before_filter :validate_access, :except => [:login, :login_submit, :register]
   
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
@@ -16,9 +19,18 @@ class ApplicationController < ActionController::Base
   
   def validate_access
     #require_member
-    security = SecurityController.new
-    unless security.validate_access_sec(controller_name, action_name)
-      redirect_to :login
+    puts "VALIDATE ACCESS:#{controller_name}, #{action_name}"
+
+    if(current_member)
+      if (current_member.password_changed_at)# validate_access_sec(controller_name, action_name, params)
+        unless (has_permission?(controller_name, action_name, params))
+          session[:redirect_url] = request.fullpath
+          redirect_to :login
+        end
+      else
+        redirect_to edit_self_path
+      end
+        
     end
   end
 

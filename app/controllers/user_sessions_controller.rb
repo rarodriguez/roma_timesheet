@@ -3,20 +3,24 @@ class UserSessionsController < ApplicationController
   before_filter :require_member, :only=>[:member_logout]
   # filter to prepare the model for creating an admin session
   before_filter :prepare_member_model, :only => [:login, :login_submit]
-  filter_parameter_logging 'password'
+  #filter_parameter_logging 'password'
   
    # Backend login page
   def login
+      puts "LOGIN #{controller_name}, #{action_name}"
   end
   
     # Backend login action 
   def login_submit
     #@user_session = UserSession.new(params[:user])
     if(@member_session.save)
+      puts "LOGIN_SUBMIT #{controller_name}, #{action_name}"
       @current_member = @member_session.record
+      puts @current_member
       session[:member_name] = (@current_member.name.nil? ? @current_member.login : @current_member.name)
-      redirect_to dashboard_path
+      redirect_back_or_default dashboard_path
     else
+      puts "LOGIN_SUBMIT ELSE #{controller_name}, #{action_name}"
       render :action => "login"
     end
   end
