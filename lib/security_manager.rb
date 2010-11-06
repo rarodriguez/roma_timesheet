@@ -30,13 +30,12 @@ module SecurityManager
     false  
   end  
   
-  def f params
-    params
-    binding
-  end
-
   
   ## Specific extra validation methods ##
+  
+  ##
+  # Projects
+  ##
   def projects_new_validation params
     puts "PROJECTS NEW: #{current_member.managed_company.id} == #{params[:company_id]}"
     if(params[:company_id] && current_member.managed_company.id == params[:company_id].to_i)
@@ -49,6 +48,22 @@ module SecurityManager
   
   def projects_create_validation params
     return projects_new_validation params
+  end
+  
+  def projects_show_validation params
+    true
+  end
+  
+  def projects_index_validation params
+    true
+  end
+  
+  def projects_edit_validation params
+    true
+  end
+  
+  def projects_update_validation params
+    projects_edit_validation params
   end
   
 end
