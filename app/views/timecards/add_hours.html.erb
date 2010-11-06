@@ -1,0 +1,108 @@
+<%= content_for :head do%>
+  <%= javascript_include_tag 'i18n/grid.locale-en.js','jquery.jqGrid.min.js', 'jquery-ui-1.8.6.custom.min.js', 'jquery.mini-timepicker.js' %>
+  <%= stylesheet_link_tag "jquery-ui-1.8.5.custom.css", "ui.jqgrid.css" %>  
+<script type="text/javascript">
+  var hours_grid = "";
+  $(document).ready(function(){
+    var lastsel2;
+    hours_grid = jQuery("#hours_grid").jqGrid({
+        colNames: ["id", "Date", "Description", "Initial Time", "End Time", "Total Hours"],
+        datatype: "local",
+        width: 935,
+        shrinkToFit: false,
+        pgtext: false,
+        pgbuttons: false,
+        pginput: false,
+        colModel: [
+          {name: 'id',index: 'id',width: 0,hidden: true,sortable: false, key: true}, 
+          {name: 'date', index: 'date', align: 'center', editable:true, width: 170, sortable: false}, 
+          {name: 'description',index: 'description',align: 'center',editable: true,edittype:"textarea", editoptions:{rows:"3",cols:"25"},width: 200,fixed: true,sortable: false },
+          {name: 'initial_time',index: 'initial_time',align: 'center',width: 160,editable:true,editoptions:{size:10},fixed: true,sortable: false},
+          {name: 'end_time', index: 'end_time', align: 'center', width: 160, editable:true, editoptions:{size:10}, fixed: true, sortable: false},
+          {name: 'total_hours',index: 'total_hours',align: 'center',width: 160,editable:true,editoptions:{size:10},fixed: true,sortable: false}
+        ],
+        
+        height: 'auto',
+        emptyrecords:"No timesheets to display",
+        viewrecords: true,
+        loadtext:"Loading...",
+        edit: {
+          addCaption: "Add Record",
+          editCaption: "Edit Record",
+          bSubmit: "Submit",
+          bCancel: "Cancel",
+          bClose: "Close",
+          saveData: "Data has been changed! Save changes?",
+          bYes : "Yes",
+          bNo : "No",
+          bExit : "Cancel"
+        },
+        editurl: "/add_hours/12",
+        onSelectRow: function(id){ 
+          if(id && id!==lastsel2){ 
+            jQuery('#hours_grid').jqGrid('restoreRow',lastsel2); 
+            jQuery('#hours_grid').jqGrid('editGridRow',id,
+              {
+                afterShowForm:function(id){
+                  pickdates(id);
+                }
+              }
+            );
+            lastsel2=id; 
+          } 
+        } 
+    });
+    function pickdates(id){
+      $("input[id=date]").attr('editable',false);
+      $("input[id=initial_time]").mini_timepicker();
+      $("input[id=end_time]").mini_timepicker();
+      $("input[id=date]").datepicker({dateFormat:"mm-dd-yy"});
+    }
+    
+    var myHours = [ {"id":"1","date":"10-10-2010","description":"sample hour","initial_time":"2","end_time":"5.0","total_hours":"20"}];
+    for(var i=0;i<myHours.length;i++){
+      jQuery("#hours_grid").addRowData(myHours[i].id,myHours[i]);
+    }
+  });
+</script>
+<%end%>
+<div class="information">
+  <h2 class="title">Show project</h2>
+  <p class="meta"><span class="date"><%= notice %></span></p>
+  <div style="clear: both;">&nbsp;</div>
+  <div class="entry">
+    <p>
+      <b>Initial time:</b>
+      <%= @timecard.initial_time %>
+    </p>
+    
+    <p>
+      <b>End time:</b>
+      <%= @timecard.end_time %>
+    </p>
+    
+    <p>
+      <b>User:</b>
+      <%= @timecard.user_id %>
+    </p>
+    
+    <p>
+      <b>Project:</b>
+      <%= @timecard.project.name if(@timecard.project) %>
+    </p>
+    
+    <p>
+      <b>Timesheet History:</b>
+      <%= @timecard.timecards_note_id %>
+    </p>
+    
+    <p>
+      <b>Last update by:</b>
+      <%= "#{@timecard.last_updater.name} #{@timecard.last_updater.last_name}" if(@timecard.last_updater) %>
+    </p>
+
+    <p class="links"><%= link_to 'Back', timecards_path %></p>
+    
+    <table id="hours_grid"></table> 
+  </div>
+</div>

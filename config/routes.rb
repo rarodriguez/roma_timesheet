@@ -29,6 +29,9 @@ Timesheet::Application.routes.draw do
   
   match 'edit_self' => 'users#edit_self', :as => :edit_self, :via => "get"
   match 'edit_self' => 'users#update_self', :as => :update_self, :via => "post"
+  
+  match 'add_hours' => 'timecards#add_hours', :as=>:add_hours, :via=>'get'
+  match 'add_hours/:id' => 'hours#create', :as=>:create_hours, :via=>'post'
 #  match 'my_companies' => 'companies#my_companies', :as => :my_companies, :via => "post"
 #  match 'my_timecards' => 'timecards#my_timecards', :as => :my_timecards, :via => "post"
 

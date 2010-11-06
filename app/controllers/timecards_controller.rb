@@ -20,6 +20,10 @@ class TimecardsController < ApplicationController
       format.xml  { render :xml => @timecard }
     end
   end
+  
+  def add_hours
+    @timecard = Timecard.new
+  end
 
   # GET /timecards/new
   # GET /timecards/new.xml

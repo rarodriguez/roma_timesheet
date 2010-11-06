@@ -23,6 +23,6 @@
         <%= "#{@project.last_updater.name} #{@project.last_updater.last_name}" if(@project.last_updater) %>
       </p>
 
-    <p class="links"><%= link_to 'Edit', edit_company_project_path(@project) %> | <%= link_to 'Back', company_projects_path %></p>
+    <p class="links"><%= link_to 'Edit', edit_company_project_path(:company_id => project.company_id ,:id=>@project.id) %> | <%= link_to 'Back', company_projects_path(project.company_id) %></p>
   </div>
 </div>

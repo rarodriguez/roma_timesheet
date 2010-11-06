@@ -42,15 +42,12 @@ class HoursController < ApplicationController
   def create
     @hour = Hour.new(params[:hour])
 
-    respond_to do |format|
-      if @hour.save
-        format.html { redirect_to(@hour, :notice => 'Hour was successfully created.') }
-        format.xml  { render :xml => @hour, :status => :created, :location => @hour }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @hour.errors, :status => :unprocessable_entity }
-      end
-    end
+    render :json=>"{\"success\":false,\"message\":\"This is the error message\"}"    
+    #if @hour.save
+    #  redirect_to(@hour, :notice => 'Hour was successfully created.')
+    #else
+    #  render :action => "new"
+    #end
   end
 
   # PUT /hours/1
