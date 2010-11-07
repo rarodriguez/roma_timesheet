@@ -349,3 +349,6 @@ table.list { width:800px;}
   font-size: 14px;
   list-style: none;
 }
+
+#add_hours {color:#9D151A;}
+#add_hours:hover{cursor:pointer;}

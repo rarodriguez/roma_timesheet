@@ -106,6 +106,17 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  # Method that looks for the first error within the defined object 
+  def first_error(object)
+    return_value = ""
+    if(object.is_a?(Array))
+      object.each {|obj| obj.errors.each{|attr, value| return value }}
+    else
+      object.errors.each{|attr,value| return value }
+    end
+    return_value
+  end
+  
   def remove_whitespaces(phrase)
     phrase.gsub(/\s+/,'_')
   end

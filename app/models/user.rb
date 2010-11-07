@@ -2,8 +2,8 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :projects
   has_and_belongs_to_many :companies
   has_and_belongs_to_many :roles
-  has_one :managed_project, :class_name => 'Project'
-  has_one :managed_company, :class_name => 'Company'
+  has_many :managed_projects, :class_name => 'Project'
+  has_many :managed_companies, :class_name => 'Company'
   has_many :timecards
   belongs_to :last_updater, :class_name => "User", :foreign_key=> 'last_updated_by'
   

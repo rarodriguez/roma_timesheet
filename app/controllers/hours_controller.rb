@@ -1,4 +1,6 @@
 class HoursController < ApplicationController
+  
+  before_filter :valid_xhr_request?, :only=>:create
   # GET /hours
   # GET /hours.xml
   def index
@@ -40,14 +42,22 @@ class HoursController < ApplicationController
   # POST /hours
   # POST /hours.xml
   def create
-    @hour = Hour.new(params[:hour])
-
-    render :json=>"{\"success\":false,\"message\":\"This is the error message\"}"    
-    #if @hour.save
-    #  redirect_to(@hour, :notice => 'Hour was successfully created.')
-    #else
-    #  render :action => "new"
-    #end
+    if(params[:oper] && params[:oper] != '')
+      # the hour the we should use
+      hour = params[:oper] == 'edit' ? Hour.find(params[:id]) : Hour.new
+      hour.description = params[:description]
+      hour.date = params[:date]
+      hour.intime = params[:initial_time]
+      hour.entime = params[:end_time]
+      hour.timecard = Timecard.find(params[:timecard_id])
+      if(hour.save)
+        render :json=>"{\"success\":true,\"message\":\"Great! you just added an hour in your timesheet.\"}"
+      else
+        render :json=>"{\"success\":false,\"message\":\"#{first_error(hour)}\"}"
+      end
+    else
+      render :json=>"{\"success\":false,\"message\":\"Oops, you tried to do an invalid operation.\"}"
+    end
   end
 
   # PUT /hours/1

@@ -4,12 +4,17 @@
   <div style="clear: both;">&nbsp;</div>
   <div class="entry">
     <%= form_for @member_session, :url => login_create_path do |f| %>
-      <% if @member_session.errors.any? %>
+      <% if @member_session.errors.any? || flash[:access_msg] %>
+      <div id="error_explanation">
         <ul>
+        <% if(flash[:access_msg])%>
+          <li><%= flash[:access_msg] %></li>
+        <% end %>
         <% @member_session.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
         </ul>
+      </div>
       <% end %>
       <p>
         <%=f.label :login, "Username"%>

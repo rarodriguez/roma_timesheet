@@ -1,9 +1,7 @@
 Timesheet::Application.routes.draw do
   root :to => "user_sessions#login"
   
-  resources :timecards
-
-  resources :hours
+  #resources :hours
 
   resources :roles
 
@@ -18,7 +16,6 @@ Timesheet::Application.routes.draw do
     resources :users, :constraints => {:id => /[0-9]+/}
   end
   
-  
   match 'login' => 'user_sessions#login', :as => :login, :via => "get"
   match 'login' => 'user_sessions#login_submit', :as => :login_create, :via => "post"
   
@@ -30,8 +27,20 @@ Timesheet::Application.routes.draw do
   match 'edit_self' => 'users#edit_self', :as => :edit_self, :via => "get"
   match 'edit_self' => 'users#update_self', :as => :update_self, :via => "post"
   
-  match 'add_hours' => 'timecards#add_hours', :as=>:add_hours, :via=>'get'
-  match 'add_hours/:id' => 'hours#create', :as=>:create_hours, :via=>'post'
+  #resources :timecards
+  
+  match 'projects/:project_id/timecards' => 'timecards#index', :as=>:timecards, :via=>'get'
+  match 'projects/:project_id/timecards/:id/new' => 'timecards#new', :as=>:new_timecard, :via=>'get'
+  match 'projects/:project_id/timecards' => 'timecards#create', :as=>:timecards, :via=>'post'
+  match 'projects/:project_id/timecards/:id/edit' => 'timecards#edit', :as=>:edit_timecard, :via=>'get'
+  match 'projects/:project_id/timecards/:id' => 'timecards#update', :as=>:edit_timecard, :via=>'put'
+  match 'projects/:project_id/timecards/:id' => 'timecards#show', :as=>:new_timecard, :via=>'get'
+  match 'projects/:project_id/timecards/:id' => 'timecards#destroy', :as=>:new_timecard, :via=>'delete'
+  
+  match 'timecards/:timecard_id/hours' => 'hours#create', :as=>:create_hours, :via=>'post'
+  match 'timecards/:timecard_id/hours/list' => 'hours#index', :as=>:list_hours, :via=>'post'
+  
+  #match 'timecards/:timecard_id/hours/add' => 'hours#create', :as=>:create_hours, :via=>'post'
 #  match 'my_companies' => 'companies#my_companies', :as => :my_companies, :via => "post"
 #  match 'my_timecards' => 'timecards#my_timecards', :as => :my_timecards, :via => "post"
 
