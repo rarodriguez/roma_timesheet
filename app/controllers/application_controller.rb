@@ -22,15 +22,27 @@ class ApplicationController < ActionController::Base
     puts "VALIDATE ACCESS:#{controller_name}, #{action_name}"
 
     if(current_member)
-      if (current_member.password_changed_at)# validate_access_sec(controller_name, action_name, params)
+      if (current_member.password_changed_at)
         unless (has_permission?(controller_name, action_name, params))
+          flash[:access_msg] = "You are not authorized to access this page."
           session[:redirect_url] = request.fullpath
-          redirect_to :login
+          if request.xhr?
+            render :json => "{\"success\":false, \"message\":\"You are not authorized to access this page.\"}"
+          else
+            redirect_to login_url # TODO REDIRECCIONAR A NO TIENE PERMISOS
+          end
         end
       else
+        flash[:access_msg] = "It seems to be your first login, please change your temporal password."
         redirect_to edit_self_path
       end
-        
+    else
+      flash[:access_msg] = "You are not authorized to access this page, please login first."
+      if request.xhr?
+        render :json => "{\"redirect\":true, \"url\": \"#{login_url}\"}"
+      else
+        redirect_to login_url
+      end
     end
   end
 
@@ -106,6 +118,14 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def remove_whitespaces(phrase)
+    phrase.gsub(/\s+/,'_')
+  end
+  
+  def redo_whitespaces(phrase)
+    phrase.gsub('_', ' ')
+  end
+  
   # Method that looks for the first error within the defined object 
   def first_error(object)
     return_value = ""
@@ -115,13 +135,5 @@ class ApplicationController < ActionController::Base
       object.errors.each{|attr,value| return value }
     end
     return_value
-  end
-  
-  def remove_whitespaces(phrase)
-    phrase.gsub(/\s+/,'_')
-  end
-  
-  def redo_whitespaces(phrase)
-    phrase.gsub('_', ' ')
   end  
 end
