@@ -211,7 +211,7 @@ module SecurityManager
     end
     #Company Manager
     timecard = project? project.timecards.where(["id = ?", params[:timecard_id]]).first : nil
-    company = project? current_member.managed_companies.where(["id = ?", project.company.id]).first : nil
+    company = current_member.managed_companies.where(["id = ?", params[:project_id]]).first : nil
     if(company && timecard)
       return true
     end
@@ -224,14 +224,7 @@ module SecurityManager
   end
   
   def timecards_index_validation params
-    if(params[:company_id] && current_member.managed_company.id == params[:company_id].to_i)
-      return true
-    end
-    company = current_member.companies.where(["id = ?", params[:company_id]]).first
-    if(params[:company_id] && company)
-      return true
-    end
-    false
+    timecards_show_validation params
   end
   ##################################################
     
