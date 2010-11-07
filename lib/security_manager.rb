@@ -48,10 +48,12 @@ module SecurityManager
   end
   
   def companies_show_validation params
+    #Company Manager
     company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
     if(params[:company_id] && company)
       return true
     end
+    #Company Member
     company = current_member.companies.where(["id = ?", params[:company_id]]).first
     if(params[:company_id] && company)
       return true
@@ -65,13 +67,11 @@ module SecurityManager
   # Projects
   ##
   def projects_new_validation params
-    puts "PROJECTS NEW: #{current_member.managed_company.id} == #{params[:company_id]}"
+    #Company Manger
     company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
     if(params[:company_id] && company)
-      puts "VALIDO PROJECTS NEW"
       return true
     end
-    puts "INVALIDO PROJECTS NEW"
     false
   end
   def projects_create_validation params
@@ -79,11 +79,14 @@ module SecurityManager
   end
   
   def projects_edit_validation params
+    #Company Manager
     company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
     if(params[:company_id] && company)
       return true
     end
-    if(params[:company_id] && params[:project_id] && current_member.managed_project.id == params[:project_id].to_i)
+    #Project Manager
+    project = current_member.managed_projects.where(["id = ?", params[:project_id]]).first
+    if(params[:company_id] && params[:project_id] && project)
       return true
     end
     false
@@ -93,10 +96,12 @@ module SecurityManager
   end
   
   def projects_show_validation params
+    #Company Maanager
     company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
     if(params[:company_id] && company)
       return true
     end
+    #Project Member
     project = current_member.projects.where(["id = ?", params[:project_id]]).first
     if(params[:company_id] && params[:project_id] && project)
       return true
@@ -105,10 +110,12 @@ module SecurityManager
   end
   
   def projects_index_validation params
+    #Company Manager
     company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
     if(params[:company_id] && company)
       return true
     end
+    #Company Member
     company = current_member.companies.where(["id = ?", params[:company_id]]).first
     if(params[:company_id] && company)
       return true
@@ -122,6 +129,7 @@ module SecurityManager
   # User
   ##
   def users_new_validation params
+    #company Manager
     company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
     if(params[:company_id] && company)
       return true
@@ -133,10 +141,12 @@ module SecurityManager
   end
   
   def users_edit_validation params
+    #Company Manager
     company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
     if(params[:company_id] && company)
       return true
     end
+    #Owner
     if(params[:user_id] && current_member.id == params[:user_id].to_i)
       return true
     end
@@ -147,10 +157,12 @@ module SecurityManager
   end
   
   def users_show_validation params
+    #Project Manager
     company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
     if(params[:company_id] && company)
       return true
     end
+    #Project Member
     project = current_member.projects.where(["id = ?", params[:project_id]]).first
     if(params[:company_id] && params[:project_id] && project)
       return true
@@ -159,11 +171,14 @@ module SecurityManager
   end
   
   def users_index_validation params
+    #Company anager
     company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
     if(params[:company_id] && company)
       return true
     end
-    if(params[:company_id] && params[:project_id] && current_member.managed_project.id == params[:project_id].to_i)
+    #Project Manager
+    project = current_member.managed_projects.where(["id = ?", params[:project_id]]).first
+    if(params[:company_id] && params[:project_id] && project)
       return true
     end
     false
@@ -175,6 +190,7 @@ module SecurityManager
   # Timecard
   ##
   def timecards_new_validation params
+    #Project Member
     project = current_member.projects.where(["id = ?", params[:project_id]]).first
     if(params[:project_id] && project)
       return true
@@ -186,11 +202,13 @@ module SecurityManager
   end
   
   def timecards_edit_validation params
+    #Owner
     project = current_member.projects.where(["id = ?", params[:project_id]]).first
     timecard = current_member.timecards.where(["id = ?", params[:timecard_id]]).first
     if(params[:project_id] && project && params[:timecard_id] && timecards)
       return true
     end
+    #Project Manager
     project = current_member.managed_projects.where(["id = ?", params[:project_id]]).first
     timecard = project? project.timecards.where(["id = ?", params[:timecard_id]]).first : nil
     if(params[:project_id] && project && params[:timecard_id] && timecards)
