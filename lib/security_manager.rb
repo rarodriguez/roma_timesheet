@@ -192,7 +192,7 @@ module SecurityManager
       return true
     end
     project = current_member.managed_projects.where(["id = ?", params[:project_id]]).first
-    timecard = project? project.timecards.where(["id = ?", params[:timecard_id]]).first : nil
+    timecard = project ? project.timecards.where(["id = ?", params[:timecard_id]]).first : nil
     if(params[:project_id] && project && params[:timecard_id] && timecards)
       return true
     end
@@ -210,8 +210,8 @@ module SecurityManager
       return true
     end
     #Company Manager
-    timecard = project? project.timecards.where(["id = ?", params[:timecard_id]]).first : nil
-    company = project? current_member.managed_companies.where(["id = ?", project.company.id]).first : nil
+    timecard = project ? project.timecards.where(["id = ?", params[:timecard_id]]).first : nil
+    company = project ? current_member.managed_companies.where(["id = ?", project.company.id]).first : nil
     if(company && timecard)
       return true
     end

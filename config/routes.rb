@@ -39,6 +39,7 @@ Timesheet::Application.routes.draw do
   
   match 'timecards/:timecard_id/hours' => 'hours#create', :as=>:create_hours, :via=>'post'
   match 'timecards/:timecard_id/hours/list' => 'hours#index', :as=>:list_hours, :via=>'post'
+  match 'timecards/:timecard_id/hours/:id' => 'hours#destroy', :as=>:create_hours, :via=>'delete'
   
   #match 'timecards/:timecard_id/hours/add' => 'hours#create', :as=>:create_hours, :via=>'post'
 #  match 'my_companies' => 'companies#my_companies', :as => :my_companies, :via => "post"

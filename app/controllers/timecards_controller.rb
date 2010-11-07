@@ -8,6 +8,7 @@ class TimecardsController < ApplicationController
       format.html # index.html.erb
       format.xml  { render :xml => @timecards }
     end
+    
   end
 
   # GET /timecards/1

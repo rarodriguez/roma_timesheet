@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   helper_method :remove_whitespaces, :redo_whitespaces
 
   #before_filter
-  before_filter :validate_access, :except => [:login, :login_submit, :register]
+  #before_filter :validate_access, :except => [:login, :login_submit, :register]
   
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password

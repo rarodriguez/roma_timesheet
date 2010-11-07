@@ -31,4 +31,14 @@ class Timecard < ActiveRecord::Base
     
     timecards_param.to_local_jqgrid_hash([:id, :company, :project, :total_hours, :initial_time, :end_time, :details])
   end
+  
+  private
+  
+  def ranges_of_dates
+    if(self.initial_time && self.end_time)
+      if(self.initial_time > self.end_time)
+        self.errors.add(:end_time, "End time should be greater than initial time.")
+      end
+    end
+  end
 end
