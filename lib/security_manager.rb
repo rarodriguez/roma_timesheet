@@ -30,6 +30,38 @@ module SecurityManager
     false  
   end  
   
+  def is_company_manager? company_id
+    company = current_member.managed_companies.where(["id = ?", company_id]).first
+    if(company_id && company)
+      return true
+    end
+    false
+  end
+  
+  def is_company_member? company_id
+    company = current_member.companies.where(["id = ?", company_id]).first
+    if(company_id && company)
+      return true
+    end
+    false
+  end
+  
+  def is_project_manager? project_id
+    project = current_member.managed_projects.where(["id = ?", project_id]).first
+    if(project_id && project)
+      return true
+    end
+    false
+  end
+  
+  def is_project_member? project_id
+    project = current_member.projects.where(["id = ?", project_id]).first
+    if(project_id && project)
+      return true
+    end
+    false
+  end
+  
   
   ## Specific extra validation methods ##
   
@@ -38,11 +70,7 @@ module SecurityManager
   ##
   def companies_edit_validation params
     #Company Manager
-    company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
-    if(params[:company_id] && company)
-      return true
-    end
-    false
+    return is_company_manager? params[:id]
   end
   def companies_update_validation params
     companies_edit_validation params
@@ -50,16 +78,10 @@ module SecurityManager
   
   def companies_show_validation params
     #Company Manager
-    company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
-    if(params[:company_id] && company)
-      return true
-    end
+    company_manager = is_company_manager? params[:id]
     #Company Member
-    company = current_member.companies.where(["id = ?", params[:company_id]]).first
-    if(params[:company_id] && company)
-      return true
-    end
-    false
+    company_member = is_company_member? params[:id]
+    return company_manager || company_member 
   end
   ##################################################
   
@@ -69,11 +91,7 @@ module SecurityManager
   ##
   def projects_new_validation params
     #Company Manger
-    company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
-    if(params[:company_id] && company)
-      return true
-    end
-    false
+    return is_company_manager? params[:company_id]
   end
   def projects_create_validation params
     return projects_new_validation params
@@ -81,47 +99,29 @@ module SecurityManager
   
   def projects_edit_validation params
     #Company Manager
-    company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
-    if(params[:company_id] && company)
-      return true
-    end
+    company_manager = is_company_manager? params[:company_id]
     #Project Manager
-    project = current_member.managed_projects.where(["id = ?", params[:project_id]]).first
-    if(params[:company_id] && params[:project_id] && project)
-      return true
-    end
-    false
+    project_manager = is_project_manager? params[:id]
+    return company_manager || project_manager
   end
   def projects_update_validation params
     projects_edit_validation params
   end
   
   def projects_show_validation params
-    #Company Maanager
-    company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
-    if(params[:company_id] && company)
-      return true
-    end
+    #Company Manager
+    company_manager = is_company_manager? params[:company_id]
     #Project Member
-    project = current_member.projects.where(["id = ?", params[:project_id]]).first
-    if(params[:company_id] && params[:project_id] && project)
-      return true
-    end
-    false
+    project_member = is_project_member? params[:id]
+    return company_manager || project_member
   end
   
   def projects_index_validation params
     #Company Manager
-    company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
-    if(params[:company_id] && company)
-      return true
-    end
+    company_manager = is_company_manager? params[:company_id]
     #Company Member
-    company = current_member.companies.where(["id = ?", params[:company_id]]).first
-    if(params[:company_id] && company)
-      return true
-    end
-    false
+    project_member = is_project_member? params[:company_id]
+    return company_manager || project_member
   end
   ##################################################
   
@@ -131,11 +131,7 @@ module SecurityManager
   ##
   def users_new_validation params
     #company Manager
-    company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
-    if(params[:company_id] && company)
-      return true
-    end
-    false
+    return is_company_manager? params[:company_id]
   end
   def users_create_validation params
     return projects_new_validation params
@@ -143,46 +139,33 @@ module SecurityManager
   
   def users_edit_validation params
     #Company Manager
-    company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
-    if(params[:company_id] && company)
-      return true
-    end
+    company_manager = is_company_manager? params[:company_id]
     #Owner
-    if(params[:user_id] && current_member.id == params[:user_id].to_i)
-      return true
-    end
-    false
+    owner = params[:id] && current_member.id == params[:id].to_i
+    return company_manager || owner
   end
   def users_update_validation params
     users_edit_validation params
   end
   
   def users_show_validation params
+    #Company Manager
+    company_manager = is_company_manager? params[:company_id]
     #Project Manager
-    company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
-    if(params[:company_id] && company)
-      return true
-    end
-    #Project Member
-    project = current_member.projects.where(["id = ?", params[:project_id]]).first
-    if(params[:company_id] && params[:project_id] && project)
-      return true
-    end
-    false
+    project_manager = is_project_manager? params[:project_id]
+    #Owner
+    owner = params[:id] && current_member.id == params[:id].to_i
+    return company_manager || project_manager || owner
   end
   
   def users_index_validation params
-    #Company anager
-    company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
-    if(params[:company_id] && company)
-      return true
-    end
-    #Project Manager
-    project = current_member.managed_projects.where(["id = ?", params[:project_id]]).first
-    if(params[:company_id] && params[:project_id] && project)
-      return true
-    end
-    false
+    #Company Manager
+    company_manager = is_company_manager? params[:company_id]
+    #Project Memeber
+    project_member = is_project_member? params[:project_id]
+    #Owner
+    owner = params[:id] && current_member.id == params[:id].to_i
+    return company_manager || project_member || owner
   end
   ##################################################
   
@@ -192,28 +175,28 @@ module SecurityManager
   ##
   def timecards_new_validation params
     #Project Member
-    project = current_member.projects.where(["id = ?", params[:project_id]]).first
-    if(params[:project_id] && project)
-      return true
-    end
-    false
+    return is_project_member? params[:project_id]
   end
   def timecards_create_validation params
     return timecards_new_validation params
   end
   
   def timecards_edit_validation params
-    #Owner
-    project = current_member.projects.where(["id = ?", params[:project_id]]).first
-    timecard = current_member.timecards.where(["id = ?", params[:timecard_id]]).first
-    if(params[:project_id] && project && params[:timecard_id] && timecards)
-      return true
-    end
-    #Project Manager
-    project = current_member.managed_projects.where(["id = ?", params[:project_id]]).first
-    timecard = project? project.timecards.where(["id = ?", params[:timecard_id]]).first : nil
-    if(params[:project_id] && project && params[:timecard_id] && timecards)
-      return true
+    timecard = Timecard.where(["id = ?", params[:id]]).first
+    unless timecard.nil?
+      timecard_status = timecard.current_timecards_note.current_status
+      
+      #Owner
+      project_member = is_project_member? params[:project_id]
+      owner = project_member && timecard.user == current_member && (timecard_status == PROCESS || timecard_status == REJECT)    
+      #Project Manager
+      project_manager = is_project_manager? params[:project_id]
+      proj_manager = project_manager && timcard.project.manager == current_member && (timecard_status == REVISION || timecard_status == ACCEPT)
+      #Company Manager
+      company_manager = is_company_manager? params[timecard.project.company.id]
+      comp_manager = company_manager && timecard.user == timecard.manager && (timecard_status == REVISION || timecard_status == ACCEPT)
+      
+      return owner || proj_manager || comp_manager
     end
     false
   end
@@ -222,22 +205,18 @@ module SecurityManager
   end
   
   def timecards_show_validation params
-    #Owner
-    project = current_member.projects.where(["id = ?", params[:project_id]]).first
-    timecard = current_member.timecards.where(["id = ?", params[:timecard_id]]).first
-    if(params[:project_id] && project && params[:timecard_id] && timecards)
-      return true
-    end
-    #Company Manager
-    timecard = project? project.timecards.where(["id = ?", params[:timecard_id]]).first : nil
-    company = current_member.managed_companies.where(["id = ?", params[:project_id]]).first
-    if(company && timecard)
-      return true
-    end
-    #Project Manager
-    project = current_member.managed_projects.where(["id = ?", params[:project_id]]).first
-    if(params[:project_id] && project && params[:timecard_id] && timecards)
-      return true
+    timecard = Timecard.where(["id = ?", params[:id]]).first
+    unless timecard.nil?      
+      #Owner
+      project_member = is_project_member? params[:project_id]
+      owner = project_member && timecard.user == current_member
+      #Project Manager
+      project_manager = is_project_manager? params[:project_id]
+      proj_manager = project_manager && timcard.project.manager == current_member
+      #Company Manager
+      company_manager = is_company_manager? params[timecard.project.company.id]
+      
+      return owner || proj_manager || company_manager
     end
     false
   end
@@ -245,6 +224,9 @@ module SecurityManager
   def timecards_index_validation params
     timecards_show_validation params
   end
+  
+  #TODO validation for accept, finish, reject
+  
   ##################################################
   
   
@@ -252,34 +234,37 @@ module SecurityManager
   # Hours
   ##
   def hours_create_validation params
-    timecard = Timecard.where(["id = ?", params[:timecard_id]]).first
-    hour = timecard.hours? timecard.hours.where(["id = ?", params[:id]]).first : nil
-    if(params[:timecard_id] && timecard && hour)
+    hour = Hour.where(["id = ?", params[:id]]).first
+    unless hour.nil?
+      timecard = hour.timecard
+      
       #Owner
-      if(timecard.user == current_member)
-        return true
-      end
+      project_member = is_project_member? timecard.project.id
+      owner = project_member && timecard.user == current_member && timecard.id == params[:timecard_id] 
       #Project Manager
-      project = current_member.managed_projects.where(["id = ?", timecard.project.id]).first
-      if(project)
-        return true
-      end
+      project_manager = is_project_manager? timecard.project.id
+      proj_manager = project_manager && timcard.project.manager == current_member && timecard.id == params[:timecard_id]
+      
+      return owner || proj_manager
     end
     false
   end
   
   def hours_index_validation params
-    timecard = Timecard.where(["id = ?", params[:timecard_id]]).first
-    #Owner
-    company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
-    if(params[:company_id] && company)
-      return true
-    end
-    #Project Manager
-    #Company Manager
-    company = current_member.companies.where(["id = ?", params[:company_id]]).first
-    if(params[:company_id] && company)
-      return true
+    hour = Hour.where(["id = ?", params[:id]]).first
+    unless hour.nil?
+      timecard = hour.timecard
+      
+      #Owner
+      project_member = is_project_member? timecard.project.id
+      owner = project_member && timecard.user == current_member && timecard.id == params[:timecard_id] 
+      #Project Manager
+      project_manager = is_project_manager? timecard.project.id
+      proj_manager = project_manager && timcard.project.manager == current_member && timecard.id == params[:timecard_id]
+      #Company Manager
+      company_manager = is_company_manager? params[timecard.project.company.id]
+      
+      return (owner || proj_manager || company_manager) && timecard.id == params[:timecard_id]
     end
     false
   end
