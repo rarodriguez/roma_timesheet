@@ -37,6 +37,7 @@ module SecurityManager
   # Companies
   ##
   def companies_edit_validation params
+    #Company Manager
     company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
     if(params[:company_id] && company)
       return true
@@ -229,7 +230,7 @@ module SecurityManager
     end
     #Company Manager
     timecard = project? project.timecards.where(["id = ?", params[:timecard_id]]).first : nil
-    company = current_member.managed_companies.where(["id = ?", params[:project_id]]).first : nil
+    company = current_member.managed_companies.where(["id = ?", params[:project_id]]).first
     if(company && timecard)
       return true
     end
@@ -243,6 +244,44 @@ module SecurityManager
   
   def timecards_index_validation params
     timecards_show_validation params
+  end
+  ##################################################
+  
+  
+  ##
+  # Hours
+  ##
+  def hours_create_validation params
+    timecard = Timecard.where(["id = ?", params[:timecard_id]]).first
+    hour = timecard.hours? timecard.hours.where(["id = ?", params[:id]]).first : nil
+    if(params[:timecard_id] && timecard && hour)
+      #Owner
+      if(timecard.user == current_member)
+        return true
+      end
+      #Project Manager
+      project = current_member.managed_projects.where(["id = ?", timecard.project.id]).first
+      if(project)
+        return true
+      end
+    end
+    false
+  end
+  
+  def hours_index_validation params
+    timecard = Timecard.where(["id = ?", params[:timecard_id]]).first
+    #Owner
+    company = current_member.managed_companies.where(["id = ?", params[:company_id]]).first
+    if(params[:company_id] && company)
+      return true
+    end
+    #Project Manager
+    #Company Manager
+    company = current_member.companies.where(["id = ?", params[:company_id]]).first
+    if(params[:company_id] && company)
+      return true
+    end
+    false
   end
   ##################################################
     
