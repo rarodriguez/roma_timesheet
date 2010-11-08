@@ -1,28 +1,57 @@
+<%= content_for :head do %>
+<script>
+	var timecards_url = "/my_timecards";
+	var timecards_details = "/my_timecards/";
+</script>
+<%= javascript_include_tag 'i18n/grid.locale-en.js','jquery.jqGrid.min.js','timecards_grid.js' %>
+<%= stylesheet_link_tag "jquery-ui-1.8.5.custom.css","ui.jqgrid.css" %>
+<script>
+	$().ready(function(){
+		var myTimecards = <%=raw @timecards%>;
+	    for(var i=0;i<myTimecards.length;i++){
+			myTimecards[i].details = "<a href='"+timecards_details+myTimecards[i].details+"'>Details</a>&nbsp;|&nbsp;<a href='"+timecards_details+myTimecards[i].details+"/edit'>Edit</a>"
+	    	jQuery("#timecards_grid").addRowData(myTimecards[i].id,myTimecards[i]);
+	    }
+	});
+</script>
+<%end %>
 <div class="information">
-  <h2 class="title">Show project</h2>
-  <p class="meta"><span class="date"><%= notice %></span></p>
-  <div style="clear: both;">&nbsp;</div>
-  <div class="entry">
-      <p>
-        <b>Name:</b>
-        <%= @project.name %>
-      </p>
-      
-      <p>
-        <b>Company:</b>
-        <%= @project.company_id %>
-      </p>
-      
-      <p>
-        <b>Manager:</b>
-        <%= "#{@project.manager.name} #{@project.manager.last_name}" if(@project.manager) %>
-      </p>
-      
-      <p>
-        <b>Last update by:</b>
-        <%= "#{@project.last_updater.name} #{@project.last_updater.last_name}" if(@project.last_updater) %>
-      </p>
-
-    <p class="links"><%= link_to 'Edit', edit_company_project_path(:company_id => project.company_id ,:id=>@project.id) %> | <%= link_to 'Back', company_projects_path(project.company_id) %></p>
-  </div>
+    <h2 class="title">Show project</h2>
+    <p class="meta">
+        <span class="date"><%= notice %></span>
+    </p>
+    <div style="clear: both;">
+        &nbsp;
+    </div>
+    <div class="entry">
+        <p>
+            <b>Name:</b>
+            <%= @project.name %>
+        </p>
+        <p>
+            <b>Company:</b>
+            <%= @project.company_id %>
+        </p>
+        <p>
+            <b>Manager:</b>
+            <%= "#{@project.manager.name} #{@project.manager.last_name}" if(@project.manager) %>
+        </p>
+        <p>
+            <b>Last update by:</b>
+            <%= "#{@project.last_updater.name} #{@project.last_updater.last_name}" if(@project.last_updater) %>
+        </p>
+    </div>
+    <p class="meta">
+        <span class="date">My Timecards</span>
+    </p>
+    <div style="clear: both;">
+        &nbsp;
+    </div>
+    <div class="entry">
+        <table id="timecards_grid">
+        </table>
+        <p class="links">
+            <%= link_to 'Add an additional timecard', edit_company_project_path(:company_id => project.company_id ,:id=>@project.id) %>| <%= link_to 'Back', company_projects_path(project.company_id) %>
+        </p>
+    </div>
 </div>

@@ -43,7 +43,6 @@ $(document).ready( function() {
       for(var i=0;i < ids.length;i++) {
         var cl = ids[i];
         ce = '<input type="button" class="delete_btn" title="Delete this hour" id="btn_'+cl+'" style="background-image:url(/images/trash.png);display:block;height:16px;width:16px;margin:0 auto;border:none;background-color:none;>&nbsp;&nbsp;</input>"'
-        //ce = '<a class="delete_url" id="'+cl+'" href="#" style="background-image:url(/images/trash.png);display:block;height:16px;width:16px;margin:0 auto;"></a>';
         jQuery("#hours_grid").jqGrid('setRowData',ids[i],{delete:ce});
       }
       

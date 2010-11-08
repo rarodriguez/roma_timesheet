@@ -12,6 +12,7 @@ class ProjectsController < ApplicationController
   def show
     @company = Company.find(params[:company_id])
     @project = @company.projects.find(params[:id])
+    @timecards = Timecard.user_timecards(current_member, @project.id)
   end
 
   # GET /projects/new

@@ -13,9 +13,14 @@ class Timecard < ActiveRecord::Base
     (((total_hours/3600)*100).to_i)/100.0
   end
   
-  def self.user_timecards(user)
-    # timecards = user.timecards
-    timecards = self.all
+  def self.user_timecards(user, project_id = 0)
+    if(project > 0)
+      timecards = self.where("project_id = ?", project_id)
+      #timecards = user.timecards.where("project_id = ?", project_id)
+    else
+      # timecards = user.timecards
+      timecards = self.all
+    end
     timecards_param = []
     timecards.each do |timecard|
       time_hash = {}
@@ -25,10 +30,9 @@ class Timecard < ActiveRecord::Base
       time_hash[:total_hours] = timecard.total_hours
       time_hash[:initial_time] = timecard.initial_time.strftime("%x %X")
       time_hash[:end_time] = timecard.end_time.strftime("%x %X")
-      time_hash[:details] = "Details"
+      time_hash[:details] = timecard.id
       timecards_param << time_hash
     end
-    
     timecards_param.to_local_jqgrid_hash([:id, :company, :project, :total_hours, :initial_time, :end_time, :details])
   end
   
