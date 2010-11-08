@@ -52,7 +52,7 @@ $(document).ready( function() {
           position:'left',
           questionText: "Are you sure you want <br />to delete the selected hour?",
           onProceed:function(trigger){
-            alert(trigger.id);
+            delete_hour(trigger.id);
           }
         });
       });
@@ -110,39 +110,36 @@ $(document).ready( function() {
   }
   
   function delete_hour(id){
-    //THIS METHOD DOESN'T WORK YET
-    $.ajax({
-      type: "POST",
-      url: "/member_accounts",
-      data: dataString,
-      dataType: 'json',
-      beforeSend: function(){
-          $('#error_message').html("Validating Account...");
-      },
-      success: function(data){
-        if (data != null) {
-          if (data.redirect_err != true && data.redirect_err != 'true') {
-            if (data.success) {
-              grid.trigger('reloadGrid');
-            }
-            else {
-                $('#password1').attr('value', '');
-                $('#error_message').html(data.errormsg);
+    id = id.split('_');
+    if(id.length == 2){
+      id = id[1];
+      var dataString = 'authenticity_token=' + $('meta[name=csrf-token]').attr('content') + '&_method=delete';
+      $.ajax({
+        type: "POST",
+        url: delete_url+id,
+        data: dataString,
+        dataType: 'json',
+        success: function(data){
+          if (data != null) {
+            if(data.redirect == true || data.redirect == 'true') {
+              window.location.replace(data.url);
+            }else{
+              if (data.success) {
+                grid.trigger('reloadGrid');
+              }
+              else {
+                alert("We had a problem while deleting the hour registry, please try again.");
               }
             }
-            else {
-              $('#password1').attr('value', '');
-              $('#cc_digits1').attr('value', '');
-              $('#error_message').html("We had a problem with your request, please try it again.");
-            }
-            $('#addAccountBtn').show();
-            $('.addcardBtnInvalid').hide();
+          }else{
+            window.location.reload();
           }
-          else {
-            window.location.replace(data.redirect_page);
-          }
+        },
+        error: function(request, error){
+          alert("We had a problem while deleting the hour registry, please try again.");
         }
-    });
+      });
   }
+}
 
 });

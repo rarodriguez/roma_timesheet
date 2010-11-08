@@ -34,6 +34,6 @@ class HoursController < ApplicationController
   def destroy
     @hour = Hour.find(params[:id])
     @hour.destroy
-    render :json=>"{\"success\":false}"
+    render :json=>"{\"success\":true}"
   end
 end
