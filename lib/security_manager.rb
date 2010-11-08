@@ -75,6 +75,9 @@ module SecurityManager
   def companies_update_validation params
     companies_edit_validation params
   end
+  def companies_destroy_validation params
+    companies_edit_validation params
+  end
   
   def companies_show_validation params
     #Company Manager
@@ -95,6 +98,9 @@ module SecurityManager
   end
   def projects_create_validation params
     return projects_new_validation params
+  end
+  def projects_destroy_validation params
+    projects_new_validation params
   end
   
   def projects_edit_validation params
@@ -147,6 +153,9 @@ module SecurityManager
   def users_update_validation params
     users_edit_validation params
   end
+  def users_destroy_validation params
+    users_edit_validation params
+  end
   
   def users_show_validation params
     #Company Manager
@@ -191,10 +200,10 @@ module SecurityManager
       owner = project_member && timecard.user == current_member && (timecard_status == PROCESS || timecard_status == REJECT)    
       #Project Manager
       project_manager = is_project_manager? params[:project_id]
-      proj_manager = project_manager && timcard.project.manager == current_member && (timecard_status == REVISION || timecard_status == ACCEPT)
+      proj_manager = project_manager && timcard.project.manager == current_member && timecard.user != current_member && (timecard_status == REVISION || timecard_status == ACCEPT)
       #Company Manager
       company_manager = is_company_manager? params[timecard.project.company.id]
-      comp_manager = company_manager && timecard.user == timecard.manager && (timecard_status == REVISION || timecard_status == ACCEPT)
+      comp_manager = company_manager && timecard.user == timecard.project.manager && (timecard_status == REVISION || timecard_status == ACCEPT)
       
       return owner || proj_manager || comp_manager
     end
@@ -203,6 +212,84 @@ module SecurityManager
   def timecards_update_validation params
     timecards_edit_validation params
   end
+  def timecards_destroy_validation params
+    timecards_edit_validation params
+  end
+  
+  def timecards_process_validation params
+    timecard = Timecard.where(["id = ?", params[:id]]).first
+    unless timecard.nil?
+      timecard_status = timecard.current_timecards_note.current_status
+      
+      #Owner
+      project_member = is_project_member? params[:project_id]
+      return  project_member && timecard.user == current_member && timecard_status == REJECT
+    end
+    false
+  end
+  
+  def timecards_revision_validation params
+    timecard = Timecard.where(["id = ?", params[:id]]).first
+    unless timecard.nil?
+      timecard_status = timecard.current_timecards_note.current_status
+      
+      #Owner
+      project_member = is_project_member? params[:project_id]
+      return  project_member && timecard.user == current_member && timecard_status == PROCESS
+    end
+    false
+  end
+  
+  def timecards_reject_validation params
+    timecard = Timecard.where(["id = ?", params[:id]]).first
+    unless timecard.nil?
+      timecard_status = timecard.current_timecards_note.current_status
+          
+      #Project Manager
+      project_manager = is_project_manager? params[:project_id]
+      proj_manager = project_manager && timcard.project.manager == current_member && timecard.user != current_member && (timecard_status == REVISION || timecard_status == ACCEPT)
+      #Company Manager
+      company_manager = is_company_manager? params[timecard.project.company.id]
+      comp_manager = company_manager && timecard.user == timecard.manager && (timecard_status == REVISION || timecard_status == ACCEPT)
+      
+      return proj_manager || comp_manager
+    end
+    false
+  end
+  
+  def timecards_accept_validation params
+    timecard = Timecard.where(["id = ?", params[:id]]).first
+    unless timecard.nil?
+      timecard_status = timecard.current_timecards_note.current_status
+          
+      #Project Manager
+      project_manager = is_project_manager? params[:project_id]
+      proj_manager = project_manager && timcard.project.manager == current_member && timecard.user != current_member && timecard_status == REVISION
+      #Company Manager
+      company_manager = is_company_manager? params[timecard.project.company.id]
+      comp_manager = company_manager && timecard.user == timecard.manager && timecard_status == REVISION
+      
+      return proj_manager || comp_manager
+    end
+    false
+  end
+  
+  def timecards_finished_validation params
+    timecard = Timecard.where(["id = ?", params[:id]]).first
+    unless timecard.nil?
+      timecard_status = timecard.current_timecards_note.current_status
+          
+      #Project Manager
+      project_manager = is_project_manager? params[:project_id]
+      proj_manager = project_manager && timcard.project.manager == current_member && timecard.user != current_member && timecard_status == ACCEPT
+      #Company Manager
+      company_manager = is_company_manager? params[timecard.project.company.id]
+      comp_manager = company_manager && timecard.user == timecard.manager && timecard_status == ACCEPT
+      
+      return proj_manager || comp_manager
+    end
+    false
+  end 
   
   def timecards_show_validation params
     timecard = Timecard.where(["id = ?", params[:id]]).first
@@ -219,14 +306,10 @@ module SecurityManager
       return owner || proj_manager || company_manager
     end
     false
-  end
-  
+  end 
   def timecards_index_validation params
     timecards_show_validation params
-  end
-  
-  #TODO validation for accept, finish, reject
-  
+  end 
   ##################################################
   
   
@@ -248,6 +331,9 @@ module SecurityManager
       return owner || proj_manager
     end
     false
+  end
+  def hours_destroy_validation params
+    hours_create_validation params
   end
   
   def hours_index_validation params
