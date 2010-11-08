@@ -182,6 +182,17 @@ module SecurityManager
   end
   
   def timecards_edit_validation params
+<<<<<<< HEAD
+    project = current_member.projects.where(["id = ?", params[:project_id]]).first
+    timecard = current_member.timecards.where(["id = ?", params[:timecard_id]]).first
+    if(params[:project_id] && project && params[:timecard_id] && timecards)
+      return true
+    end
+    project = current_member.managed_projects.where(["id = ?", params[:project_id]]).first
+    timecard = project ? project.timecards.where(["id = ?", params[:timecard_id]]).first : nil
+    if(params[:project_id] && project && params[:timecard_id] && timecards)
+      return true
+=======
     timecard = Timecard.where(["id = ?", params[:id]]).first
     unless timecard.nil?
       timecard_status = timecard.current_timecards_note.current_status
@@ -197,6 +208,7 @@ module SecurityManager
       comp_manager = company_manager && timecard.user == timecard.manager && (timecard_status == REVISION || timecard_status == ACCEPT)
       
       return owner || proj_manager || comp_manager
+>>>>>>> manuel
     end
     false
   end
@@ -205,6 +217,24 @@ module SecurityManager
   end
   
   def timecards_show_validation params
+<<<<<<< HEAD
+    #Owner
+    project = current_member.projects.where(["id = ?", params[:project_id]]).first
+    timecard = current_member.timecards.where(["id = ?", params[:timecard_id]]).first
+    if(params[:project_id] && project && params[:timecard_id] && timecards)
+      return true
+    end
+    #Company Manager
+    timecard = project ? project.timecards.where(["id = ?", params[:timecard_id]]).first : nil
+    company = project ? current_member.managed_companies.where(["id = ?", project.company.id]).first : nil
+    if(company && timecard)
+      return true
+    end
+    #Project Manager
+    project = current_member.managed_projects.where(["id = ?", params[:project_id]]).first
+    if(params[:project_id] && project && params[:timecard_id] && timecards)
+      return true
+=======
     timecard = Timecard.where(["id = ?", params[:id]]).first
     unless timecard.nil?      
       #Owner
@@ -217,6 +247,7 @@ module SecurityManager
       company_manager = is_company_manager? params[timecard.project.company.id]
       
       return owner || proj_manager || company_manager
+>>>>>>> manuel
     end
     false
   end
