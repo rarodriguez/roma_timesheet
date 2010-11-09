@@ -51,7 +51,6 @@ class TimecardsController < ApplicationController
     timecard_note = TimecardNote.new(:project_id=>"ID!!!")
     @timecard.current_timecards_note = timecard_note
     
-    
     if @timecard.save
       redirect_to(@timecard, :notice => 'Timecard was successfully created.')
     else
