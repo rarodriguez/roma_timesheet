@@ -326,7 +326,7 @@ module SecurityManager
       owner = project_member && timecard.user == current_member && timecard.id == params[:timecard_id] 
       #Project Manager
       project_manager = is_project_manager? timecard.project.id
-      proj_manager = project_manager && timcard.project.manager == current_member && timecard.id == params[:timecard_id]
+      proj_manager = project_manager && timecard.project.manager == current_member && timecard.id == params[:timecard_id]
       
       return owner || proj_manager
     end
@@ -346,7 +346,7 @@ module SecurityManager
       owner = project_member && timecard.user == current_member && timecard.id == params[:timecard_id] 
       #Project Manager
       project_manager = is_project_manager? timecard.project.id
-      proj_manager = project_manager && timcard.project.manager == current_member && timecard.id == params[:timecard_id]
+      proj_manager = project_manager && timecard.project.manager == current_member && timecard.id == params[:timecard_id]
       #Company Manager
       company_manager = is_company_manager? params[timecard.project.company.id]
       
