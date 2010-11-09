@@ -45,17 +45,48 @@ class TimecardsController < ApplicationController
   # POST /timecards
   # POST /timecards.xml
   def create
-    @timecard = Timecard.new()
+    @timecard = Timecard.new
     project = Project.find(params[:id])
     @timecard.project = project
-    timecard_note = TimecardNote.new(:project_id=>"ID!!!")
-    @timecard.current_timecards_note = timecard_note
     
-    if @timecard.save
-      redirect_to(@timecard, :notice => 'Timecard was successfully created.')
+    # Calculate initial time
+    first_date_week = Time.now.beginning_of_week
+    last_date_week = Time.now.end_of_week
+    
+    timecards = Timecard.where(["(initial_time = ? OR end_time = ?) AND project_id = ?", first_date_week, last_date_week, project.id])
+    if(timecards.nil? || timecards.size == 0)
+      #    TIMECARD
+      #    t.datetime "initial_time"
+      #    t.datetime "end_time"
+      #    t.integer  "user_id"
+      #    t.integer  "project_id"
+      #    t.integer  "timecards_note_id"
+      #    t.integer  "last_update_by"
+      #    t.datetime "created_at"
+      #    t.datetime "updated_at"
+      
+      timecard = Timecard.new(:initial_time)
+      #    TIMECARD_NOTE
+      #    t.integer  "old_status"
+      #    t.integer  "current_status"
+      #    t.text     "justification"
+      #    t.integer  "timecard_id"
+      #    t.integer  "created_by"
+      #    t.datetime "created_at"
+      #    t.datetime "updated_at"
+
+      timecard_note = TimecardNote.new()
+      @timecard.current_timecards_note = timecard_note
+      
+      if @timecard.save
+        redirect_to(@timecard, :notice => 'Timecard was successfully created.')
+      else
+        render :action => "new"
+      end
     else
-      render :action => "new"
+      
     end
+
   end
 
   # PUT /timecards/1
