@@ -30,7 +30,7 @@ Timesheet::Application.routes.draw do
   #resources :timecards
   
   match 'projects/:project_id/timecards' => 'timecards#index', :as=>:timecards, :via=>'get'
-  match 'projects/:project_id/timecards/:id/new' => 'timecards#new', :as=>:new_timecard, :via=>'get'
+  match 'projects/:project_id/timecards/new' => 'timecards#new', :as=>:new_timecard, :via=>'get'
   match 'projects/:project_id/timecards' => 'timecards#create', :as=>:timecards, :via=>'post'
   match 'projects/:project_id/timecards/:id/edit' => 'timecards#edit', :as=>:edit_timecard, :via=>'get'
   match 'projects/:project_id/timecards/:id' => 'timecards#update', :as=>:edit_timecard, :via=>'put'

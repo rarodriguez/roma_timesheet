@@ -3,7 +3,7 @@ $().ready(function(){
         url: timecards_url,
         datatype: "json",
         mtype: "POST",
-        colNames: ["id", "Company", "Project", "Registered Hours", "Initial Time", "End Time", "Details"],
+        colNames: ["id", "Company", "Project", "Registered Hours", "Initial Time", "End Time", "", ""],
         datatype: "local",
         width: 935,
         shrinkToFit: false,
@@ -40,21 +40,28 @@ $().ready(function(){
         }, {
             name: 'initial_time',
             index: 'initial_time',
-            width: 128,
+            width: 125,
             fixed: true,
             align: 'center',
             sortable: false
         }, {
             name: 'end_time',
             index: 'end_time',
-            width: 128,
+            width: 126,
             fixed: true,
             align: 'center',
             sortable: false
         }, {
             name: 'details',
             index: 'details',
-            width: 128,
+            width: 64,
+            fixed: true,
+            align: 'center',
+            sortable: false
+        },{
+            name: 'edit',
+            index: 'edit',
+            width: 64,
             fixed: true,
             align: 'center',
             sortable: false

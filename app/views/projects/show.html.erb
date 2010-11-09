@@ -1,7 +1,7 @@
 <%= content_for :head do %>
 <script>
 	var timecards_url = "/my_timecards";
-	var timecards_details = "/my_timecards/";
+	var timecards_details = "/projects/<%=@project.id%>/timecards/";
 </script>
 <%= javascript_include_tag 'i18n/grid.locale-en.js','jquery.jqGrid.min.js','timecards_grid.js' %>
 <%= stylesheet_link_tag "jquery-ui-1.8.5.custom.css","ui.jqgrid.css" %>
@@ -9,8 +9,9 @@
 	$().ready(function(){
 		var myTimecards = <%=raw @timecards%>;
 	    for(var i=0;i<myTimecards.length;i++){
-			myTimecards[i].details = "<a href='"+timecards_details+myTimecards[i].details+"'>Details</a>&nbsp;|&nbsp;<a href='"+timecards_details+myTimecards[i].details+"/edit'>Edit</a>"
-	    	jQuery("#timecards_grid").addRowData(myTimecards[i].id,myTimecards[i]);
+			   myTimecards[i].details = "<a href='"+timecards_details+myTimecards[i].details+"'>Details</a>";
+			   myTimecards[i].edit = "<a href='"+timecards_details+myTimecards[i].edit+"/edit'>Edit</a>";
+	       jQuery("#timecards_grid").addRowData(myTimecards[i].id,myTimecards[i]);
 	    }
 	});
 </script>
@@ -30,7 +31,7 @@
         </p>
         <p>
             <b>Company:</b>
-            <%= @project.company_id %>
+            <%= @project.company.name if(@project.company) %>
         </p>
         <p>
             <b>Manager:</b>
@@ -51,7 +52,7 @@
         <table id="timecards_grid">
         </table>
         <p class="links">
-            <%= link_to 'Add an additional timecard', edit_company_project_path(:company_id => project.company_id ,:id=>@project.id) %>| <%= link_to 'Back', company_projects_path(project.company_id) %>
+            <%= link_to 'Add an additional timecard', timecards_path(@project.id),:method => :post %> | <%= link_to 'Back', dashboard_path %>
         </p>
     </div>
 </div>

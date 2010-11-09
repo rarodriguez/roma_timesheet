@@ -28,14 +28,14 @@ class TimecardsController < ApplicationController
 
   # GET /timecards/new
   # GET /timecards/new.xml
-  def new
-    @timecard = Timecard.new
+  #def new
+  #  @timecard = Timecard.new
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @timecard }
-    end
-  end
+  #  respond_to do |format|
+  #    format.html # new.html.erb
+  #    format.xml  { render :xml => @timecard }
+  #  end
+  #end
 
   # GET /timecards/1/edit
   def edit
@@ -45,16 +45,17 @@ class TimecardsController < ApplicationController
   # POST /timecards
   # POST /timecards.xml
   def create
-    @timecard = Timecard.new(params[:timecard])
-
-    respond_to do |format|
-      if @timecard.save
-        format.html { redirect_to(@timecard, :notice => 'Timecard was successfully created.') }
-        format.xml  { render :xml => @timecard, :status => :created, :location => @timecard }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @timecard.errors, :status => :unprocessable_entity }
-      end
+    @timecard = Timecard.new()
+    project = Project.find(params[:id])
+    @timecard.project = project
+    timecard_note = TimecardNote.new(:project_id=>"ID!!!")
+    @timecard.current_timecards_note = timecard_note
+    
+    
+    if @timecard.save
+      redirect_to(@timecard, :notice => 'Timecard was successfully created.')
+    else
+      render :action => "new"
     end
   end
 
