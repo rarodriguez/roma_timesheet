@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   helper_method :remove_whitespaces, :redo_whitespaces
 
   #before_filter
-  #before_filter :validate_access, :except => [:login, :login_submit, :register]
+  before_filter :validate_access, :except => [:login, :login_submit, :register]
   
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
     puts "VALIDATE ACCESS:#{controller_name}, #{action_name}"
 
     if(current_member)
-      if (current_member.password_changed_at)
+      if (current_member.password_changed_at || (controller_name == "users" && action_name == "edit_self"))
         unless (has_permission?(controller_name, action_name, params))
           flash[:access_msg] = "You are not authorized to access this page."
           session[:redirect_url] = request.fullpath

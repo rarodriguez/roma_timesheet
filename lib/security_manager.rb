@@ -10,24 +10,26 @@ module SecurityManager
   
   # Generic method to validate the actions of the user in the controller
   def has_permission? (controller, action, params)
+    puts "HAS_PERMISSIONS#################"
     if (controller && action)
       action = "#{controller}_#{action}"
       action.gsub!(/\W+/, "")
       roles = current_member.roles
       roles.each do |role|
+        puts "EACH ROLES#############################"
         permission = role.permissions.where(["name = ?", action]).first
         if (permission && permission.name == action)
-          puts "PERMISSIONS #{permission.name}"
+          puts "PERMISSIONS #{permission.name} ########################"
           if (permission.needs_extra_validation)
             proc = lambda { params; binding }
             return eval("#{action}_validation params ", proc.call)
           end
           return true
-        end
-        
+        end      
       end
     end
-    false  
+    puts "RETURN FALSE################"
+    return false  
   end  
   
   def is_company_manager? company_id
@@ -192,7 +194,7 @@ module SecurityManager
   
   def timecards_edit_validation params
     timecard = Timecard.where(["id = ?", params[:id]]).first
-    unless timecard.nil?
+    unless timecard.first
       timecard_status = timecard.current_timecards_note.current_status
       
       #Owner
@@ -212,13 +214,13 @@ module SecurityManager
   def timecards_update_validation params
     timecards_edit_validation params
   end
-  def timecards_destroy_validation params
-    timecards_edit_validation params
-  end
+  #deprecated#def timecards_destroy_validation params
+  #  timecards_edit_validation params
+  #end
   
   def timecards_process_validation params
     timecard = Timecard.where(["id = ?", params[:id]]).first
-    unless timecard.nil?
+    unless timecard.first
       timecard_status = timecard.current_timecards_note.current_status
       
       #Owner
@@ -230,7 +232,7 @@ module SecurityManager
   
   def timecards_revision_validation params
     timecard = Timecard.where(["id = ?", params[:id]]).first
-    unless timecard.nil?
+    unless timecard.first
       timecard_status = timecard.current_timecards_note.current_status
       
       #Owner
@@ -242,7 +244,7 @@ module SecurityManager
   
   def timecards_reject_validation params
     timecard = Timecard.where(["id = ?", params[:id]]).first
-    unless timecard.nil?
+    unless timecard.first
       timecard_status = timecard.current_timecards_note.current_status
           
       #Project Manager
@@ -259,7 +261,7 @@ module SecurityManager
   
   def timecards_accept_validation params
     timecard = Timecard.where(["id = ?", params[:id]]).first
-    unless timecard.nil?
+    unless timecard.first
       timecard_status = timecard.current_timecards_note.current_status
           
       #Project Manager
@@ -276,7 +278,7 @@ module SecurityManager
   
   def timecards_finished_validation params
     timecard = Timecard.where(["id = ?", params[:id]]).first
-    unless timecard.nil?
+    unless timecard.first
       timecard_status = timecard.current_timecards_note.current_status
           
       #Project Manager
@@ -293,7 +295,7 @@ module SecurityManager
   
   def timecards_show_validation params
     timecard = Timecard.where(["id = ?", params[:id]]).first
-    unless timecard.nil?      
+    unless timecard.first      
       #Owner
       project_member = is_project_member? params[:project_id]
       owner = project_member && timecard.user == current_member
@@ -318,7 +320,7 @@ module SecurityManager
   ##
   def hours_create_validation params
     hour = Hour.where(["id = ?", params[:id]]).first
-    unless hour.nil?
+    unless hour.first
       timecard = hour.timecard
       
       #Owner
@@ -338,7 +340,7 @@ module SecurityManager
   
   def hours_index_validation params
     hour = Hour.where(["id = ?", params[:id]]).first
-    unless hour.nil?
+    unless hour.first
       timecard = hour.timecard
       
       #Owner

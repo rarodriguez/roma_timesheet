@@ -16,7 +16,7 @@
       
       <p>
         <b>Administrator:</b>
-        <%= @company.manager.first_name + @company.manager.last_name if(@company.manager)%>
+        <%= @company.manager.name + @company.manager.last_name if(@company.manager)%>
       </p>
       
       <p>

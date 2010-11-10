@@ -6,54 +6,61 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
-permissions = Permission.create([
-                {:name => 'contents_dashboard', :needs_extra_validation => 0},
-  
-                {:name => 'companies_edit'},
-                {:name => 'companies_update'},
-                {:name => 'companies_destroy'},
-                {:name => 'companies_show'},
-                  
-                
-                {:name => 'projects_new'},
-                {:name => 'projects_create'},
-                {:name => 'projects_destroy'},
-                {:name => 'projects_edit'},
-                {:name => 'projects_update'},
-                {:name => 'projects_show'},
-                {:name => 'projects_index'},
-                
-                  
-                {:name => 'users_new'},
-                {:name => 'users_create'},
-                {:name => 'users_edit'},
-                {:name => 'users_update'},
-                {:name => 'users_destroy'},
-                {:name => 'users_show'},   
-                {:name => 'users_index'}, 
-                  
-                  
-                {:name => 'timecards_new'}, 
-                {:name => 'timecards_create'},   
-                {:name => 'timecards_edit'}, 
-                {:name => 'timecards_update'}, 
-                {:name => 'timecards_destroy'},   
-                {:name => 'timecards_process'},   
-                {:name => 'timecards_revision'},   
-                {:name => 'timecards_reject'},   
-                {:name => 'timecards_accept'}, 
-                {:name => 'timecards_finished'}, 
-                {:name => 'timecards_show'}, 
-                  
-                  
-                {:name => 'hours_create'}, 
-                {:name => 'hours_destroy'},
-                {:name => 'hours_index'}
-              ])
-              
-  roles = Role.create([
+COMPANY=0
+PROJECT=1
+EMPLOYEE=2
+
+roles = Role.create([
                 {:name => 'company_manager', :description =>''},
                 {:name => 'project_manager', :description =>''},
                 {:name => 'employee', :description =>''}
+              ])
+
+permissions = Permission.create([
+                {:name => 'contents_dashboard', :roles =>[roles[EMPLOYEE]], :needs_extra_validation => 0},
+  
+                {:name => 'companies_edit', :roles =>[roles[COMPANY]]},
+                {:name => 'companies_update', :roles =>[roles[COMPANY]]},
+                {:name => 'companies_destroy', :roles =>[roles[COMPANY]]},
+                {:name => 'companies_show', :roles =>[roles[EMPLOYEE]]},
+                  
+                
+                {:name => 'projects_new', :roles =>[roles[COMPANY]]},
+                {:name => 'projects_create', :roles =>[roles[COMPANY]]},
+                {:name => 'projects_destroy', :roles =>[roles[COMPANY]]},
+                {:name => 'projects_edit', :roles =>[roles[COMPANY],roles[PROJECT]]},
+                {:name => 'projects_update', :roles =>[roles[COMPANY],roles[PROJECT]]},
+                {:name => 'projects_show', :roles =>[roles[EMPLOYEE]]},
+                {:name => 'projects_index', :roles =>[roles[EMPLOYEE]]},
+                
+                  
+                {:name => 'users_new', :roles =>[roles[COMPANY]]},
+                {:name => 'users_create', :roles =>[roles[COMPANY]]},
+                {:name => 'users_edit', :roles =>[roles[EMPLOYEE]]},
+                {:name => 'users_edit_self', :roles =>[roles[EMPLOYEE]], :needs_extra_validation => 0},
+                {:name => 'users_update', :roles =>[roles[EMPLOYEE]]},
+                {:name => 'users_update_self', :roles =>[roles[EMPLOYEE]], :needs_extra_validation => 0},
+                {:name => 'users_destroy', :roles =>[roles[EMPLOYEE]]},
+                {:name => 'users_show', :roles =>[roles[EMPLOYEE]]},   
+                {:name => 'users_index', :roles =>[roles[EMPLOYEE]]}, 
+                  
+                  
+                {:name => 'timecards_new', :roles =>[roles[EMPLOYEE]]}, 
+                {:name => 'timecards_create', :roles =>[roles[EMPLOYEE]]},   
+                {:name => 'timecards_edit', :roles =>[roles[EMPLOYEE]]}, 
+                {:name => 'timecards_update', :roles =>[roles[EMPLOYEE]]}, 
+                #{:name => 'timecards_destroy'},   
+                {:name => 'timecards_process', :roles =>[roles[EMPLOYEE]]},   
+                {:name => 'timecards_revision', :roles =>[roles[EMPLOYEE]]},   
+                {:name => 'timecards_reject', :roles =>[roles[COMPANY],roles[PROJECT]]},   
+                {:name => 'timecards_accept', :roles =>[roles[COMPANY],roles[PROJECT]]}, 
+                {:name => 'timecards_finished', :roles =>[roles[COMPANY],roles[PROJECT]]}, 
+                {:name => 'timecards_show', :roles =>[roles[EMPLOYEE]]},
+                {:name => 'timecards_index', :roles =>[roles[EMPLOYEE]]}, 
+                  
+                  
+                {:name => 'hours_create', :roles =>[roles[EMPLOYEE]]}, 
+                {:name => 'hours_destroy', :roles =>[roles[EMPLOYEE]]},
+                {:name => 'hours_index', :roles =>[roles[EMPLOYEE]]}
               ])
   
