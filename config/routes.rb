@@ -3,9 +3,9 @@ Timesheet::Application.routes.draw do
   
   #resources :hours
 
-  resources :roles
+  #resources :roles
 
-  resources :permissions
+  #resources :permissions
 
   #resources :projects
 
@@ -25,7 +25,7 @@ Timesheet::Application.routes.draw do
   match 'dashboard' => 'contents#dashboard', :as => :dashboard, :via => "get"
   
   match 'edit_self' => 'users#edit_self', :as => :edit_self, :via => "get"
-  match 'edit_self' => 'users#update_self', :as => :update_self, :via => "post"
+  match 'edit_self' => 'users#update_self', :as => :update_self, :via => "put"
   
   #resources :timecards
   

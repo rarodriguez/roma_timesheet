@@ -31,8 +31,8 @@ class UsersController < ApplicationController
   # POST /register
   def register_create
     @user = User.new(params[:user])
-    # TODO add the method to asign the ROLE
-    # @user.roles << Role.find_by_name(Admin)
+
+    @user.roles << Role.find_by_name("company_manager").first
     @company = Company.new(params[:company])
     
     if [@user.valid?, @company.valid?].all? 
@@ -56,7 +56,6 @@ class UsersController < ApplicationController
       render :action => "register"
     end
   end
-
 
   # GET /users/1/edit
   def edit
@@ -86,7 +85,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     @company = Company.find(params[:company_id])
-    #TODO uncomment @user.last_updater = current_user
+    @user.last_updater = current_user
     if @user.save
       @company.users << @user
       redirect_to(company_user_path(:company_id=>@company.id, :id=>@user.id), :notice => 'User was successfully created.')
@@ -101,7 +100,7 @@ class UsersController < ApplicationController
   # PUT /users/1.xml
   def update
     @user = User.find(params[:id])
-    #TODO uncomment @user.last_updater = current_user
+    @user.last_updater = current_user
     @user.last_updated_by = 1
     if @user.update_attributes(params[:user])
       redirect_to(company_user_path(:company_id=>params[:company_id], :id=>@user.id), :notice => 'User was successfully updated.')

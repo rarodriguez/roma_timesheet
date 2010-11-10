@@ -1,5 +1,4 @@
 class HoursController < ApplicationController
-  
   before_filter :valid_xhr_request?, :only=>:create
   # GET /hours
   # GET /hours.xml
