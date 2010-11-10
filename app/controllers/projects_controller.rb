@@ -39,7 +39,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(params[:project])
     manager = User.find(params[:project][:user_id])
     @project.manager = manager
-    # TODO UNCOMMENT @project.last_updater = current_user
+    @project.last_updater = current_user
     @project.company = Company.find(params[:company_id])
 
     if @project.save
@@ -58,7 +58,7 @@ class ProjectsController < ApplicationController
     @project = Company.find(params[:company_id]).projects.find(params[:id])
     manager = User.find(params[:project][:user_id])
     @project.manager = manager
-    # TODO UNCOMMENT @project.last_updater = current_user
+    @project.last_updater = current_user
     if @project.update_attributes(params[:project])
       redirect_to(company_project_path(:id=>@project.id, :company_id =>@project.company.id), :notice => 'Project was successfully updated.')
     else

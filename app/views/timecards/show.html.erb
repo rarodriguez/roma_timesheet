@@ -1,38 +1,44 @@
+<%= content_for :head do%>
+  <script type="text/javascript">
+    var listing_grid = "<%=list_hours_url(@timecard.id)%>";
+  </script>
+  <%= javascript_include_tag 'i18n/grid.locale-en.js','jquery.jqGrid.min.js', 'jquery-ui-1.8.6.custom.min.js','hours_show_grid.js' %>
+  <%= stylesheet_link_tag "jquery-ui-1.8.5.custom.css", "ui.jqgrid.css", 'jquery.fastconfirm.css' %>  
+<%end%>
 <div class="information">
-  <h2 class="title">Show project</h2>
+  <h2 class="title">My timecard</h2>
   <p class="meta"><span class="date"><%= notice %></span></p>
   <div style="clear: both;">&nbsp;</div>
   <div class="entry">
     <p>
       <b>Initial time:</b>
-      <%= @timecard.initial_time %>
+      <%= @timecard.initial_time.strftime("%A %d, %Y at %H:%M") %>
     </p>
     
     <p>
       <b>End time:</b>
-      <%= @timecard.end_time %>
+      <%= @timecard.end_time.strftime("%A %d, %Y at %H:%M") %>
     </p>
-    
-    <p>
-      <b>User:</b>
-      <%= @timecard.user_id %>
-    </p>
-    
     <p>
       <b>Project:</b>
       <%= @timecard.project.name if(@timecard.project) %>
     </p>
     
+    <%if(@timecard.timecards_notes.size > 0)%>
     <p>
       <b>Timesheet History:</b>
-      <%= @timecard.timesheets_note_id %>
+      <%= timecards_notes_list(@timecard.timecards_notes) %>
     </p>
-    
+    <% end %>
     <p>
       <b>Last update by:</b>
       <%= "#{@timecard.last_updater.name} #{@timecard.last_updater.last_name}" if(@timecard.last_updater) %>
     </p>
 
-    <p class="links"><%= link_to 'Edit', edit_timecard_path(@timecard) %> | <%= link_to 'Back', timecards_path %></p>
+  </div>
+  <p class="meta"><span class="date">Show the hours that you spend on this project from <%= @timecard.initial_time.strftime('%m/%d/%Y') %> to <%=@timecard.end_time.strftime('%m/%d/%Y')%></span></p>
+  <div style="clear: both;">&nbsp;</div>
+  <div class="entry">
+    <table id="hours_grid"></table> 
   </div>
 </div>

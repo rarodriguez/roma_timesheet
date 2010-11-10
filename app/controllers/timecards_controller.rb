@@ -58,10 +58,10 @@ class TimecardsController < ApplicationController
     if(old_timecard.nil? || old_timecard.size == 0)
       @timecard.initial_time = first_date_week
       @timecard.end_time = last_date_week
-      @timecard.user_id = 1
-      #@timecard.user = current_member
-      @timecard.last_update_by = 1
-      #@timecard.last_updater = 1
+      #@timecard.user_id = 1
+      @timecard.user = current_member
+      #@timecard.last_update_by = 1
+      @timecard.last_updater = current_member
       begin
         Timecard.transaction do
           @timecard.save!
@@ -84,31 +84,31 @@ class TimecardsController < ApplicationController
     end
   end
 
-  # PUT /timecards/1
-  # PUT /timecards/1.xml
-  def update
-    @timecard = Timecard.find(params[:id])
+#  # PUT /timecards/1
+#  # PUT /timecards/1.xml
+#  def update
+#    @timecard = Timecard.find(params[:id])
+#
+#    respond_to do |format|
+#      if @timecard.update_attributes(params[:timecard])
+#        format.html { redirect_to(@timecard, :notice => 'Timecard was successfully updated.') }
+#        format.xml  { head :ok }
+#      else
+#        format.html { render :action => "edit" }
+#        format.xml  { render :xml => @timecard.errors, :status => :unprocessable_entity }
+#      end
+#    end
+#  end
 
-    respond_to do |format|
-      if @timecard.update_attributes(params[:timecard])
-        format.html { redirect_to(@timecard, :notice => 'Timecard was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @timecard.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /timecards/1
-  # DELETE /timecards/1.xml
-  def destroy
-    @timecard = Timecard.find(params[:id])
-    @timecard.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(timecards_url) }
-      format.xml  { head :ok }
-    end
-  end
+#  # DELETE /timecards/1
+#  # DELETE /timecards/1.xml
+#  def destroy
+#    @timecard = Timecard.find(params[:id])
+#    @timecard.destroy
+#
+#    respond_to do |format|
+#      format.html { redirect_to(timecards_url) }
+#      format.xml  { head :ok }
+#    end
+#  end
 end
