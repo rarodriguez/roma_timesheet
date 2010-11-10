@@ -4,6 +4,6 @@
   <div style="clear: both;">&nbsp;</div>
   <div class="entry">
       <%= render 'form' %>
-    <p class="links"><%= link_to 'Show', company_project_path(:id=>@project.id) %>&nbsp;|&nbsp;<%= link_to 'Back', company_projects_path %></p>
+    <p class="links"><%= link_to 'Show', company_project_path(:company_id=>@project.company_id, :id=>@project.id) %>&nbsp;|&nbsp;<%= link_to 'Back', company_projects_path(:company_id=>@project.company_id) %></p>
   </div>
 </div>

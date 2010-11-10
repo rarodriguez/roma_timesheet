@@ -8,35 +8,30 @@
   <%= stylesheet_link_tag "jquery-ui-1.8.5.custom.css", "ui.jqgrid.css", 'jquery.fastconfirm.css' %>  
 <%end%>
 <div class="information">
-  <h2 class="title">Show project</h2>
+  <h2 class="title">My timecard</h2>
   <p class="meta"><span class="date"><%= notice %></span></p>
   <div style="clear: both;">&nbsp;</div>
   <div class="entry">
     <p>
       <b>Initial time:</b>
-      <%= @timecard.initial_time %>
+      <%= @timecard.initial_time.strftime("%A %d, %Y at %H:%M") %>
     </p>
     
     <p>
       <b>End time:</b>
-      <%= @timecard.end_time %>
+      <%= @timecard.end_time.strftime("%A %d, %Y at %H:%M") %>
     </p>
-    
-    <p>
-      <b>User:</b>
-      <%= @timecard.user_id %>
-    </p>
-    
     <p>
       <b>Project:</b>
       <%= @timecard.project.name if(@timecard.project) %>
     </p>
     
+    <%if(@timecard.timecards_notes.size > 0)%>
     <p>
       <b>Timesheet History:</b>
-      <%= @timecard.timecards_note_id %>
+      <%= timecards_notes_list(@timecard.timecards_notes) %>
     </p>
-    
+    <% end %>
     <p>
       <b>Last update by:</b>
       <%= "#{@timecard.last_updater.name} #{@timecard.last_updater.last_name}" if(@timecard.last_updater) %>
