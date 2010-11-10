@@ -1,14 +1,14 @@
 class Timecard < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
-  belongs_to :current_timecards_note, :class_name=>"TimecardsNote"
+  belongs_to :current_timecards_note, :class_name=>"TimecardsNote", :foreign_key=>'timecards_note_id'
   has_many :timecards_notes
   has_many :hours
   belongs_to :last_updater, :class_name => "User", :foreign_key=> 'last_update_by'
   
   validates_presence_of :initial_time, :message=>"Oops, your didn't typed an initial time"
   validates_presence_of :end_time, :message=>"Oops, your didn't typed an end time"
-  validates_presence_of :current_timecards_note, :message=>"Oops, you didn't added any note for the timesheet"
+  #validates_presence_of :current_timecards_note, :message=>"Oops, you didn't added any note for the timesheet"
   
   def total_hours
     total_hours = 0

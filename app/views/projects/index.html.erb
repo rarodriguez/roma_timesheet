@@ -20,9 +20,9 @@
         <td><%= project.company_id %></td>
         <td><%= project.user_id %></td>
         <td><%= project.last_update_by %></td>
-        <td><%= link_to 'Show', company_project_path(:company_id=>project.company_id, :project=>project.id) %></td>
-        <td><%= link_to 'Edit', edit_company_project_path(:company_id=>project.company_id, :project=>project.id) %></td>
-        <td><%= link_to 'Destroy', company_project_path(:company_id=>project.company_id, :project=>project.id), :confirm => 'Are you sure?', :method => :delete %></td>
+        <td><%= link_to 'Show', company_project_path(:company_id=>project.company_id, :id=>project.id) %></td>
+        <td><%= link_to 'Edit', edit_company_project_path(:company_id=>project.company_id, :id=>project.id) %></td>
+        <td><%= link_to 'Destroy', company_project_path(:company_id=>project.company_id, :id=>project.id), :confirm => 'Are you sure?', :method => :delete %></td>
       </tr>
     <% end %>
 
