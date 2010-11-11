@@ -41,7 +41,7 @@ class CompaniesController < ApplicationController
   # POST /companies.xml
   def create
     @company = Company.new(params[:company])
-    @company.manager = current_user
+    @company.manager = current_member
     if @company.save
       
       redirect_to(@company, :notice => 'Company was successfully created.')

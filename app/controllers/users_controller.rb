@@ -70,8 +70,8 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.xml
   def update_self
-    @user = current_user
-    @user.last_updater = current_user
+    @user = current_member
+    @user.last_updater = current_member
     @user.password_changed_at = Time.now
     if @user.update_attributes(params[:user])
       redirect_to(dashboard_path)
@@ -85,7 +85,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     @company = Company.find(params[:company_id])
-    @user.last_updater = current_user
+    @user.last_updater = current_member
     if @user.save
       @company.users << @user
       redirect_to(company_user_path(:company_id=>@company.id, :id=>@user.id), :notice => 'User was successfully created.')
@@ -100,7 +100,7 @@ class UsersController < ApplicationController
   # PUT /users/1.xml
   def update
     @user = User.find(params[:id])
-    @user.last_updater = current_user
+    @user.last_updater = current_member
     @user.last_updated_by = 1
     if @user.update_attributes(params[:user])
       redirect_to(company_user_path(:company_id=>params[:company_id], :id=>@user.id), :notice => 'User was successfully updated.')
