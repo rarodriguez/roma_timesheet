@@ -39,6 +39,8 @@
   <p class="meta"><span class="date">Show the hours that you spend on this project from <%= @timecard.initial_time.strftime('%m/%d/%Y') %> to <%=@timecard.end_time.strftime('%m/%d/%Y')%></span></p>
   <div style="clear: both;">&nbsp;</div>
   <div class="entry">
-    <table id="hours_grid"></table> 
+    <table id="hours_grid"></table>
+    <p class="links">
+      <% if @can_edit_timecard %><%=link_to "Edit this timecard", edit_timecard_url(:project_id =>@timecard.project_id, :id=>@timecard.id)%> |<% end %> <%= link_to 'Back', company_project_path(:company_id=>@timecard.project.company_id, :id=>@timecard.project.id) %></p>
   </div>
 </div>

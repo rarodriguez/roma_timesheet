@@ -14,32 +14,23 @@ class TimecardsController < ApplicationController
   # GET /timecards/1
   # GET /timecards/1.xml
   def show
-    @timecard = Timecard.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @timecard }
-    end
+    project = Project.find(params[:project_id])
+    @timecard = project.timecards.find(params[:id])
+    @can_edit_timecard = has_permission?("timecards", "show", params)
+    #@can_edit_timecard = true
   end
   
   def add_hours
     @timecard = Timecard.new
   end
 
-  # GET /timecards/new
-  # GET /timecards/new.xml
-  #def new
-  #  @timecard = Timecard.new
-
-  #  respond_to do |format|
-  #    format.html # new.html.erb
-  #    format.xml  { render :xml => @timecard }
-  #  end
-  #end
 
   # GET /timecards/1/edit
   def edit
-    @timecard = Timecard.find(params[:id])
+    project = Project.find(params[:project_id])
+    @timecard = project.timecards.find(params[:id])
+    @can_edit_timecard = has_permission?("timecards", "edit", params)
+    #@can_edit_timecard = true
   end
 
   # POST /timecards
@@ -77,6 +68,7 @@ class TimecardsController < ApplicationController
       old_timecard = old_timecard.first
       if(old_timecard.current_timecards_note.current_status == PROCESS)
         @timecard = old_timecard
+        
         render :action => "edit"
       else
         redirect_to(company_project_path(:company_id=>project.company_id,:id=>project.id), :notice => "You already created and submit a timecard for this week. You can create another next week.")

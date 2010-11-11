@@ -25,7 +25,7 @@ class UserSessionsController < ApplicationController
     end
   end
   
-  def member_logout
+  def logout
     current_member_session.destroy
     session.clear
     redirect_to root_url

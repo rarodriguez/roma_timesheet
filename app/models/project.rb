@@ -14,8 +14,8 @@ class Project < ActiveRecord::Base
   
   def self.user_projects(user)
     # We should only allow access if the user is the owner of the company
-    # projects = user.projects
-    projects = self.all
+    projects = user.projects
+    #projects = self.all
     projects_param = []
     projects.each do |proj|
       proj_hash = {}

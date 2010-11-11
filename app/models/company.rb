@@ -13,8 +13,8 @@ class Company < ActiveRecord::Base
   
   def self.user_companies(user)
     # We should only allow access if the user is the owner of the company
-    # companies = user.companies
-    companies = self.all
+    companies = user.companies
+    #companies = self.all
     companies_param = []
     companies.each do |comp|
       comp_hash = {}

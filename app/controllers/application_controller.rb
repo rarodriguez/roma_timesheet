@@ -10,7 +10,8 @@ class ApplicationController < ActionController::Base
   helper_method :current_member
   helper_method :remove_whitespaces, :redo_whitespaces
 
-  #before_filter
+  before_filter :require_no_member, :only=> [:login, :login_submit, :register, :register_create]
+  before_filter :require_member, :except=> [:logout]
   before_filter :validate_access, :except => [:login, :login_submit, :register, :register_create]
   
   # Scrub sensitive parameters from your log
@@ -104,11 +105,6 @@ class ApplicationController < ActionController::Base
   def rescue_HTTPError(e)
     logger.error("HTTP ERROR --- #{e}")
     #This Text should be change for an 500 error.
-    render :file => "public/500.html", :status => 500
-  end
-
-  def rescue_SOAPFault(e)
-    logger.error("SOAP ERROR --- #{e}")
     render :file => "public/500.html", :status => 500
   end
 

@@ -19,11 +19,11 @@ class Timecard < ActiveRecord::Base
   
   def self.user_timecards(user, project_id = 0)
     if(project_id > 0)
-      timecards = self.where("project_id = ?", project_id)
-      #timecards = user.timecards.where("project_id = ?", project_id)
+      #timecards = self.where("project_id = ?", project_id)
+      timecards = user.timecards.where("project_id = ?", project_id)
     else
-      # timecards = user.timecards
-      timecards = self.all
+      timecards = user.timecards
+      #timecards = self.all
     end
     timecards_param = []
     timecards.each do |timecard|
@@ -31,14 +31,34 @@ class Timecard < ActiveRecord::Base
       time_hash[:id] = timecard.id
       time_hash[:company] = timecard.project.company.name
       time_hash[:project] = timecard.project.name
+      time_hash[:status] = timecard.status_name
       time_hash[:total_hours] = timecard.total_hours
-      time_hash[:initial_time] = timecard.initial_time.strftime("%x %X")
-      time_hash[:end_time] = timecard.end_time.strftime("%x %X")
+      time_hash[:initial_time] = timecard.initial_time.strftime("%x %H:%M")
+      time_hash[:end_time] = timecard.end_time.strftime("%x %H:%M")
       time_hash[:details] = timecard.id
       time_hash[:edit] = timecard.id
       timecards_param << time_hash
     end
-    timecards_param.to_local_jqgrid_hash([:id, :company, :project, :total_hours, :initial_time, :end_time, :details, :edit])
+    timecards_param.to_local_jqgrid_hash([:id, :company, :project, :status, :total_hours, :initial_time, :end_time, :details, :edit])
+  end
+  
+  def status_name
+    if(self.current_timecards_note)
+      case self.current_timecards_note.current_status
+      when PROCESS
+        "Process"
+      when REVISION
+        "Under Review"
+      when REJECT
+        "Rejected"
+      when ACCEPT
+        "Accepted"
+      when FINISHED
+        "Finished"
+      else
+        "New Timecard"
+      end
+    end
   end
   
   private

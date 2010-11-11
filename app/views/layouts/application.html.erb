@@ -39,9 +39,11 @@ Released   : 20100423
   <div id="page">
   <div id="page-bgtop">
   <div id="page-bgbtm">
+    <% if current_member %>
     <div class="rightText">
-      Logged in as, USER. <a href="#">Logout</a>
+      Logged in as, <%=current_member.name%>. <%=link_to "Logout", logout_url, :method=>'delete'%>
     </div>
+    <% end %>
     <div id="content">
       <%= yield %>
     </div>
