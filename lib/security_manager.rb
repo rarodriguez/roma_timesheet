@@ -10,16 +10,13 @@ module SecurityManager
   
   # Generic method to validate the actions of the user in the controller
   def has_permission? (controller, action, params)
-    puts "HAS_PERMISSIONS#################"
     if (controller && action)
       action = "#{controller}_#{action}"
       action.gsub!(/\W+/, "")
       roles = current_member.roles
       roles.each do |role|
-        puts "EACH ROLES#############################"
         permission = role.permissions.where(["name = ?", action]).first
         if (permission && permission.name == action)
-          puts "PERMISSIONS #{permission.name} ########################"
           if (permission.needs_extra_validation)
             proc = lambda { params; binding }
             return eval("#{action}_validation params ", proc.call)
@@ -28,7 +25,6 @@ module SecurityManager
         end      
       end
     end
-    puts "RETURN FALSE################"
     return false  
   end  
   
@@ -198,6 +194,7 @@ module SecurityManager
       timecard_status = timecard.current_timecards_note.current_status
       
       #Owner
+    puts "RETURN FALSE################"
       project_member = is_project_member? params[:project_id]
       owner = project_member && timecard.user == current_member && (timecard_status == PROCESS || timecard_status == REJECT)    
       #Project Manager
