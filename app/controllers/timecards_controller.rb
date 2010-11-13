@@ -16,7 +16,12 @@ class TimecardsController < ApplicationController
   def show
     project = Project.find(params[:project_id])
     @timecard = project.timecards.find(params[:id])
-    @can_edit_timecard = has_permission?("timecards", "show", params)
+    @can_edit_timecard = has_permission?("timecards", "edit", params)
+    @can_process_timecard = has_permission?("timecards", "process", params)
+    @can_accept_timecard = has_permission?("timecards", "accept", params)
+    @can_reject_timecard = has_permission?("timecards", "reject", params)
+    @can_revision_timecard = has_permission?("timecards", "revision", params)
+    @can_finished_timecard = has_permission?("timecards", "finished", params)
     #@can_edit_timecard = true
   end
   
@@ -55,8 +60,8 @@ class TimecardsController < ApplicationController
       @timecard.last_updater = current_member
       begin
         Timecard.transaction do
+          @timecard.current_timecards_note = TimecardsNote.create(:current_status=>PROCESS, :timecard=>@timecard, :creator=>current_member)
           @timecard.save!
-          @timecard.timecards_notes << TimecardsNote.new(:current_status=>PROCESS, :timecard=>@timecard, :creator=>current_member)
         end
         render :action => "edit"
       rescue Exception => e
@@ -75,6 +80,39 @@ class TimecardsController < ApplicationController
       end
     end
   end
+  
+  def timecards_process
+    @timecard = current_memeber.timecards.find(params[:id])
+    old_note = @timecard.current_timecards_note
+    @timecard.last_updater = current_member
+    begin
+        Timecard.transaction do
+          @timecard.current_timecards_note = TimecardsNote.create(:current_status=>PROCESS, :old_status=>old_note.current_status , :timecard=>@timecard, :creator=>current_member)
+          @timecard.save!
+        end
+        render :json=>"{\"success\":true,\"message\":\"The timecard is now in a state of process, waiting to be send to revision.\"}"
+      rescue Exception => e
+        logger.error e.message
+        logger.error e.backtrace
+        render :json=>"{\"success\":true,\"message\":\"We couldn't change timecard's state. Please try again.\"}"
+      end
+  end
+  
+  def timecards_revision
+    
+  end
+    
+  def timecards_reject
+    
+  end
+         
+  def timecards_accept
+    
+  end
+   
+  def timecards_finished
+     
+  end 
 
 #  # PUT /timecards/1
 #  # PUT /timecards/1.xml

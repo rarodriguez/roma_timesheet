@@ -180,7 +180,7 @@ module SecurityManager
   ##
   # Timecard
   ##
-  def timecards_new_validation params
+  def timecards_add_hours_validation params
     #Project Member
     return is_project_member? params[:project_id]
   end
@@ -194,7 +194,6 @@ module SecurityManager
       timecard_status = timecard.current_timecards_note.current_status
       
       #Owner
-    puts "RETURN FALSE################"
       project_member = is_project_member? params[:project_id]
       owner = project_member && timecard.user == current_member && (timecard_status == PROCESS || timecard_status == REJECT)    
       #Project Manager
@@ -208,9 +207,9 @@ module SecurityManager
     end
     false
   end
-  def timecards_update_validation params
-    timecards_edit_validation params
-  end
+  #deprecated#def timecards_update_validation params
+  #  timecards_edit_validation params
+  #end
   #deprecated#def timecards_destroy_validation params
   #  timecards_edit_validation params
   #end
