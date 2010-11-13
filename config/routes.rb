@@ -35,12 +35,12 @@ Timesheet::Application.routes.draw do
   match 'projects/:project_id/timecards' => 'timecards#create', :as=>:timecards, :via=>'post', :constraints => {:project_id => /[0-9]+/}
   match 'projects/:project_id/timecards/:id/edit' => 'timecards#edit', :as=>:edit_timecard, :via=>'get', :constraints => {:project_id => /[0-9]+/, :id => /[0-9]+/}
   match 'projects/:project_id/timecards/:id' => 'timecards#update', :as=>:update_timecard, :via=>'put', :constraints => {:project_id => /[0-9]+/, :id => /[0-9]+/}
-  match 'projects/:project_id/timecards/:id' => 'timecards#show', :as=>:new_timecard, :via=>'get', :constraints => {:project_id => /[0-9]+/, :id => /[0-9]+/}
-  match 'projects/:project_id/timecards/:id' => 'timecards#destroy', :as=>:new_timecard, :via=>'delete', :constraints => {:project_id => /[0-9]+/, :id => /[0-9]+/}
+  match 'projects/:project_id/timecards/:id' => 'timecards#show', :as=>:timecard, :via=>'get', :constraints => {:project_id => /[0-9]+/, :id => /[0-9]+/}
+  match 'projects/:project_id/timecards/:id' => 'timecards#destroy', :as=>:destroy_timecard, :via=>'delete', :constraints => {:project_id => /[0-9]+/, :id => /[0-9]+/}
   
   match 'timecards/:timecard_id/hours' => 'hours#create', :as=>:create_hours, :via=>'post', :constraints => {:timecard_id => /[0-9]+/}
   match 'timecards/:timecard_id/hours/list' => 'hours#index', :as=>:list_hours, :via=>'post', :constraints => {:timecard_id => /[0-9]+/}
-  match 'timecards/:timecard_id/hours/:id' => 'hours#destroy', :as=>:create_hours, :via=>'delete', :constraints => {:timecard_id => /[0-9]+/}
+  match 'timecards/:timecard_id/hours/:id' => 'hours#destroy', :as=>:destroy_hours, :via=>'delete', :constraints => {:timecard_id => /[0-9]+/}
   
   #match 'timecards/:timecard_id/hours/add' => 'hours#create', :as=>:create_hours, :via=>'post'
 #  match 'my_companies' => 'companies#my_companies', :as => :my_companies, :via => "post"

@@ -17,6 +17,10 @@
     <%= f.label :user_id, "Project Manager" %><br />
     <%= f.select :user_id, @managers %>
   </div>
+  <div class="field">
+    <%= f.label :employees, "Employees" %><br />
+    <%= f.select :employees, @managers,{},{:multiple=>true} %>
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>
