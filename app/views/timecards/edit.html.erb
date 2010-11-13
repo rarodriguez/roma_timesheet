@@ -42,6 +42,6 @@
   <div style="clear: both;">&nbsp;</div>
   <div class="entry">
     <table id="hours_grid"></table> 
-    <p class="links"><span id="add_hours">Add additional Hours</span> | <%= link_to 'Back', company_project_path(:company_id=>@timecard.project.company_id, :project_id=>@timecard.project.id) %></p>
+    <p class="links"><span id="add_hours">Add additional Hours</span> | <a href='<%="/companies/#{@timecard.project.company_id}/projects/#{@timecard.project.id}"%>'>Back</a></p>
   </div>
 </div>

@@ -60,20 +60,20 @@ class TimecardsController < ApplicationController
       @timecard.last_updater = current_member
       begin
         Timecard.transaction do
-          @timecard.current_timecards_note = TimecardsNote.create(:current_status=>PROCESS, :timecard=>@timecard, :creator=>current_member)
           @timecard.save!
+          timecard_note = TimecardsNote.create(:current_status=>PROCESS, :timecard_id=>@timecard.id, :creator=>current_member)
+          @timecard.current_timecards_note=timecard_note
         end
         render :action => "edit"
       rescue Exception => e
         logger.error e.message
         logger.error e.backtrace
-        redirect_to(projects_path(:company_id=>project.company_id,:id=>project.id), :notice => "We couldn't create a new timecard for your account. Please try again.")
+        redirect_to(company_project_path(:company_id=>project.company_id,:id=>project.id), :notice => "We couldn't create a new timecard for your account. Please try again.")
       end
     else
       old_timecard = old_timecard.first
-      if(old_timecard.current_timecards_note.current_status == PROCESS)
+      if(old_timecard.current_timecards_note && old_timecard.current_timecards_note.current_status == PROCESS)
         @timecard = old_timecard
-        
         render :action => "edit"
       else
         redirect_to(company_project_path(:company_id=>project.company_id,:id=>project.id), :notice => "You already created and submit a timecard for this week. You can create another next week.")

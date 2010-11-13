@@ -36,11 +36,21 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.xml
   def create
-    @project = Project.new(params[:project])
-    manager = User.find(params[:project][:user_id])
+    company = Company.find(params[:company_id])
+    
+    project_params = params[:project]
+    
+    manager = User.find(project_params[:user_id])
+    project_params.delete(:user_id)
+    if(manager && project_params[:employees] && project_params[:employees].size > 0)
+      project_params[:employees] = User.all_by_company_and_ids_and_not_manager company, project_params[:employees], manager
+    end
+    
+    
+    @project = Project.new(project_params)
     @project.manager = manager
     @project.last_updater = current_member
-    @project.company = Company.find(params[:company_id])
+    @project.company = company
 
     if @project.save
       redirect_to(company_project_path(:id=>@project.id, :company_id =>@project.company.id), :notice => 'Project was successfully created.')

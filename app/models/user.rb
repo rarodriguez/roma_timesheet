@@ -57,6 +57,15 @@ class User < ActiveRecord::Base
     self.last_password_change_at + pass_expiration.days < Date.today
   end
   
+  def self.all_by_company_and_ids_and_not_manager company, ids, manager
+    results = []
+    ids.each do|id|
+      user = company.users.find(id)
+      results << user if(user != manager) 
+    end
+    results
+  end
+  
   private
   def change_password_valid_info?
     if(!self.check_old_pass.nil?)

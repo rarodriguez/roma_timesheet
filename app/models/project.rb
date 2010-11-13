@@ -4,6 +4,7 @@ class Project < ActiveRecord::Base
   belongs_to :last_updater, :class_name => "User", :foreign_key=> 'last_update_by'  
   belongs_to :company
   has_many :timecards
+  has_and_belongs_to_many :employees, :class_name => "User", :association_foreign_key=>'user_id'
   has_many :hours, :through => :timecards
   
   validates_presence_of :name, :message=>"Oops, you can't proceed until you enter your project's name."
