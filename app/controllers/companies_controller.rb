@@ -14,6 +14,9 @@ class CompaniesController < ApplicationController
   # GET /companies/1.xml
   def show
     @company = Company.find(params[:id])
+    @can_edit_company = has_permission?("companies","edit", params)
+    params[:company_id] = params[:id]
+    @can_add_project = has_permission?("projects","new", params)
 
     respond_to do |format|
       format.html # show.html.erb

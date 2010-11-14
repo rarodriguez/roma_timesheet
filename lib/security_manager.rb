@@ -198,7 +198,7 @@ module SecurityManager
       owner = project_member && timecard.user == current_member && (timecard_status == PROCESS || timecard_status == REJECT)    
       #Project Manager
       project_manager = is_project_manager? params[:project_id]
-      proj_manager = project_manager && timcard.project.manager == current_member && timecard.user != current_member && (timecard_status == REVISION || timecard_status == ACCEPT)
+      proj_manager = project_manager && timecard.project.manager == current_member && timecard.user != current_member && (timecard_status == REVISION || timecard_status == ACCEPT)
       #Company Manager
       company_manager = is_company_manager? params[timecard.project.company.id]
       comp_manager = company_manager && timecard.user == timecard.project.manager && (timecard_status == REVISION || timecard_status == ACCEPT)
@@ -245,10 +245,10 @@ module SecurityManager
           
       #Project Manager
       project_manager = is_project_manager? params[:project_id]
-      proj_manager = project_manager && timcard.project.manager == current_member && timecard.user != current_member && (timecard_status == REVISION || timecard_status == ACCEPT)
+      proj_manager = project_manager && timecard.project.manager == current_member && timecard.user != current_member && (timecard_status == REVISION || timecard_status == ACCEPT)
       #Company Manager
       company_manager = is_company_manager? params[timecard.project.company.id]
-      comp_manager = company_manager && timecard.user == timecard.manager && (timecard_status == REVISION || timecard_status == ACCEPT)
+      comp_manager = company_manager && timecard.user == timecard.project.manager && (timecard_status == REVISION || timecard_status == ACCEPT)
       
       return proj_manager || comp_manager
     end
@@ -262,10 +262,10 @@ module SecurityManager
           
       #Project Manager
       project_manager = is_project_manager? params[:project_id]
-      proj_manager = project_manager && timcard.project.manager == current_member && timecard.user != current_member && timecard_status == REVISION
+      proj_manager = project_manager && timecard.project.manager == current_member && timecard.user != current_member && timecard_status == REVISION
       #Company Manager
       company_manager = is_company_manager? params[timecard.project.company.id]
-      comp_manager = company_manager && timecard.user == timecard.manager && timecard_status == REVISION
+      comp_manager = company_manager && timecard.user == timecard.project.manager && timecard_status == REVISION
       
       return proj_manager || comp_manager
     end
@@ -297,7 +297,7 @@ module SecurityManager
       owner = project_member && timecard.user == current_member
       #Project Manager
       project_manager = is_project_manager? params[:project_id]
-      proj_manager = project_manager && timcard.project.manager == current_member
+      proj_manager = project_manager && timecard.project.manager == current_member
       #Company Manager
       company_manager = is_company_manager? params[timecard.project.company.id]
       
@@ -306,7 +306,16 @@ module SecurityManager
     false
   end 
   def timecards_index_validation params
-    timecards_show_validation params
+    project = Project.where(["id = ?", params[:project_id]]).first
+    unless project.first
+      #Project Manager
+      project_manager = is_project_manager? params[:project_id]
+      #Company Manager
+      company_manager = is_company_manager? params[project.company.id]
+      
+      return project_manager || company_manager
+    end
+    false
   end 
   ##################################################
   

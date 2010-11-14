@@ -25,7 +25,7 @@ class Company < ActiveRecord::Base
       comp.timecards.each{|tc| total_hours += tc.total_hours}
       comp_hash[:total_hours] = total_hours && total_hours != '' ? total_hours : 0
       comp_hash[:total_employees] = comp.users.count
-      comp_hash[:details] = "Details"
+      comp_hash[:details] = " "
       companies_param << comp_hash
     end
     companies_param.to_local_jqgrid_hash([:id,:name,:total_projects,:total_employees,:total_hours,:details])
