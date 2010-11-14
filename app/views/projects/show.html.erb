@@ -8,11 +8,24 @@
 <script>
 	$().ready(function(){
 		var myTimecards = <%=raw @timecards%>;
-	    for(var i=0;i<myTimecards.length;i++){
-			   myTimecards[i].details = "<a href='"+timecards_details+myTimecards[i].details+"'>Details</a>";
-			   myTimecards[i].edit = "<a href='"+timecards_details+myTimecards[i].edit+"/edit'>Edit</a>";
-	       jQuery("#timecards_grid").addRowData(myTimecards[i].id,myTimecards[i]);
-	    }
+    for(var i=0;i<myTimecards.length;i++){
+		   myTimecards[i].details = "<a href='"+timecards_details+myTimecards[i].id+"'>Details</a>";
+		   if(myTimecards[i].edit != 0 && myTimecards[i].edit != '0'){
+         myTimecards[i].edit = "<a href='"+timecards_details+myTimecards[i].edit+"/edit'>Edit</a>";
+       }
+       jQuery("#timecards_grid").addRowData(myTimecards[i].id,myTimecards[i]);
+    }
+    <%if @manager%>
+    var projectTimecards = <%=raw @project_timecards%>;
+    for(var i=0;i<projectTimecards.length;i++){
+       currentTimecard = projectTimecards[i]; 
+       currentTimecard.details = "<a href='"+timecards_details+currentTimecard.id+"'>Details</a>";
+       if(currentTimecard.edit != 0 && currentTimecard.edit != '0'){
+         currentTimecard.edit = "<a href='"+timecards_details+currentTimecard.edit+"/edit'>Edit</a>";
+       }
+       jQuery("#project_timecards_grid").addRowData(currentTimecard.id,currentTimecard);
+    }
+    <%end%>
 	});
 </script>
 <%end %>
@@ -52,7 +65,22 @@
         <table id="timecards_grid">
         </table>
         <p class="links">
-            <%= link_to 'Add an additional timecard', timecards_path(@project.id),:method => :post %> | <%= link_to 'Back', dashboard_path %>
+            <%= link_to 'Add an additional timecard', timecards_path(@project.id),:method => :post %><%if !@manager || @employees_timecards_size < 1%> | <%= link_to 'Back', dashboard_path %><%end%>
         </p>
     </div>
+    <%if @manager && @employees_timecards_size > 0%>
+    <p class="meta">
+        <span class="date">My employees' timecards</span>
+    </p>
+    <div style="clear: both;">
+        &nbsp;
+    </div>
+    <div class="entry">
+        <table id="project_timecards_grid">
+        </table>
+        <p class="links">
+            <%= link_to 'Back', dashboard_path %>
+        </p>
+    </div>
+    <% end %>
 </div>

@@ -353,3 +353,5 @@ table.list { width:800px;}
 #add_hours {color:#9D151A;}
 #add_hours:hover{cursor:pointer;}
 #timecards_grid .ui-widget-content a { color:#9D151A; }
+#project_timecards_grid .ui-widget-content a { color:#9D151A; }
+.ui-widget-content a { color:#9D151A; }

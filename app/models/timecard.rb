@@ -1,4 +1,8 @@
 class Timecard < ActiveRecord::Base
+  
+  # Includes Security
+  include SecurityManager
+  
   belongs_to :project
   belongs_to :user
   #belongs_to :current_timecards_note, :class_name=>"TimecardsNote", :foreign_key=>'timecards_note_id'
@@ -35,21 +39,13 @@ class Timecard < ActiveRecord::Base
       timecards = user.timecards
       #timecards = self.all
     end
-    timecards_param = []
-    timecards.each do |timecard|
-      time_hash = {}
-      time_hash[:id] = timecard.id
-      time_hash[:company] = timecard.project.company.name
-      time_hash[:project] = timecard.project.name
-      time_hash[:status] = timecard.status_name
-      time_hash[:total_hours] = timecard.total_hours
-      time_hash[:initial_time] = timecard.initial_time.strftime("%x %H:%M")
-      time_hash[:end_time] = timecard.end_time.strftime("%x %H:%M")
-      time_hash[:details] = timecard.id
-      time_hash[:edit] = timecard.id
-      timecards_param << time_hash
-    end
-    timecards_param.to_local_jqgrid_hash([:id, :company, :project, :status, :total_hours, :initial_time, :end_time, :details, :edit])
+    timecards_param = timecard_local timecards
+    timecards_param.to_local_jqgrid_hash([:id, :company, :project, :status, :total_hours, :initial_time, :end_time, :employee, :details, :edit])
+  end
+  
+  def self.project_timecards(project, user_id)
+    timecards = Timecard.where(["project_id = ? AND user_id != ?",project.id, user_id]).order("end_time DESC")
+    timecard_local timecards
   end
   
   def status_name
@@ -79,5 +75,24 @@ class Timecard < ActiveRecord::Base
         self.errors.add(:end_time, "End time should be greater than initial time.")
       end
     end
+  end
+  
+  def self.timecard_local timecards
+    timecards_param = []
+    timecards.each do |timecard|
+      time_hash = {}
+      time_hash[:id] = timecard.id
+      time_hash[:company] = timecard.project.company.name
+      time_hash[:project] = timecard.project.name
+      time_hash[:status] = timecard.status_name
+      time_hash[:total_hours] = timecard.total_hours
+      time_hash[:initial_time] = timecard.initial_time.strftime("%x %H:%M")
+      time_hash[:end_time] = timecard.end_time.strftime("%x %H:%M")
+      time_hash[:employee] = "#{timecard.user.name} #{timecard.user.last_name}"
+      time_hash[:details] = ""
+      time_hash[:edit] = timecard.id 
+      timecards_param << time_hash
+    end
+    timecards_param
   end
 end
