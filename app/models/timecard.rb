@@ -39,12 +39,13 @@ class Timecard < ActiveRecord::Base
       timecards = user.timecards
       #timecards = self.all
     end
-    timecard_local_host timecards
+    timecards_param = timecard_local timecards
+    timecards_param.to_local_jqgrid_hash([:id, :company, :project, :status, :total_hours, :initial_time, :end_time, :employee, :details, :edit])
   end
   
-  def self.project_timecards(project)
-    timecards = project.timecards
-    timecard_local_host timecards
+  def self.project_timecards(project, user_id)
+    timecards = Timecard.where(["project_id = ? AND user_id != ?",project.id, user_id]).order("end_time DESC")
+    timecard_local timecards
   end
   
   def status_name
@@ -66,14 +67,6 @@ class Timecard < ActiveRecord::Base
     end
   end
   
-  def edit_id
-    if has_permission?("timecards", "edit", {:project_id=>self.project.id, :id=>self.id})
-      self.id
-    else
-      0
-    end
-  end
-  
   private
   
   def ranges_of_dates
@@ -84,7 +77,7 @@ class Timecard < ActiveRecord::Base
     end
   end
   
-  def self.timecard_local_host timecards
+  def self.timecard_local timecards
     timecards_param = []
     timecards.each do |timecard|
       time_hash = {}
@@ -97,9 +90,9 @@ class Timecard < ActiveRecord::Base
       time_hash[:end_time] = timecard.end_time.strftime("%x %H:%M")
       time_hash[:employee] = "#{timecard.user.name} #{timecard.user.last_name}"
       time_hash[:details] = ""
-      time_hash[:edit] = timecard.edit_id 
+      time_hash[:edit] = timecard.id 
       timecards_param << time_hash
     end
-    timecards_param.to_local_jqgrid_hash([:id, :company, :project, :status, :total_hours, :initial_time, :end_time, :employee, :details, :edit])
+    timecards_param
   end
 end

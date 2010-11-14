@@ -65,12 +65,12 @@
         <table id="timecards_grid">
         </table>
         <p class="links">
-            <%= link_to 'Add an additional timecard', timecards_path(@project.id),:method => :post %> | <%= link_to 'Back', dashboard_path %>
+            <%= link_to 'Add an additional timecard', timecards_path(@project.id),:method => :post %><%if !@manager || @employees_timecards_size < 1%> | <%= link_to 'Back', dashboard_path %><%end%>
         </p>
     </div>
-    <%if @manager%>
+    <%if @manager && @employees_timecards_size > 0%>
     <p class="meta">
-        <span class="date">My employees</span>
+        <span class="date">My employees' timecards</span>
     </p>
     <div style="clear: both;">
         &nbsp;

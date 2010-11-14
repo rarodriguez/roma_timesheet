@@ -3,6 +3,7 @@ class ContentsController < ApplicationController
     @timecards = Timecard.user_timecards(current_member)
     @companies = Company.user_companies(current_member)
     @projects = Project.user_projects(current_member)
+    @dashboard = true
   end
   
 end

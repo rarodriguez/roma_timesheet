@@ -13,8 +13,16 @@ class ProjectsController < ApplicationController
     @company = Company.find(params[:company_id])
     @project = @company.projects.find(params[:id])
     @timecards = Timecard.user_timecards(current_member, @project.id)
-    @manager = true#has_permission? ("timecards","index",{:project_id=>@project.id})
-    @project_timecards = Timecard.project_timecards @project if(@manager)
+    @manager = has_permission? ("timecards","index",{:project_id=>@project.id})
+    if(@manager)
+      @project_timecards = Timecard.project_timecards @project, current_member.id
+      # check permissions
+      @project_timecards.each do |time|
+        time[:edit] = has_permission?("timecards", "edit", {:project_id=>@project.id, :id=>time.id}) ? time[:edit] : ''
+      end
+      @employees_timecards_size = @project_timecards.size 
+      @project_timecards = @project_timecards.to_local_jqgrid_hash([:id, :company, :project, :status, :total_hours, :initial_time, :end_time, :employee, :details, :edit])
+    end 
   end
 
   # GET /projects/new
