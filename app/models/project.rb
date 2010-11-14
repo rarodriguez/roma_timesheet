@@ -22,6 +22,7 @@ class Project < ActiveRecord::Base
       proj_hash = {}
       proj_hash[:id] = proj.id
       proj_hash[:project] = proj.name
+      proj_hash[:company_id] = proj.company.id
       # timecards = Timecard.where(["timecards.project_id = ? AND timecards.user_id = ?", proj.id, user.id]) 
       timecards = proj.timecards
       total_hours = 0
@@ -32,5 +33,6 @@ class Project < ActiveRecord::Base
       proj_hash[:add_timesheet] = " "
       projects_param << proj_hash
     end
+    projects_param
   end
 end
