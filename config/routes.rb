@@ -38,6 +38,8 @@ Timesheet::Application.routes.draw do
   match 'projects/:project_id/timecards/:id' => 'timecards#show', :as=>:timecard, :via=>'get', :constraints => {:project_id => /[0-9]+/, :id => /[0-9]+/}
   match 'projects/:project_id/timecards/:id' => 'timecards#destroy', :as=>:destroy_timecard, :via=>'delete', :constraints => {:project_id => /[0-9]+/, :id => /[0-9]+/}
   
+  match 'projects/:project_id/timecards/:id/(:change_to)' => 'timecards#change_state', :as=>:change_state_timecard, :via=>'post', :constraints => {:project_id => /[0-9]+/, :id => /[0-9]+/}
+  
   match 'timecards/:timecard_id/hours' => 'hours#create', :as=>:create_hours, :via=>'post', :constraints => {:timecard_id => /[0-9]+/}
   match 'timecards/:timecard_id/hours/list' => 'hours#index', :as=>:list_hours, :via=>'post', :constraints => {:timecard_id => /[0-9]+/}
   match 'timecards/:timecard_id/hours/:id' => 'hours#destroy', :as=>:destroy_hours, :via=>'delete', :constraints => {:timecard_id => /[0-9]+/}

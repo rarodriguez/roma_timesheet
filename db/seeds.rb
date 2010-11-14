@@ -50,6 +50,7 @@ permissions = Permission.create([
                 {:name => 'timecards_edit', :roles =>[roles[EMPLOYEE]]}, 
                 #{:name => 'timecards_update', :roles =>[roles[EMPLOYEE]]}, 
                 #{:name => 'timecards_destroy'},   
+                {:name => 'timecards_change_state', :roles =>[roles[EMPLOYEE]], :needs_extra_validation => 0},  
                 {:name => 'timecards_process', :roles =>[roles[EMPLOYEE]]},   
                 {:name => 'timecards_revision', :roles =>[roles[EMPLOYEE]]},   
                 {:name => 'timecards_reject', :roles =>[roles[COMPANY],roles[PROJECT]]},   

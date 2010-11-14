@@ -1,8 +1,44 @@
 <%= content_for :head do%>
   <script type="text/javascript">
-    var edit_url = "<%=create_hours_url(@timecard.id)%>";
-    var listing_grid = "<%=list_hours_url(@timecard.id)%>";
-    var delete_url = "/timecards/<%=@timecard.id%>/hours/";
+    
+    var change_state_url = "<%=change_state_timecard_url(:project_id=>@timecard.project.id, :id=>@timecard.id)%>"
+    
+    $(document).ready(function(){
+      
+      $('.change_state').click(function(){
+        var action = $(this).attr("id");
+        if(id.match(/[A-Za-z]{1,10}/)){
+          var dataString = 'authenticity_token=' + $('meta[name=csrf-token]').attr('content');
+          $.ajax({
+            type: "POST",
+            url: change_state_url + "/" + action,
+            data: dataString,
+            dataType: 'json',
+            success: function(data){
+              if (data != null) {
+                if(data.redirect == true || data.redirect == 'true') {
+                  window.location.replace(data.url);
+                }else{
+                  if (data.success) {
+                    alert(data.message);
+                  }
+                  else {
+                    alert(data.message);
+                  }
+                }
+              }else{
+                window.location.reload();
+              }
+            },
+            error: function(request, error){
+              alert("We had a problem while changing timecard state, please try again.");
+            }
+          });
+        }
+      });
+      
+    });
+    
   </script>
   <%= javascript_include_tag 'i18n/grid.locale-en.js','jquery.jqGrid.min.js', 'jquery-ui-1.8.6.custom.min.js','hours_grid.js', 'jquery.fastconfirm.js' %>
   <%= stylesheet_link_tag "jquery-ui-1.8.5.custom.css", "ui.jqgrid.css", 'jquery.fastconfirm.css' %>  
@@ -42,6 +78,14 @@
   <div style="clear: both;">&nbsp;</div>
   <div class="entry">
     <table id="hours_grid"></table> 
-    <p class="links"><span id="add_hours">Add additional Hours</span> | <a href='<%="/companies/#{@timecard.project.company_id}/projects/#{@timecard.project.id}"%>'>Back</a></p>
+    <p class="links">
+      <span id="add_hours">Add additional Hours</span> | 
+      <%if(@can_process_timecard)%><span class="change_state" id="process">Change state to &quot;in process&quot;</span> |<% end %>
+      <%if(@can_revision_timecard)%><span class="change_state" id="revision">Send to &quot;revision&quot;</span> |<% end %>
+      <%if(@can_accept_timecard)%><span class="change_state" id="accept">&quot;Accept&quot;</span> |<% end %>
+      <%if(@can_reject_timecard)%><span class="change_state" id="reject">&quot;Reject&quot;</span> |<% end %>
+      <%if(@can_finished_timecard)%><span class="change_state" id="finished">Mark as &quot;finished&quot;</span> |<% end %>
+      <a href='<%="/companies/#{@timecard.project.company_id}/projects/#{@timecard.project.id}"%>'>Back</a>
+    </p>
   </div>
 </div>

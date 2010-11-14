@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   helper_method :current_member
   helper_method :remove_whitespaces, :redo_whitespaces
+  helper_method :timecards_status_name
 
   before_filter :require_no_member, :only=> [:login, :login_submit, :register, :register_create]
   before_filter :require_member, :except=> [:logout]
@@ -50,6 +51,23 @@ class ApplicationController < ActionController::Base
   def redirect_back_or_default(default)
     redirect_to(session[:redirect_url] || default)
     session[:redirect_url] = nil
+  end
+  
+  def timecards_status_name status
+    case status
+    when PROCESS
+      "Process"
+    when REVISION
+      "Revision"
+    when REJECT
+      "Rejected"
+    when ACCEPT
+      "Accepted"
+    when FINISHED
+      "Finished"
+    else
+      "New Timecard"
+    end
   end
 
   ###################### MEMBER ##########################
@@ -111,6 +129,7 @@ class ApplicationController < ActionController::Base
   def valid_xhr_request?
     if !request.xhr?
        render :file => "public/404.html", :status => 404
+       return
     end
   end
   
