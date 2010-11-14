@@ -60,8 +60,8 @@ class ProjectsController < ApplicationController
     @project.company = @company
 
     if @project.save
-      project_role = Role.find_by_name("project_manager").first
-      manager.roles << project_role if(manager.roles.find(project_role.id).nil?)
+      project_role = Role.find_by_name("project_manager")
+      manager.roles << project_role# if(manager.roles.find(project_role.id).nil?)
       redirect_to(company_project_path(:id=>@project.id, :company_id =>@company.id), :notice => 'Project was successfully created.')
     else
       @company_id = params[:company_id]
