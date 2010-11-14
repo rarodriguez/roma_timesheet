@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
           if request.xhr?
             render :json => "{\"success\":false, \"message\":\"You are not authorized to access this page.\"}"
           else
-            redirect_to login_url # TODO REDIRECCIONAR A NO TIENE PERMISOS
+            redirect_to dashboard_url # TODO REDIRECCIONAR A NO TIENE PERMISOS
           end
         end
       else
@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
     else
       flash[:access_msg] = "You are not authorized to access this page, please login first."
       if request.xhr?
-        render :json => "{\"redirect\":true, \"url\": \"#{login_url}\"}"
+        render :json => "{\"redirect\":true, \"url\":\"#{login_url}\"}"
       else
         redirect_to login_url, notice=>"You are not authorized to access this page, please login first."
       end
