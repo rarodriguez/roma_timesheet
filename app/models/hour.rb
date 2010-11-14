@@ -56,7 +56,7 @@ class Hour < ActiveRecord::Base
     if(self.initial_time && self.end_time && timecard_id)
       #checks that there isn't any additional hour at the same time
       existing_hours = Hour.includes(:timecard).where(["timecards.user_id = ? AND ((hours.initial_time >= ? AND hours.initial_time < ?) OR (hours.end_time > ? AND hours.end_time <= ?) OR (hours.initial_time <= ? AND hours.end_time >= ?))", self.timecard.user_id, self.initial_time,self.end_time,self.initial_time,self.end_time,self.initial_time,self.end_time])
-      if(existing_hours.length > 0)
+      if(existing_hours.length > 0 && existing_hours.first.id != self.id)
         self.errors.add(:initial_time, "Oops, you already have an hour registered within this timeframe.")
       end
     end

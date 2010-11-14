@@ -66,6 +66,15 @@ class User < ActiveRecord::Base
     results
   end
   
+  def self.cb_all_by_company_id company_id
+    employees = User.includes(:companies).where("companies.id = ?",company_id)
+    if(employees)
+      employees.collect{|emp| ["#{emp.name} #{emp.last_name}", emp.id]}
+    else
+      []
+    end
+  end
+  
   private
   def change_password_valid_info?
     if(!self.check_old_pass.nil?)
