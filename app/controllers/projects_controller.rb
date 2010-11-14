@@ -13,7 +13,7 @@ class ProjectsController < ApplicationController
     @company = Company.find(params[:company_id])
     @project = @company.projects.find(params[:id])
     @timecards = Timecard.user_timecards(current_member, @project.id)
-    @manager = has_permission? ("timecards","index",{:project_id=>@project.id})
+    @manager = has_permission?("timecards","index",{:project_id=>@project.id})
     if(@manager)
       @project_timecards = Timecard.project_timecards @project, current_member.id
       # check permissions

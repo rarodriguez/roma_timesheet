@@ -23,6 +23,7 @@ class CompaniesController < ApplicationController
       can_add_timecards = has_permission?("timecards","create", params)
       proj.add_timesheet = can_add_timecards
     end
+    @projects = @projects.to_local_jqgrid_hash([:id,:project,:registered_hours,:total_timesheets,:view_timesheets,:add_timesheet])
     
     respond_to do |format|
       format.html # show.html.erb

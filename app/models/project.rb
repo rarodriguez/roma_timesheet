@@ -32,6 +32,5 @@ class Project < ActiveRecord::Base
       proj_hash[:add_timesheet] = " "
       projects_param << proj_hash
     end
-    projects_param.to_local_jqgrid_hash([:id,:project,:registered_hours,:total_timesheets,:view_timesheets,:add_timesheet])
   end
 end
