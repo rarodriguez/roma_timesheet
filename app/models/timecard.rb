@@ -14,8 +14,10 @@ class Timecard < ActiveRecord::Base
     TimecardsNote.find(self.timecards_note_id) if(self.timecards_note_id)
   end
   def current_timecards_note= timecard_note
-    self.timecards_note_id = timecard_note.id
-    self.save
+    if(timecard_note)
+      self.timecards_note_id = timecard_note.id
+      self.save
+    end
   end
   
   def total_hours

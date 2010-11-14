@@ -13,12 +13,14 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.xml
   def show
-    @user = User.find(params[:id])
+    @company = Company.find(params[:company_id])
+    @user = @company.users.find(params[:id])
   end
 
   # GET /users/new
   # GET /users/new.xml
   def new
+    @company = Company.find(params[:company_id])
     @user = User.new
   end
 
@@ -59,7 +61,8 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    @company = Company.find(params[:company_id])
+    @user = @company.users.find(params[:id])
   end
 
   # GET /edit_self
@@ -99,7 +102,8 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.xml
   def update
-    @user = User.find(params[:id])
+    @company = Company.find(params[:company_id])
+    @user = @company.users.find(params[:id])
     @user.last_updater = current_member
     @user.last_updated_by = 1
     if @user.update_attributes(params[:user])
@@ -112,7 +116,8 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.xml
   def destroy
-    @user = User.find(params[:id])
+    @company = Company.find(params[:company_id])
+    @user = @company.users.find(params[:id])
     @user.destroy
 
     redirect_to(company_users_url)
