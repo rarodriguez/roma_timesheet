@@ -40,7 +40,7 @@ class Timecard < ActiveRecord::Base
       #timecards = self.all
     end
     timecards_param = timecard_local timecards
-    timecards_param.to_local_jqgrid_hash([:id, :company, :project, :status, :total_hours, :initial_time, :end_time, :employee, :details, :edit])
+    timecards_param.to_local_jqgrid_hash([:id, :company, :project, :project_id, :status, :total_hours, :initial_time, :end_time, :employee, :details, :edit])
   end
   
   def self.project_timecards(project, user_id)
@@ -84,6 +84,7 @@ class Timecard < ActiveRecord::Base
       time_hash[:id] = timecard.id
       time_hash[:company] = timecard.project.company.name
       time_hash[:project] = timecard.project.name
+      time_hash[:project_id] = timecard.project.id
       time_hash[:status] = timecard.status_name
       time_hash[:total_hours] = timecard.total_hours
       time_hash[:initial_time] = timecard.initial_time.strftime("%x %H:%M")

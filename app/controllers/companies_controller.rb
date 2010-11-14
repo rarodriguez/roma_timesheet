@@ -17,11 +17,12 @@ class CompaniesController < ApplicationController
     @can_edit_company = has_permission?("companies","edit", params)
     params[:company_id] = params[:id]
     @can_add_project = has_permission?("projects","new", params)
-    @can_add_timecards = has_permission?("timecards","create", params)
     @projects = Project.user_projects(current_member)
-    #@projects.each do |proj|
-    #  parameters.
-    #end
+    @projects.each do |proj|
+      params[:project_id] = proj.id
+      can_add_timecards = has_permission?("timecards","create", params)
+      proj.add_timesheet = can_add_timecards
+    end
     
     respond_to do |format|
       format.html # show.html.erb
