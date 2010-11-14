@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   helper_method :timecards_status_name
 
   before_filter :require_no_member, :only=> [:login, :login_submit, :register, :register_create]
-  before_filter :require_member, :except=> [:logout]
+  before_filter :require_member, :only=> [:logout]
   before_filter :validate_access, :except => [:login, :login_submit, :register, :register_create]
   
   # Scrub sensitive parameters from your log
@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
       if request.xhr?
         render :json => "{\"redirect\":true, \"url\": \"#{login_url}\"}"
       else
-        redirect_to login_url
+        redirect_to login_url, notice=>"You are not authorized to access this page, please login first."
       end
     end
   end
@@ -87,6 +87,7 @@ class ApplicationController < ActionController::Base
         # An unauthorize response
         render :status => 401, :json => "{'errormsg':\"You are not authorized to access this page, please login first.\", 'redirect_page':'#{admin_login_url}'}"
       else
+        flash[:access_msg] = "You are not authorized to access this page, please login first."
         redirect_to login_url
       end
       return false
@@ -99,7 +100,7 @@ class ApplicationController < ActionController::Base
         # An unauthorize response
         render :status => 401, :json => "{'errormsg':\"This page is for not logged in users, please logout first.\", 'redirect_page':'#{admin_control_panels_url}'}"
       else
-        redirect_to root_url
+        redirect_to dashboard_url, notice=>"You are authenticated into the application. Please logout before trying it again."
       end
       return false
     end
@@ -112,7 +113,7 @@ class ApplicationController < ActionController::Base
       # An unauthorize response
       render :status => 500, :json => "{'success':false,'errormsg':\"Your session has expired, please login again.\", 'redirect_page':'#{admin_login_url}'}"
     else
-      flash[:notice] = "That session has expired. Please log in again."
+      flash[:access_msg] = "Your session has expired. Please log in again."
       redirect_to login_url
     end
     #redirect_to :back

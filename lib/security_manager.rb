@@ -190,7 +190,7 @@ module SecurityManager
   end
   
   def timecards_edit_validation params
-    timecard = Timecard.where(["id = ?", params[:id]]).first
+    timecard = Timecard.where(["id = ?", params[:id]])
     unless timecard.first
       timecard_status = timecard.current_timecards_note.current_status
       
@@ -216,7 +216,7 @@ module SecurityManager
   #end
   
   def timecards_process_validation params
-    timecard = Timecard.where(["id = ?", params[:id]]).first
+    timecard = Timecard.where(["id = ?", params[:id]])
     unless timecard.first
       timecard_status = timecard.current_timecards_note.current_status
       
@@ -228,7 +228,7 @@ module SecurityManager
   end
   
   def timecards_revision_validation params
-    timecard = Timecard.where(["id = ?", params[:id]]).first
+    timecard = Timecard.where(["id = ?", params[:id]])
     unless timecard.first
       timecard_status = timecard.current_timecards_note.current_status
       
@@ -240,7 +240,7 @@ module SecurityManager
   end
   
   def timecards_reject_validation params
-    timecard = Timecard.where(["id = ?", params[:id]]).first
+    timecard = Timecard.where(["id = ?", params[:id]])
     unless timecard.first
       timecard_status = timecard.current_timecards_note.current_status
           
@@ -257,7 +257,7 @@ module SecurityManager
   end
   
   def timecards_accept_validation params
-    timecard = Timecard.where(["id = ?", params[:id]]).first
+    timecard = Timecard.where(["id = ?", params[:id]])
     unless timecard.first
       timecard_status = timecard.current_timecards_note.current_status
           
@@ -274,7 +274,7 @@ module SecurityManager
   end
   
   def timecards_finished_validation params
-    timecard = Timecard.where(["id = ?", params[:id]]).first
+    timecard = Timecard.where(["id = ?", params[:id]])
     unless timecard.first
       timecard_status = timecard.current_timecards_note.current_status
           
@@ -291,7 +291,7 @@ module SecurityManager
   end 
   
   def timecards_show_validation params
-    timecard = Timecard.where(["id = ?", params[:id]]).first
+    timecard = Timecard.where(["id = ?", params[:id]])
     unless timecard.first      
       #Owner
       project_member = is_project_member? params[:project_id]
@@ -307,7 +307,7 @@ module SecurityManager
     false
   end 
   def timecards_index_validation params
-    project = Project.where(["id = ?", params[:project_id]]).first
+    project = Project.where(["id = ?", params[:project_id]])
     unless project.first
       #Project Manager
       project_manager = is_project_manager? params[:project_id]
@@ -325,7 +325,7 @@ module SecurityManager
   # Hours
   ##
   def hours_create_validation params
-    hour = Hour.where(["id = ?", params[:id]]).first
+    hour = Hour.where(["id = ?", params[:id]])
     unless hour.first
       timecard = hour.timecard
       
@@ -345,7 +345,7 @@ module SecurityManager
   end
   
   def hours_index_validation params
-    hour = Hour.where(["id = ?", params[:id]]).first
+    hour = Hour.where(["id = ?", params[:id]])
     unless hour.first
       timecard = hour.timecard
       

@@ -34,7 +34,8 @@ class UsersController < ApplicationController
   def register_create
     @user = User.new(params[:user])
 
-    @user.roles << Role.find_by_name("company_manager").first
+    @user.roles << Role.find_by_name("company_manager")
+    @user.roles << Role.find_by_name("employee")
     @company = Company.new(params[:company])
     
     if [@user.valid?, @company.valid?].all? 
@@ -46,7 +47,7 @@ class UsersController < ApplicationController
           # Adds the user to the list of users that belongs to the company
           @company.users << @user
         end
-        redirect_to "/"
+        redirect_to dashboard_path
       rescue Exception => e
         logger.error e.message
         logger.error e.backtrace
