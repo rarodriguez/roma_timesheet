@@ -190,8 +190,8 @@ module SecurityManager
   end
   
   def timecards_edit_validation params
-    timecard = Timecard.where(["id = ?", params[:id]])
-    unless timecard.first
+    timecard = Timecard.where(["id = ?", params[:id]]).first
+    if(timecard)
       timecard_status = timecard.current_timecards_note.current_status
       
       #Owner
@@ -216,8 +216,8 @@ module SecurityManager
   #end
   
   def timecards_process_validation params
-    timecard = Timecard.where(["id = ?", params[:id]])
-    unless timecard.first
+    timecard = Timecard.where(["id = ?", params[:id]]).first
+    if(timecard)
       timecard_status = timecard.current_timecards_note.current_status
       
       #Owner
@@ -228,8 +228,8 @@ module SecurityManager
   end
   
   def timecards_revision_validation params
-    timecard = Timecard.where(["id = ?", params[:id]])
-    unless timecard.first
+    timecard = Timecard.where(["id = ?", params[:id]]).first
+    if(timecard)
       timecard_status = timecard.current_timecards_note.current_status
       
       #Owner
@@ -240,8 +240,8 @@ module SecurityManager
   end
   
   def timecards_reject_validation params
-    timecard = Timecard.where(["id = ?", params[:id]])
-    unless timecard.first
+    timecard = Timecard.where(["id = ?", params[:id]]).first
+    if(timecard)
       timecard_status = timecard.current_timecards_note.current_status
           
       #Project Manager
@@ -257,8 +257,8 @@ module SecurityManager
   end
   
   def timecards_accept_validation params
-    timecard = Timecard.where(["id = ?", params[:id]])
-    unless timecard.first
+    timecard = Timecard.where(["id = ?", params[:id]]).first
+    if(timecard)
       timecard_status = timecard.current_timecards_note.current_status
           
       #Project Manager
@@ -274,13 +274,13 @@ module SecurityManager
   end
   
   def timecards_finished_validation params
-    timecard = Timecard.where(["id = ?", params[:id]])
-    unless timecard.first
+    timecard = Timecard.where(["id = ?", params[:id]]).first
+    if(timecard)
       timecard_status = timecard.current_timecards_note.current_status
           
       #Project Manager
       project_manager = is_project_manager? params[:project_id]
-      proj_manager = project_manager && timcard.project.manager == current_member && timecard.user != current_member && timecard_status == ACCEPT
+      proj_manager = project_manager && timecard.project.manager == current_member && timecard.user != current_member && timecard_status == ACCEPT
       #Company Manager
       company_manager = is_company_manager? params[timecard.project.company.id]
       comp_manager = company_manager && timecard.user == timecard.manager && timecard_status == ACCEPT
@@ -291,8 +291,8 @@ module SecurityManager
   end 
   
   def timecards_show_validation params
-    timecard = Timecard.where(["id = ?", params[:id]])
-    unless timecard.first      
+    timecard = Timecard.where(["id = ?", params[:id]]).first
+    if(timecard)      
       #Owner
       project_member = is_project_member? params[:project_id]
       owner = project_member && timecard.user == current_member
@@ -307,8 +307,8 @@ module SecurityManager
     false
   end 
   def timecards_index_validation params
-    project = Project.where(["id = ?", params[:project_id]])
-    unless project.first
+    project = Project.where(["id = ?", params[:project_id]]).first
+    if(project)
       #Project Manager
       project_manager = is_project_manager? params[:project_id]
       #Company Manager
@@ -325,8 +325,8 @@ module SecurityManager
   # Hours
   ##
   def hours_create_validation params
-    hour = Hour.where(["id = ?", params[:id]])
-    unless hour.first
+    hour = Hour.where(["id = ?", params[:id]]).first
+    if(hour)
       timecard = hour.timecard
       
       #Owner
@@ -345,8 +345,8 @@ module SecurityManager
   end
   
   def hours_index_validation params
-    hour = Hour.where(["id = ?", params[:id]])
-    unless hour.first
+    hour = Hour.where(["id = ?", params[:id]]).first
+    if(hour)
       timecard = hour.timecard
       
       #Owner

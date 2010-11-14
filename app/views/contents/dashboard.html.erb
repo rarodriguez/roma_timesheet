@@ -25,7 +25,7 @@
       details_url = "/companies/"+myProjects[i].company_id+"/projects/"+myProjects[i].id
       myProjects[i].details = "<a href='"+details_url+"'>Details</a>";
       if(myProjects[i].add_timesheet == true || myProjects[i].add_timesheet == 'true'){
-        add_timecard_url = "/projects/"+myProjects[i].id+"/timecard/"
+        add_timecard_url = "/projects/"+myProjects[i].id+"/timecard/";
         myProjects[i].add_timesheet = "<a href='"+add_timecard_url+"'>Add timecard</a>";
       }else{
         myProjects[i].add_timesheet = ""
