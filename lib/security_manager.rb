@@ -180,12 +180,13 @@ module SecurityManager
   ##
   # Timecard
   ##
-  def timecards_add_hours_validation params
+  #deprecated#def timecards_add_hours_validation params
+  #  #Project Member
+  #  return is_project_member? params[:project_id]
+  #end
+  def timecards_create_validation params
     #Project Member
     return is_project_member? params[:project_id]
-  end
-  def timecards_create_validation params
-    return timecards_new_validation params
   end
   
   def timecards_edit_validation params

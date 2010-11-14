@@ -205,11 +205,17 @@
     }
     
     var myProjects = <%=raw @projects%>;
+    var add_timecard_url = "";
+    var details_url = "";
     for(var i=0;i<myProjects.length;i++){
-      var details_url = "/projects/"+myProjects[i].id
+      details_url = "/projects/"+myProjects[i].id
       myCompanies[i].details = "<a href='"+details_url+"'>Details</a>";
-      var add_timecard_url = "/projects/"+myProjects[i].id+"/timecard/"
-      myCompanies[i].details = "<a href='"+add_timecard_url+"'>Add timecard</a>";
+      if(myCompanies[i].add_timesheet == true || myCompanies[i].add_timesheet == 'true'){
+        add_timecard_url = "/projects/"+myProjects[i].id+"/timecard/"
+        myCompanies[i].add_timesheet = "<a href='"+add_timecard_url+"'>Add timecard</a>";
+      }else{
+        myCompanies[i].add_timesheet = ""
+      }
       jQuery("#projects_grid").addRowData(myProjects[i].id,myProjects[i]);
     }
   });
@@ -222,14 +228,14 @@
   <div class="entry">
     <table id="companies_grid"></table>
     <div id="companies_pager"></div> 
-    <p class="links"><%= link_to 'Add another company', new_company_path %></p>
+    <%#p class="links"><%= link_to 'Add another company', new_company_path ></p%>
   </div>
   <br/>
   <p class="meta"><span class="date">My Projects</span></p>
   <div style="clear: both;">&nbsp;</div>
   <div class="entry">
     <table id="projects_grid"></table>
-    <!--p class="links"><= link_to 'Create another Project', new_project_path %></p-->
+    <%#p class="links"><%= link_to 'Create another Project', new_project_path ></p%>
   </div>
   <br/>
   <p class="meta"><span class="date">My Timesheets</span></p>

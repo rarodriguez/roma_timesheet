@@ -1,3 +1,87 @@
+<%= content_for :head do%>
+<%= javascript_include_tag 'i18n/grid.locale-en.js','jquery.jqGrid.min.js' %>
+<%= stylesheet_link_tag "jquery-ui-1.8.5.custom.css","ui.jqgrid.css" %>
+  <script>
+    var projects_grid = "";
+    $(document).ready(function(){
+      var lastsel2;
+      projects_grid = jQuery("#projects_grid").jqGrid({
+          colNames: ["id", "Project", "Registered Hours", "Total Timesheets", " ", " "],
+          datatype: "local",
+          width: 935,
+          shrinkToFit: false,
+          pgtext: false,
+          pgbuttons: false,
+          pginput: false,
+          colModel: [{
+              name: 'id',
+              index: 'id',
+              width: 0,
+              hidden: true,
+              sortable: false,
+              key: true
+          }, {
+              name: 'project',
+              index: 'project',
+              align: 'center',
+              width: 270,
+              sortable: false
+          }, {
+              name: 'registered_hours',
+              index: 'registered_hours',
+              align: 'center',
+              width: 200,
+              fixed: true,
+              sortable: false
+          }, {
+              name: 'total_timesheets',
+              index: 'total_timesheets',
+              align: 'center',
+              width: 160,
+              fixed: true,
+              sortable: false
+          },{
+              name: 'details',
+              index: 'details',
+              width: 140,
+              fixed: true,
+              align: 'center',
+              sortable: false
+          },{
+              name: 'add_timesheet',
+              index: 'add_timesheet',
+              width: 140,
+              fixed: true,
+              align: 'center',
+              sortable: false
+          }],
+          height: 'auto',
+          emptyrecords:"No timesheets to display",
+          viewrecords: true,
+          loadtext:"Loading...",
+      });
+    });
+  </script>
+  <script>
+    $().ready(function(){    
+      var myProjects = <%=raw @projects%>;
+      var add_timecard_url = "";
+      var details_url = "";
+      for(var i=0;i<myProjects.length;i++){
+        details_url = "/projects/"+myProjects[i].id
+        myCompanies[i].details = "<a href='"+details_url+"'>Details</a>";
+        if(myCompanies[i].add_timesheet == true || myCompanies[i].add_timesheet == 'true'){
+          add_timecard_url = "/projects/"+myProjects[i].id+"/timecard/"
+          myCompanies[i].add_timesheet = "<a href='"+add_timecard_url+"'>Add timecard</a>";
+        }else{
+          myCompanies[i].add_timesheet = ""
+        }
+        jQuery("#projects_grid").addRowData(myProjects[i].id,myProjects[i]);
+      }
+    });
+  </script>
+<%end%>
+
 <div class="information">
   <h2 class="title">Show Company</h2>
   <p class="meta"><span class="date"><%= notice %></span></p>
@@ -23,7 +107,13 @@
         <b>Description:</b>
         <%= @company.description %>
       </p>
-
+    <br/>
+    <p class="meta"><span class="date">Projects</span></p>
+    <div style="clear: both;">&nbsp;</div>
+    <div class="entry">
+      <table id="projects_grid"></table>
+      <%#p class="links"><%= link_to 'Create another Project', new_project_path ></p%>
+    </div>
     <p class="links">
       <%if(@can_edit_company)%><%= link_to 'Edit', edit_company_path(@company) %> | <%end%>
       <%if(@can_add_project)%><%= link_to 'Add project', new_company_project_path(@company) %> | <%end%>

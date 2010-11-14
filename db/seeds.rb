@@ -45,7 +45,7 @@ permissions = Permission.create([
                 {:name => 'users_index', :roles =>[roles[EMPLOYEE]]}, 
                   
                   
-                {:name => 'timecards_add_hours', :roles =>[roles[EMPLOYEE]]}, 
+                #{:name => 'timecards_add_hours', :roles =>[roles[EMPLOYEE]]}, 
                 {:name => 'timecards_create', :roles =>[roles[EMPLOYEE]]},   
                 {:name => 'timecards_edit', :roles =>[roles[EMPLOYEE]]}, 
                 #{:name => 'timecards_update', :roles =>[roles[EMPLOYEE]]}, 
