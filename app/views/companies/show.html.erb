@@ -24,6 +24,9 @@
         <%= @company.description %>
       </p>
 
-    <p class="links"><%= link_to 'Edit', edit_company_path(@company) %> | <%= link_to 'Back', companies_path %></p>
+    <p class="links">
+      <%if(@can_edit_company)%><%= link_to 'Edit', edit_company_path(@company) %> | <%end%>
+      <%if(@can_add_project)%><%= link_to 'Add project', new_company_project_path(@company) %> | <%end%>
+      <%= link_to 'Back', dashboard_path %></p>
   </div>
 </div>

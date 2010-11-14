@@ -7,10 +7,9 @@
   var timecards_grid = "";
   $(document).ready(function(){
     projects_grid = jQuery("#companies_grid").jqGrid({
-        url: '/my_companies',
         datatype: "json",
         mtype: "POST",
-        colNames: ["id", "Name", "Total Projects", "Total Employees", "Registered hours", "Details"],
+        colNames: ["id", "Name", "Total Projects", "Total Employees", "Registered hours", " "],
         datatype: "local",
         width: 935,
         shrinkToFit: false,
@@ -67,10 +66,9 @@
     });
     
     timecards_grid = jQuery("#timecards_grid").jqGrid({
-        url: '/my_timecards',
         datatype: "json",
         mtype: "POST",
-        colNames: ["id", "Company", "Project", "Registered Hours", "Initial Time", "End Time", "Details"],
+        colNames: ["id", "Company", "Project", "Registered Hours", "Initial Time", "End Time", " "],
         datatype: "local",
         width: 935,
         shrinkToFit: false,
@@ -134,7 +132,7 @@
     });
     var lastsel2;
     projects_grid = jQuery("#projects_grid").jqGrid({
-        colNames: ["id", "Project", "Registered Hours", "Total Timesheets", "View Timesheets", "Add a Timesheet"],
+        colNames: ["id", "Project", "Registered Hours", "Total Timesheets", " ", " "],
         datatype: "local",
         width: 935,
         shrinkToFit: false,
@@ -169,8 +167,8 @@
             fixed: true,
             sortable: false
         },{
-            name: 'view_timesheets',
-            index: 'view_timesheets',
+            name: 'details',
+            index: 'details',
             width: 140,
             fixed: true,
             align: 'center',
@@ -194,23 +192,31 @@
   $().ready(function(){
     var myTimecards = <%=raw @timecards%>;
     for(var i=0;i<myTimecards.length;i++){
+      var details_url = "/projects/"+myTimecards[i].project.id+"/timecards/"+myTimecards[i].id
+      myTimecards[i].details = "<a href='"+details_url+"'>Details</a>";
       jQuery("#timecards_grid").addRowData(myTimecards[i].id,myTimecards[i]);
     }
     
     var myCompanies = <%=raw @companies%>;
     for(var i=0;i<myCompanies.length;i++){
+      var details_url = "/companies/"+myCompanies[i].id
+      myCompanies[i].details = "<a href='"+details_url+"'>Details</a>";
       jQuery("#companies_grid").addRowData(myCompanies[i].id,myCompanies[i]);
     }
     
     var myProjects = <%=raw @projects%>;
     for(var i=0;i<myProjects.length;i++){
+      var details_url = "/projects/"+myProjects[i].id
+      myCompanies[i].details = "<a href='"+details_url+"'>Details</a>";
+      var add_timecard_url = "/projects/"+myProjects[i].id+"/timecard/"
+      myCompanies[i].details = "<a href='"+add_timecard_url+"'>Add timecard</a>";
       jQuery("#projects_grid").addRowData(myProjects[i].id,myProjects[i]);
     }
   });
 </script>
 
 <div class="information">
-  <h2 class="title">My information</h2>
+  <h2 class="title">Dashboard :: My information</h2>
   <p class="meta"><span class="date">My Companies</span></p>
   <div style="clear: both;">&nbsp;</div>
   <div class="entry">
@@ -219,16 +225,16 @@
     <p class="links"><%= link_to 'Add another company', new_company_path %></p>
   </div>
   <br/>
-  <p class="meta"><span class="date">My Timesheets</span></p>
-  <div style="clear: both;">&nbsp;</div>
-  <div class="entry">
-    <table id="timecards_grid"></table>
-    <p class="links"><%= link_to 'Create another Timesheet', new_company_path %></p>
-  </div>
-  <br/>
   <p class="meta"><span class="date">My Projects</span></p>
   <div style="clear: both;">&nbsp;</div>
   <div class="entry">
     <table id="projects_grid"></table>
+    <!--p class="links"><= link_to 'Create another Project', new_project_path %></p-->
+  </div>
+  <br/>
+  <p class="meta"><span class="date">My Timesheets</span></p>
+  <div style="clear: both;">&nbsp;</div>
+  <div class="entry">
+    <table id="timecards_grid"></table>
   </div>
 </div>

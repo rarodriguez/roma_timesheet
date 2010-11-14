@@ -28,8 +28,8 @@ class Project < ActiveRecord::Base
       timecards.each{|tc| total_hours += tc.total_hours}
       proj_hash[:registered_hours] = total_hours && total_hours != '' ? total_hours : 0
       proj_hash[:total_timesheets] = proj.timecards.size
-      proj_hash[:view_timesheets] = "View Timesheets"
-      proj_hash[:add_timesheet] = "Add Timesheet"
+      proj_hash[:details] = " "
+      proj_hash[:add_timesheet] = " "
       projects_param << proj_hash
     end
     projects_param.to_local_jqgrid_hash([:id,:project,:registered_hours,:total_timesheets,:view_timesheets,:add_timesheet])

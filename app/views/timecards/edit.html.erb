@@ -80,11 +80,11 @@
     <table id="hours_grid"></table> 
     <p class="links">
       <span id="add_hours">Add additional Hours</span> | 
-      <%if(@can_process_timecard)%><span class="change_state" id="process">Change state to &quot;in process&quot;</span> |<% end %>
-      <%if(@can_revision_timecard)%><span class="change_state" id="revision">Send to &quot;revision&quot;</span> |<% end %>
-      <%if(@can_accept_timecard)%><span class="change_state" id="accept">&quot;Accept&quot;</span> |<% end %>
-      <%if(@can_reject_timecard)%><span class="change_state" id="reject">&quot;Reject&quot;</span> |<% end %>
-      <%if(@can_finished_timecard)%><span class="change_state" id="finished">Mark as &quot;finished&quot;</span> |<% end %>
+      <%if(@can_process_timecard)%><span class="change_state" id="process">Change state to &quot;in process&quot;</span> | <% end %>
+      <%if(@can_revision_timecard)%><span class="change_state" id="revision">Send to &quot;revision&quot;</span> | <% end %>
+      <%if(@can_accept_timecard)%><span class="change_state" id="accept">&quot;Accept&quot;</span> | <% end %>
+      <%if(@can_reject_timecard)%><span class="change_state" id="reject">&quot;Reject&quot;</span> | <% end %>
+      <%if(@can_finished_timecard)%><span class="change_state" id="finished">Mark as &quot;finished&quot;</span> | <% end %>
       <a href='<%="/companies/#{@timecard.project.company_id}/projects/#{@timecard.project.id}"%>'>Back</a>
     </p>
   </div>
