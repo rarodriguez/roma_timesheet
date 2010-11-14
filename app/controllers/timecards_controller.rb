@@ -19,11 +19,6 @@ class TimecardsController < ApplicationController
     @can_edit_timecard = has_permission?("timecards", "edit", params)
     #@can_edit_timecard = true
   end
-  
-  def add_hours
-    @timecard = Timecard.new
-  end
-
 
   # GET /timecards/1/edit
   def edit

@@ -26,9 +26,11 @@ Released   : 20100423
   </div>
   <!-- end #header -->
   <div id="menu">
+    <% if(current_member) %>
     <ul>
       <li class="<%="current_page_item" if(@dashboard)%>"><a href="#">Dashboard</a></li>
     </ul>
+    <% end %>
   </div>
   <!-- end #menu -->
   <div id="page">
