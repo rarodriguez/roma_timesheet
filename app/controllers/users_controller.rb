@@ -90,10 +90,22 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     @company = Company.find(params[:company_id])
     @user.last_updater = current_member
-    if @user.save
-      @user.roles << Role.find_by_name("employee").first
-      @company.users << @user
-      redirect_to(company_user_path(:company_id=>@company.id, :id=>@user.id), :notice => 'User was successfully created.')
+    if(@user.valid?)
+    begin
+        User.transaction do
+          @user.save!
+          @user.roles << Role.find_by_name("employee")
+          @company.users << @user
+        end
+        redirect_to(company_user_path(:company_id=>@company.id, :id=>@user.id), :notice => 'User was successfully created.')
+      rescue Exception => e
+        logger.error e.message
+        logger.error e.backtrace
+        @user.password = ""
+        @user.password_confirmation = ""
+        errors.add_to_base("We had a problem while processing your request.")
+        render :action => "new"
+      end
     else
       @user.password = ""
       @user.password_confirmation = ""
