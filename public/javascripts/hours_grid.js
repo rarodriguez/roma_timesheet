@@ -124,7 +124,7 @@ $(document).ready( function() {
               window.location.replace(data.url);
             }else{
               if (data.success) {
-                grid.trigger('reloadGrid');
+                hours_grid.trigger('reloadGrid');
               }
               else {
                 alert("We had a problem while deleting the hour registry, please try again.");
