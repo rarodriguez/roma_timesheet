@@ -325,10 +325,13 @@ module SecurityManager
   # Hours
   ##
   def hours_create_validation params
-    hour = Hour.where(["id = ?", params[:id]]).first
-    if(hour)
-      timecard = hour.timecard
-      
+    #hour = Hour.where(["id = ?", params[:id]]).first
+    #if(hour)
+    #  timecard = hour.timecard
+    #else
+      timecard = Timecard.where(["id = ?", params[:timecard_id]]).first
+    #end
+    if(timecard)  
       #Owner
       project_member = is_project_member? timecard.project.id
       owner = project_member && timecard.user == current_member && timecard.id == params[:timecard_id] 
