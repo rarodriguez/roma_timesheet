@@ -357,3 +357,5 @@ table.list { width:800px;}
 #projects_grid .ui-widget-content a { color:#9D151A; }
 #projects_grid .ui-widget-content a { color:#9D151A; }
 #companies_grid .ui-widget-content a { color:#9D151A; }
+.change_state {color:#9D151A;}
+.change_state:hover {cursor: pointer;}

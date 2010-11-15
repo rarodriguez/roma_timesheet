@@ -10,7 +10,7 @@
       
       $('.change_state').click(function(){
         var action = $(this).attr("id");
-        if(id.match(/[A-Za-z]{1,10}/)){
+        if(action.match(/[A-Za-z]{1,10}/)){
           var dataString = 'authenticity_token=' + $('meta[name=csrf-token]').attr('content');
           $.ajax({
             type: "POST",
