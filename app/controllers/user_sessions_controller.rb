@@ -8,6 +8,9 @@ class UserSessionsController < ApplicationController
    # Backend login page
   def login
       puts "LOGIN #{controller_name}, #{action_name}"
+      if(current_member)
+        redirect_to dashboard_url
+      end
   end
   
     # Backend login action 
@@ -28,7 +31,7 @@ class UserSessionsController < ApplicationController
   def logout
     current_member_session.destroy
     session.clear
-    redirect_to root_url
+    redirect_to login_url
   end
   
   private

@@ -1,5 +1,5 @@
-Timesheet::Application.routes.draw do
-  root :to => "contents#dashboard"
+Timesheet::Application.routes.draw do 
+  root :to => "user_sessions#login"
   
   resources :companies, :constraints => {:id => /[0-9]+/, :company_id =>/[0-9]+/}   do
     resources :projects, :constraints => {:id => /[0-9]+/}
@@ -31,8 +31,5 @@ Timesheet::Application.routes.draw do
   match 'timecards/:timecard_id/hours' => 'hours#create', :as=>:create_hours, :via=>'post', :constraints => {:timecard_id => /[0-9]+/}
   match 'timecards/:timecard_id/hours/list' => 'hours#index', :as=>:list_hours, :via=>'post', :constraints => {:timecard_id => /[0-9]+/}
   match 'timecards/:timecard_id/hours/:id' => 'hours#destroy', :as=>:destroy_hours, :via=>'delete', :constraints => {:timecard_id => /[0-9]+/}
-  
-  
-  #match '*url', :render_404
   
 end
