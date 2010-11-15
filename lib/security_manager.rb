@@ -325,43 +325,62 @@ module SecurityManager
   # Hours
   ##
   def hours_create_validation params
-    #hour = Hour.where(["id = ?", params[:id]]).first
-    #if(hour)
-    #  timecard = hour.timecard
-    #else
-      timecard = Timecard.where(["id = ?", params[:timecard_id]]).first
-    #end
-    if(timecard)  
-      #Owner
-      project_member = is_project_member? timecard.project.id
-      owner = project_member && timecard.user == current_member && timecard.id == params[:timecard_id] 
-      #Project Manager
-      project_manager = is_project_manager? timecard.project.id
-      proj_manager = project_manager && timecard.project.manager == current_member && timecard.id == params[:timecard_id]
-      
+    timecard = Timecard.where(["id = ?", params[:timecard_id]]).first
+    if(timecard)
+      if(params[:oper] == 'edit')
+        timecard_status = timecard.current_timecards_note ? timecard.current_timecards_note.current_status : PROCESS
+       
+        #Owner
+        project_member = is_project_member? timecard.project.id
+        owner = project_member && timecard.user == current_member && timecard.id == params[:timecard_id].to_i && timecard_status == PROCESS 
+        #Project Manager
+        project_manager = is_project_manager? timecard.project.id
+        proj_manager = project_manager && timecard.project.manager == current_member && timecard.id == params[:timecard_id].to_i && timecard_status == REVISION
+      else
+        #Owner
+        project_member = is_project_member? timecard.project.id
+        owner = project_member && timecard.user == current_member && timecard.id == params[:timecard_id].to_i && timecard_status == PROCESS
+       
+        #Project Manager (cannot create new hours for the timecard)
+        project_manager = false
+      end
       return owner || proj_manager
     end
     false
   end
-  def hours_destroy_validation params
-    hours_create_validation params
-  end
   
-  def hours_index_validation params
+  def hours_destroy_validation params
     hour = Hour.where(["id = ?", params[:id]]).first
     if(hour)
       timecard = hour.timecard
+      timecard_status = timecard.current_timecards_note ? timecard.current_timecards_note.current_status : PROCESS
       
       #Owner
       project_member = is_project_member? timecard.project.id
-      owner = project_member && timecard.user == current_member && timecard.id == params[:timecard_id] 
+      owner = project_member && timecard.user == current_member && timecard_status == PROCESS 
       #Project Manager
       project_manager = is_project_manager? timecard.project.id
-      proj_manager = project_manager && timecard.project.manager == current_member && timecard.id == params[:timecard_id]
+      proj_manager = project_manager && timecard.project.manager == current_member && timecard_status == REVISION 
+      
+      return (owner || proj_manager) && timecard.id == params[:timecard_id].to_i
+    end
+    false
+  end
+  
+  def hours_index_validation params
+    timecard = Timecard.where(["id = ?", params[:timecard_id]]).first
+
+    if(timecard) 
+      #Owner
+      project_member = is_project_member? timecard.project.id
+      owner = project_member && timecard.user == current_member
+      #Project Manager
+      project_manager = is_project_manager? timecard.project.id
+      proj_manager = project_manager && timecard.project.manager == current_member 
       #Company Manager
       company_manager = is_company_manager? params[timecard.project.company.id]
       
-      return (owner || proj_manager || company_manager) && timecard.id == params[:timecard_id]
+      return (owner || proj_manager || company_manager) && timecard.id == params[:timecard_id].to_i
     end
     false
   end
