@@ -59,10 +59,24 @@ class ProjectsController < ApplicationController
     @project.last_updater = current_member
     @project.company = @company
 
-    if @project.save
-      project_role = Role.find_by_name("project_manager")
-      manager.roles << project_role# if(manager.roles.find(project_role.id).nil?)
-      redirect_to(company_project_path(:id=>@project.id, :company_id =>@company.id), :notice => 'Project was successfully created.')
+    if(@project.valid?)
+      begin
+        Project.transaction do
+          @project.save!
+          project_role = Role.find_by_name("project_manager")
+          # if the user have just one project
+          if(manager.projects && manager.projects.size == 1)
+            manager.roles << project_role
+          end 
+        end
+        redirect_to(company_project_path(:id=>@project.id, :company_id =>@company.id), :notice => 'Project was successfully created.')
+      rescue Exception=>e
+        logger.error e.message
+        logger.error e.backtrace
+        @company_id = params[:company_id]
+        @employees = User.cb_all_by_company_id(@company_id)
+        render :action => "new"
+      end
     else
       @company_id = params[:company_id]
       @employees = User.cb_all_by_company_id(@company_id)
@@ -80,9 +94,19 @@ class ProjectsController < ApplicationController
     
     generate_employees manager, project_params
     
+    old_project_manager = @project.manager
     @project.manager = manager
     @project.last_updater = current_member
+    
     if @project.update_attributes(params[:project])
+      # if the manager changes
+      if(old_project_manager != @project.manager)
+        project_role = Role.find_by_name("project_manager")
+        #handle the role for the old manager
+        old_project_manager.roles.delete if(old_project_manager.projects.nil? || old_project_manager.projects.size < 1)
+        # if the new manager  
+        manager.roles << project_role if(manager.projects && manager.projects.size == 1)
+      end
       redirect_to(company_project_path(:id=>@project.id, :company_id =>@project.company.id), :notice => 'Project was successfully updated.')
     else
       @company_id = params[:company_id]

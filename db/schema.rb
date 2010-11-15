@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101106041606) do
+ActiveRecord::Schema.define(:version => 20101115031840) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(:version => 20101106041606) do
   end
 
   add_index "users", ["last_updated_by"], :name => "users_last_updated_by_fk"
+  add_index "users", ["login"], :name => "index_users_on_login", :unique => true
 
   add_foreign_key "companies", "users", :name => "companies_user_id_fk", :dependent => :delete
 
