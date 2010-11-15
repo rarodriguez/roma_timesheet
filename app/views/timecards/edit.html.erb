@@ -2,6 +2,9 @@
   <script type="text/javascript">
     
     var change_state_url = "<%=change_state_timecard_url(:project_id=>@timecard.project.id, :id=>@timecard.id)%>"
+    var edit_url = "<%=create_hours_url(@timecard.id)%>";
+    var listing_grid = "<%=list_hours_url(@timecard.id)%>";
+    var delete_url = "/timecards/<%=@timecard.id%>/hours/";
     
     $(document).ready(function(){
       
