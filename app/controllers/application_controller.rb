@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :require_no_member, :only=> [:login, :login_submit, :register, :register_create]
   before_filter :require_member, :only=> [:logout]
-  before_filter :validate_access, :except => [:login, :login_submit, :register, :register_create]
+  before_filter :validate_access, :except => [:login, :login_submit, :register, :register_create,:logout]
   
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
