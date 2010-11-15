@@ -327,8 +327,8 @@ module SecurityManager
   def hours_create_validation params
     timecard = Timecard.where(["id = ?", params[:timecard_id]]).first
     if(timecard)
+      timecard_status = timecard.current_timecards_note ? timecard.current_timecards_note.current_status : PROCESS
       if(params[:oper] == 'edit')
-        timecard_status = timecard.current_timecards_note ? timecard.current_timecards_note.current_status : PROCESS
        
         #Owner
         project_member = is_project_member? timecard.project.id
@@ -342,7 +342,7 @@ module SecurityManager
         owner = project_member && timecard.user == current_member && timecard.id == params[:timecard_id].to_i && timecard_status == PROCESS
        
         #Project Manager (cannot create new hours for the timecard)
-        project_manager = false
+        proj_manager = false
       end
       return owner || proj_manager
     end
