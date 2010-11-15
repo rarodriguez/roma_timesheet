@@ -18,7 +18,7 @@ Timesheet::Application.routes.draw do
   match 'edit_self' => 'users#edit_self', :as => :edit_self, :via => "get"
   match 'edit_self' => 'users#update_self', :as => :update_self, :via => "put"
   
-  match 'projects/:project_id/timecards' => 'timecards#index', :as=>:timecards, :via=>'get', :constraints => {:project_id => /[0-9]+/}
+  #match 'projects/:project_id/timecards' => 'timecards#index', :as=>:timecards, :via=>'get', :constraints => {:project_id => /[0-9]+/}
   match 'projects/:project_id/timecards/new' => 'timecards#new', :as=>:new_timecard, :via=>'get', :constraints => {:project_id => /[0-9]+/}
   match 'projects/:project_id/timecards' => 'timecards#create', :as=>:timecards, :via=>'post', :constraints => {:project_id => /[0-9]+/}
   match 'projects/:project_id/timecards/:id/edit' => 'timecards#edit', :as=>:edit_timecard, :via=>'get', :constraints => {:project_id => /[0-9]+/, :id => /[0-9]+/}
