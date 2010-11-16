@@ -132,6 +132,7 @@ class UsersController < ApplicationController
   def destroy
     @company = Company.find(params[:company_id])
     @user = @company.users.find(params[:id])
+    @user.companies.clear
     @user.destroy
 
     redirect_to(company_users_url)
