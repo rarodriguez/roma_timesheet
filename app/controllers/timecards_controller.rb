@@ -78,7 +78,7 @@ class TimecardsController < ApplicationController
     end
   end
   
-  def timecards_change_state
+  def change_state
     valid_xhr_request?
     
     action = params[:change_to]
@@ -104,6 +104,7 @@ class TimecardsController < ApplicationController
     end
   end
   
+  private
   def change_state_to (status, params)
     @timecard = current_member.timecards.find(params[:id])
     if(@timecard && status > -1)
