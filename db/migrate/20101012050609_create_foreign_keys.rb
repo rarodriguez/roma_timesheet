@@ -1,7 +1,7 @@
 class CreateForeignKeys < ActiveRecord::Migration
   def self.up
     add_foreign_key(:companies,:users, :dependent => :delete)
-    add_foreign_key(:projects, :users, :dependent => :delete)
+    #add_foreign_key(:projects, :users, :dependent => :delete)
     add_foreign_key(:users, :users, :column => 'last_updated_by', :dependent => :delete )
     add_foreign_key(:permissions, :roles, :dependent => :delete )
     add_foreign_key(:hours, :timecards, :dependent => :delete )
