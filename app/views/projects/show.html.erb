@@ -54,6 +54,16 @@
             <b>Last update by:</b>
             <%= "#{@project.last_updater.name} #{@project.last_updater.last_name}" if(@project.last_updater) %>
         </p>
+        <p>
+            <b>Employees:</b>
+            <%if(@project.employees && @project.employees.size > 0)%>
+            <ul>
+              <%@project.employees.each do|empl|%>
+              <li><%="#{empl.name} #{empl.last_name}"%></li>
+              <% end %>
+            </ul>
+            <% end %>
+        </p>
     </div>
     <p class="meta">
         <span class="date">My Timecards</span>
