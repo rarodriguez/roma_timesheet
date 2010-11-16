@@ -115,7 +115,7 @@ class TimecardsController < ApplicationController
         Timecard.transaction do
           @timecard.save!
           timecards_note = TimecardsNote.create(:current_status=>status, :old_status=>old_note.current_status , :timecard=>@timecard, :creator=>current_member)
-          @timecard.current_timecards_note=timecard_note
+          @timecard.current_timecards_note = timecards_note
         end
         render :json=>"{\"success\":true,\"message\":\"The timecard is now in a state of #{status_name}.\"}"
       rescue Exception => e
