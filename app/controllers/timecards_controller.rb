@@ -98,7 +98,7 @@ class TimecardsController < ApplicationController
       state = -1
     end
     if(has_permission?("timecards", action, params))
-      change_state_to(PROCESS, params)
+      change_state_to(state, params)
     else
       render :json=>"{\"success\":false,\"message\":\"You can't change the state of the timecard right now.\"}"
     end
@@ -114,7 +114,7 @@ class TimecardsController < ApplicationController
       begin
         Timecard.transaction do
           @timecard.save!
-          timecards_note = TimecardsNote.create(:current_status=>status, :old_status=>old_note.current_status , :timecard=>@timecard, :creator=>current_member)
+          timecards_note = TimecardsNote.create(:current_status=>status, :old_status=>old_note.current_status, :timecard_id=>@timecard.id, :creator=>current_member)
           @timecard.current_timecards_note = timecards_note
         end
         render :json=>"{\"success\":true,\"message\":\"The timecard is now in a state of #{status_name}.\"}"
