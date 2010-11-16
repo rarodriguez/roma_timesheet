@@ -36,6 +36,13 @@
 </script>
 
 <div class="information">
+  <% if(flash[:access_msg])%>
+  <div id="error_explanation">
+    <ul>
+      <li><%= flash[:access_msg] %></li>
+    </ul>
+  </div>
+  <% end %>
   <h2 class="title">Dashboard :: My information</h2>
   <p class="meta"><span class="date">My Companies</span></p>
   <div style="clear: both;">&nbsp;</div>

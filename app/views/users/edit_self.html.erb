@@ -4,9 +4,12 @@
   <div style="clear: both;">&nbsp;</div>
   <div class="entry">
       <%= form_for(@user, :url=>update_self_path) do |f| %>
-        <% if @user.errors.any? %>
+        <% if @user.errors.any? || flash[:access_msg] %>
           <div id="error_explanation">
             <ul>
+            <% if(flash[:access_msg])%>
+            <li><%= flash[:access_msg] %></li>
+            <% end %>  
             <% @user.errors.each do |attr, msg| %>
               <li><%= msg %></li>
             <% end %>
