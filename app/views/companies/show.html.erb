@@ -2,6 +2,7 @@
 <%= javascript_include_tag 'i18n/grid.locale-en.js','jquery.jqGrid.min.js' %>
 <%= stylesheet_link_tag "jquery-ui-1.8.5.custom.css","ui.jqgrid.css" %>
   <script>
+    var projects_details_url = "/companies/<%=@company.id%>/projects/";
     var projects_grid = "";
     $(document).ready(function(){
       var lastsel2;
@@ -68,8 +69,7 @@
       var add_timecard_url = "";
       var details_url = "";
       for(var i=0;i<myProjects.length;i++){
-        details_url = "/projects/"+myProjects[i].id
-        myProjects[i].details = "<a href='"+details_url+"'>Details</a>";
+        myProjects[i].details = "<a href='"+projects_details_url+myProjects[i].id+"'>Details</a>";
         if(myProjects[i].add_timesheet == true || myProjects[i].add_timesheet == 'true'){
           add_timecard_url = "/projects/"+myProjects[i].id+"/timecard/"
           myProjects[i].add_timesheet = "<a href='"+add_timecard_url+"'>Add timecard</a>";
@@ -100,7 +100,7 @@
       
       <p>
         <b>Administrator:</b>
-        <%= @company.manager.name + @company.manager.last_name if(@company.manager)%>
+        <%= "#{@company.manager.name} #{@company.manager.last_name}" if(@company.manager)%>
       </p>
       
       <p>
